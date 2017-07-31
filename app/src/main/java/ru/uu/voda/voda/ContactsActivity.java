@@ -1,5 +1,5 @@
 package ru.uu.voda.voda;
-
+/** страница с контактами*/
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

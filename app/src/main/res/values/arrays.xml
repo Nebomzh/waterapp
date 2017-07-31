@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="Spinner1_list">
+        <item>@string/Spinner1_1</item>
+        <item>@string/Spinner1_2</item>
+        <item>@string/Spinner1_3</item>
+        <item>@string/Spinner1_4</item>
+        <item>@string/Spinner1_5</item>
+        <item>@string/Spinner1_6</item>
+        <item>@string/Spinner1_7</item>
+        <item>@string/Spinner1_8</item>
+    </string-array>
+
+    <string-array name="Spinner5_list">
+        <item>@string/Spinner5_51</item>
+        <item>@string/Spinner5_53</item>
+        <item>@string/Spinner5_11</item>
+        <item>@string/Spinner5_12</item>
+        <item>@string/Spinner5_13</item>
+        <item>@string/Spinner5_14</item>
+        <item>@string/Spinner5_15</item>
+        <item>@string/Spinner5_16</item>
+        <item>@string/Spinner5_17</item>
+        <item>@string/Spinner5_18</item>
+        <item>@string/Spinner5_19</item>
+        <item>@string/Spinner5_20</item>
+        <item>@string/Spinner5_21</item>
+        <item>@string/Spinner5_22</item>
+        <item>@string/Spinner5_23</item>
+        <item>@string/Spinner5_24</item>
+        <item>@string/Spinner5_25</item>
+        <item>@string/Spinner5_26</item>
+        <item>@string/Spinner5_27</item>
+        <item>@string/Spinner5_42</item>
+        <item>@string/Spinner5_43</item>
+        <item>@string/Spinner5_44</item>
+        <item>@string/Spinner5_45</item>
+        <item>@string/Spinner5_46</item>
+        <item>@string/Spinner5_47</item>
+        <item>@string/Spinner5_48</item>
+        <item>@string/Spinner5_49</item>
+        <item>@string/Spinner5_54</item>
+    </string-array>
+
+    <string-array name="Spinner6_list">
+        <item>@string/Spinner6_28</item>
+        <item>@string/Spinner6_29</item>
+        <item>@string/Spinner6_32</item>
+        <item>@string/Spinner6_33</item>
+        <item>@string/Spinner6_34</item>
+        <item>@string/Spinner6_35</item>
+        <item>@string/Spinner6_36</item>
+        <item>@string/Spinner6_37</item>
+        <item>@string/Spinner6_38</item>
+        <item>@string/Spinner6_52</item>
+    </string-array>
+
+
+</resources>

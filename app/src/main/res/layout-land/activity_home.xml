@@ -5,6 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context="ru.uu.voda.voda.HomeActivity">
 
 
@@ -21,60 +22,54 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
             android:layout_margin="10dip"
-            android:background="#ffffff"
-            >
-
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="Button"
-                android:drawableTop="@drawable/people"
-                android:background="@drawable/buttontextstyle"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                />
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/problem"
+                android:text="@string/button1"
+                android:textColor="#ffffff" />
 
             <Button
                 android:id="@+id/button2"
-                android:background="@drawable/buttontextstyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="Button"
-                android:drawableTop="@drawable/people"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                />
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/question"
+                android:text="@string/button2"
+                android:textColor="#ffffff" />
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttontextstyle"
-                android:drawableTop="@drawable/people"
-                android:text="Button" />
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/contacts"
+                android:text="@string/button3"
+                android:textColor="#ffffff" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dip"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:background="#ffffff"
-            android:layout_margin="10dip"
 
             >
 
@@ -95,12 +90,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="Button"
-                android:drawableTop="@drawable/people"
-                android:background="@drawable/buttontextstyle"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttontextstyle"
+                android:drawableTop="@drawable/people"
+                android:text="Button"
 
                 />
 
@@ -109,13 +104,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/people"
-                android:text="Позвонить в службу подержки"
-                android:background="@drawable/buttontextstyle"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                />
+                android:layout_weight="1"
+                android:background="@drawable/buttontextstyle"
+                android:drawableTop="@drawable/people"
+                android:text="Позвонить в службу подержки" />
 
         </LinearLayout>
 

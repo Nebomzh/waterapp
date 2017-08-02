@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;    //Для всплывающих сообщений
+import android.view.Menu;       //меню
+import android.view.MenuItem;   //пункт меню
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener { //implements добавляет обработчик нажатий прямо в активити
     /** Главная страница*/
@@ -54,6 +56,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         Intent intent = new Intent(HomeActivity.this, target);
         startActivity(intent);
+    }
+
+    // создание меню
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_exit, menu);  //создание меню из xml menu_exit
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // обновление меню (в зависимости от настроек можно скрывать/показывать какие-нибудь элементы), пока не нужно.
+    /*@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // пункты меню с ID группы = 1 видны, если в CheckBox стоит галка
+        menu.setGroupVisible(1, chb.isChecked());
+        return super.onPrepareOptionsMenu(menu);
+    }*/
+
+    // обработка нажатий пунктов меню
+    public boolean onOptionsItemSelected(MenuItem item) {                   //пока у нас один пункт в меню обрабатываем всегда одинаково без свича
+        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+        finish(); // выход из приложения
+        return super.onOptionsItemSelected(item);
     }
 }
 

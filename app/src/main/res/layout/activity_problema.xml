@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     tools:context="ru.uu.voda.voda.ProblemaActivity">
 
 
-
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ScrollView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -189,13 +189,12 @@
                 android:id="@+id/ButtonSendFeedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/submit"
-                android:onClick="sendFeedback"/>
+                android:onClick="sendFeedback"
+                android:text="@string/submit" />
 
 
         </LinearLayout>
     </ScrollView>
-
 
 
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,8 @@
     <string name="button2">Есть вопрос?</string>
     <string name="button3">Контакты</string>
 
+    <string name="future_button">Эта кнопка находится в разработке</string>
+
     <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
     <string name="h1">Район города: *</string>
 

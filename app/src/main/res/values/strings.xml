@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">Voda</string>
-    <string name="title_activity_vopros">VoprosActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="button1">Сообщить о проблеме</string>
     <string name="button2">Есть вопрос?</string>
     <string name="button3">Контакты</string>
 
     <string name="future_button">Эта кнопка находится в разработке</string>
+
+    <string name="exit">Выход</string>
 
     <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
     <string name="h1">Район города: *</string>

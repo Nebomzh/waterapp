@@ -209,7 +209,7 @@ public class ProblemaActivity  extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.Toast;    //Для всплывающих сообщений
 import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
+import android.view.animation.Animation;        //Анимация
+import android.view.animation.AnimationUtils;   //Анимационные утилиты
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener { //implements добавляет обработчик нажатий прямо в активити
     /** Главная страница*/
@@ -32,7 +34,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         button5.setOnClickListener(this);
         button6.setOnClickListener(this);
 
-        }
+        //Анимация
+        Animation anim1 = AnimationUtils.loadAnimation(this, R.anim.alpha);  //элемент анимации прозрачности
+        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation anim4 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation anim5 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation anim6 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        anim2.setStartOffset(250);       //задержка анимации
+        anim3.setStartOffset(500);
+        anim4.setStartOffset(750);
+        anim5.setStartOffset(1000);
+        anim6.setStartOffset(1250);
+        button1.startAnimation(anim1);   //старт анимации на кнопках
+        button2.startAnimation(anim2);
+        button3.startAnimation(anim3);
+        button4.startAnimation(anim4);
+        button5.startAnimation(anim5);
+        button6.startAnimation(anim6);
+
+    }
 
     @Override
     public void onClick(View view) {

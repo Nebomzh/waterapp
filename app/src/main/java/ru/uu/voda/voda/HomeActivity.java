@@ -41,11 +41,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Animation anim4 = AnimationUtils.loadAnimation(this, R.anim.alpha);
         Animation anim5 = AnimationUtils.loadAnimation(this, R.anim.alpha);
         Animation anim6 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        anim2.setStartOffset(250);       //задержка анимации
-        anim3.setStartOffset(500);
-        anim4.setStartOffset(750);
-        anim5.setStartOffset(1000);
-        anim6.setStartOffset(1250);
+        anim1.setStartOffset(250);       //задержка анимации
+        anim2.setStartOffset(500);       //задержка анимации
+        anim3.setStartOffset(750);
+        anim4.setStartOffset(1000);
+        anim5.setStartOffset(1250);
+        anim6.setStartOffset(1500);
         button1.startAnimation(anim1);   //старт анимации на кнопках
         button2.startAnimation(anim2);
         button3.startAnimation(anim3);
@@ -75,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для остальных кнопок показываем тост, что они в разработке
                 return; //и выходим из обработчика, никуда не переходя
         }
-        Intent intent = new Intent(HomeActivity.this, target);
+        Intent intent = new Intent(this, target);
         startActivity(intent);
     }
 

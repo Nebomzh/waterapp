@@ -11,6 +11,7 @@ import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
 import android.view.animation.Animation;        //Анимация
 import android.view.animation.AnimationUtils;   //Анимационные утилиты
+import android.net.Uri;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener { //implements добавляет обработчик нажатий прямо в активити
     /** Главная страница*/
@@ -70,9 +71,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button3:
                 target = ContactsActivity.class;
                 break;
+            case R.id.button6:
+                Uri number = Uri.parse("tel:+73517299559");
+                Intent dial = new Intent(Intent.ACTION_DIAL, number);
+                startActivity(dial);
+                return;
             case R.id.button4:
             case R.id.button5:
-            case R.id.button6:
                 Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для остальных кнопок показываем тост, что они в разработке
                 return; //и выходим из обработчика, никуда не переходя
         }

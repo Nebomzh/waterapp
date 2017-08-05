@@ -71,13 +71,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button3:
                 target = ContactsActivity.class;
                 break;
+            case R.id.button5:
+                Uri address = Uri.parse("http://voda.uu.ru");
+                Intent openlink = new Intent(Intent.ACTION_VIEW, address);
+                startActivity(openlink);
+                return;
             case R.id.button6:
                 Uri number = Uri.parse("tel:+73517299559");
                 Intent dial = new Intent(Intent.ACTION_DIAL, number);
                 startActivity(dial);
                 return;
             case R.id.button4:
-            case R.id.button5:
                 Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для остальных кнопок показываем тост, что они в разработке
                 return; //и выходим из обработчика, никуда не переходя
         }

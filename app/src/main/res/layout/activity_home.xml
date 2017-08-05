@@ -76,12 +76,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttontextstyle"
-                android:drawableTop="@drawable/people"
-                android:text="Button" />
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/tools"
+                android:text="@string/button4"
+                android:textColor="#ffffff" />
 
         </LinearLayout>
 
@@ -99,14 +99,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttontextstyle"
-                android:drawableTop="@drawable/people"
-                android:text="Button"
-
-                />
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/site"
+                android:text="@string/button5"
+                android:textColor="#ffffff" />
 
             <Button
                 android:id="@+id/button6"
@@ -117,7 +115,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:drawableTop="@drawable/phone"
-                android:text="Позвонить в службу подержки"
+                android:text="@string/button6"
                 android:textColor="#ffffff" />
 
         </LinearLayout>

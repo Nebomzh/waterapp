@@ -4,6 +4,9 @@
     <string name="button1">Сообщить о проблеме</string>
     <string name="button2">Есть вопрос?</string>
     <string name="button3">Контакты</string>
+    <string name="button4">Отключения</string>
+    <string name="button5">Перейти на сайт</string>
+    <string name="button6">Позвонить в службу подержки</string>
 
     <string name="future_button">Эта кнопка находится в разработке</string>
 

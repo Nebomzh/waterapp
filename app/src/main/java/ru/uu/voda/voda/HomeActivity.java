@@ -59,33 +59,34 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        Class target = ProblemaActivity.class;  //Переменная для класса в который нужно будет перейти
+        Intent intent = new Intent();   //intent в который нужно будет перейти
+
         // по id определеяем кнопку, вызвавшую этот обработчик
         switch (view.getId()) {
             case R.id.button1:
-                target = ProblemaActivity.class;
+                intent.setClass(this, ProblemaActivity.class);
                 break;
             case R.id.button2:
-                target = VoprosActivity.class;
+                intent.setClass(this, VoprosActivity.class);
                 break;
             case R.id.button3:
-                target = ContactsActivity.class;
+                intent.setClass(this, ContactsActivity.class);
                 break;
-            case R.id.button5:
-                Uri address = Uri.parse("http://voda.uu.ru");
-                Intent openlink = new Intent(Intent.ACTION_VIEW, address);
-                startActivity(openlink);
-                return;
-            case R.id.button6:
-                Uri number = Uri.parse("tel:+73517299559");
-                Intent dial = new Intent(Intent.ACTION_DIAL, number);
-                startActivity(dial);
-                return;
             case R.id.button4:
-                Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для остальных кнопок показываем тост, что они в разработке
+                Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для неготовых кнопок показываем тост, что они в разработке
                 return; //и выходим из обработчика, никуда не переходя
+                /*intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("geo:55.754283,37.62002"));    //Вариант открытия координат на карте
+                break;*/
+            case R.id.button5:
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://voda.uu.ru"));
+                break;
+            case R.id.button6:
+                intent.setAction(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:+73517299559"));
+                break;
         }
-        Intent intent = new Intent(this, target);
         startActivity(intent);
     }
 

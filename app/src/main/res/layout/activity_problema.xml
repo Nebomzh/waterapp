@@ -185,6 +185,12 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName" />
 
+            <ImageView
+                android:id="@+id/ivPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
             <Button
                 android:id="@+id/ButtonSendFeedback"
                 android:layout_width="match_parent"

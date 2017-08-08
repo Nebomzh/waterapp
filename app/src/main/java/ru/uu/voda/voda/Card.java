@@ -5,4 +5,11 @@ package ru.uu.voda.voda;
  */
 
 public class Card {
+    String title;
+    String content;
+
+    Card(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

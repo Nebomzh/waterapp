@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 target = ProblemaActivity.class;
                 break;
             case R.id.button2:
-                target = VoprosActivity.class;
+                target = ScrollingActivity.class;
                 break;
             case R.id.button3:
                 target = ContactsActivity.class;

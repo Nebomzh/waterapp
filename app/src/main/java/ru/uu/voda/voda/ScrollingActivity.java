@@ -7,7 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
+
 public class ScrollingActivity extends AppCompatActivity {
+
+    private List cards;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,5 +33,29 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+        rv=(RecyclerView)findViewById(R.id.rv);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+
+        initializeData();
+        initializeAdapter();
+    }
+
+    private void initializeData(){
+        cards = new ArrayList<>();
+        cards.add(new Card("Card 1", "Content 1"));
+        cards.add(new Card("Card 2", "Content 2"));
+        cards.add(new Card("Card 3", "Content 3"));
+        cards.add(new Card("Card 4", "Content 4"));
+        cards.add(new Card("Card 5", "Content 5"));
+    }
+
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(cards);
+        rv.setAdapter(adapter);
     }
 }

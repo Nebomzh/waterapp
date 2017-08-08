@@ -3,7 +3,7 @@ package ru.uu.voda.voda;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;    //Для всплывающих сообщений
@@ -19,6 +19,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //Находим кнопки
         Button button1 = (Button)findViewById(R.id.button1);
         Button button2 = (Button)findViewById(R.id.button2);

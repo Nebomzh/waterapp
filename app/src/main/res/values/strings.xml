@@ -10,6 +10,11 @@
 
     <string name="future_button">Эта кнопка находится в разработке</string>
 
+    <string name="animSetOff">Отключить анимацию кнопок</string>
+    <string name="animSetOn">Включить анимацию кнопок</string>
+    <string name="animOff">анимация кнопок отключена</string>
+    <string name="animOn">анимация кнопок включена</string>
+
     <string name="exit">Выход</string>
 
     <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>

@@ -12,14 +12,23 @@ import android.view.animation.Animation;        //Анимация
 import android.view.animation.AnimationUtils;   //Анимационные утилиты
 import android.net.Uri;
 
+import android.content.SharedPreferences;           //для работы с настройками
+import android.content.SharedPreferences.Editor;    //для редактирования настроек
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener { //implements добавляет обработчик нажатий прямо в активити
     /** Главная страница*/
+
+    SharedPreferences sPref;    //объект настроек
+    final String ANIM_STATE = "anim_state"; //ключ состояния анимации
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sPref = getPreferences(MODE_PRIVATE);   //настройки
 
         //Находим кнопки
         View button1 = (View)findViewById(R.id.button1);
@@ -38,24 +47,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         button6.setOnClickListener(this);
 
         //Анимация
-        Animation anim1 = AnimationUtils.loadAnimation(this, R.anim.alpha);  //элемент анимации прозрачности
-        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        Animation anim4 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        Animation anim5 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        Animation anim6 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        anim1.setStartOffset(250);       //задержка анимации
-        anim2.setStartOffset(500);       //задержка анимации
-        anim3.setStartOffset(750);
-        anim4.setStartOffset(1000);
-        anim5.setStartOffset(1250);
-        anim6.setStartOffset(1500);
-        button1.startAnimation(anim1);   //старт анимации на кнопках
-        button2.startAnimation(anim2);
-        button3.startAnimation(anim3);
-        button4.startAnimation(anim4);
-        button5.startAnimation(anim5);
-        button6.startAnimation(anim6);
+        if(sPref.getBoolean(ANIM_STATE, true)) //узнаём состояние анимации из настроек(по умолчанию есть)
+        {
+            Animation anim1 = AnimationUtils.loadAnimation(this, R.anim.alpha);  //элемент анимации прозрачности
+            Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            Animation anim4 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            Animation anim5 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            Animation anim6 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            anim1.setStartOffset(250);       //задержка анимации
+            anim2.setStartOffset(500);       //задержка анимации
+            anim3.setStartOffset(750);
+            anim4.setStartOffset(1000);
+            anim5.setStartOffset(1250);
+            anim6.setStartOffset(1500);
+            button1.startAnimation(anim1);   //старт анимации на кнопках
+            button2.startAnimation(anim2);
+            button3.startAnimation(anim3);
+            button4.startAnimation(anim4);
+            button5.startAnimation(anim5);
+            button6.startAnimation(anim6);
+        }
 
     }
 
@@ -94,22 +106,42 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     // создание меню
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_exit, menu);  //создание меню из xml menu_exit
+        if(sPref.getBoolean(ANIM_STATE, true)) //узнаём состояние анимации из настроек(по умолчанию есть)
+            menu.add(0, 0, 0, R.string.animSetOff);
+        else
+            menu.add(0, 0, 0, R.string.animSetOn);
+        menu.add(0, 1, 1, R.string.exit);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // обновление меню (в зависимости от настроек можно скрывать/показывать какие-нибудь элементы), пока не нужно.
-    /*@Override
+    // обновление меню (в зависимости от настроек меняем элементы)
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // пункты меню с ID группы = 1 видны, если в CheckBox стоит галка
-        menu.setGroupVisible(1, chb.isChecked());
+        if(sPref.getBoolean(ANIM_STATE, true)) //узнаём состояние анимации из настроек(по умолчанию есть)
+            menu.getItem(0).setTitle(R.string.animSetOff);
+        else
+            menu.getItem(0).setTitle(R.string.animSetOn);
         return super.onPrepareOptionsMenu(menu);
-    }*/
+    }
 
     // обработка нажатий пунктов меню
-    public boolean onOptionsItemSelected(MenuItem item) {                   //пока у нас один пункт в меню обрабатываем всегда одинаково без свича
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
-        finish(); // выход из приложения
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // по id определеяем пункт меню, вызвавший этот обработчик
+        switch (item.getItemId()) {
+            case 0:
+                Boolean anim_state = sPref.getBoolean(ANIM_STATE, true);    //текущее состояние настроек
+                Editor ed = sPref.edit();   //объект для редактирования настроек
+                ed.putBoolean(ANIM_STATE, !anim_state); //изменение настроек
+                ed.commit();    //сохрание настроек
+                if (anim_state)                                                         //сообщения о смене анимации
+                    Toast.makeText(this, R.string.animOff, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, R.string.animOn, Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                finish(); // выход из приложения
+        }
         return super.onOptionsItemSelected(item);
     }
 }

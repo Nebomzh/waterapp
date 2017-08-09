@@ -97,4 +97,7 @@
     <string name="feedbackType4">Отчет об ошибке</string>
 
     <string name="send">Отправить</string>
+
+    <string name="title_activity_questions">Есть вопрос?</string>
+
 </resources>

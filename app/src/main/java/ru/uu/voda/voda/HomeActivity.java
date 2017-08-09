@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, ProblemaActivity.class);
                 break;
             case R.id.button2:
-                intent.setClass(this, VoprosActivity.class);
+                intent.setClass(this, QuestionsActivity.class);
                 break;
             case R.id.button3:
                 intent.setClass(this, ContactsActivity.class);

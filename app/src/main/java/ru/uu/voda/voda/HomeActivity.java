@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;    //Для всплывающих сообщений
 import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
@@ -23,12 +22,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
         //Находим кнопки
-        Button button1 = (Button)findViewById(R.id.button1);
-        Button button2 = (Button)findViewById(R.id.button2);
-        Button button3 = (Button)findViewById(R.id.button3);
-        Button button4 = (Button)findViewById(R.id.button4);
-        Button button5 = (Button)findViewById(R.id.button5);
-        Button button6 = (Button)findViewById(R.id.button6);
+        View button1 = (View)findViewById(R.id.button1);
+        View button2 = (View)findViewById(R.id.button2);
+        View button3 = (View)findViewById(R.id.button3);
+        View button4 = (View)findViewById(R.id.button4);
+        View button5 = (View)findViewById(R.id.button5);
+        View button6 = (View)findViewById(R.id.button6);
 
         //Присваиваем кнопкам обработчик
         button1.setOnClickListener(this);   //Обработчик находится в самом активити

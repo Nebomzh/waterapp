@@ -47,6 +47,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.uu.voda.voda.MainActivity" />
         </activity>
+        <activity android:name=".AnswerActivity"></activity>
     </application>
 
 </manifest>

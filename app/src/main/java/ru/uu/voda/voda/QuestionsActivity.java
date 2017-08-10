@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.content.Intent;
+import android.widget.Toast;
 
 public class QuestionsActivity extends AppCompatActivity {
 
@@ -57,7 +59,7 @@ public class QuestionsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Отправка вопросов находится в разработке", Snackbar.LENGTH_LONG)	//TODO переделать в стринг
+                Snackbar.make(view, R.string.future_question, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -70,7 +72,7 @@ public class QuestionsActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -96,20 +98,55 @@ public class QuestionsActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_questions, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            TextView textView1 = (TextView) rootView.findViewById(R.id.section_label1);
+            TextView textView2 = (TextView) rootView.findViewById(R.id.section_label2);
+            TextView textView3 = (TextView) rootView.findViewById(R.id.section_label3);
 
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {	//TODO переделать полностью формирование контента
+            textView1.setOnClickListener(this);
+            textView2.setOnClickListener(this);
+            textView3.setOnClickListener(this);
+
+
+            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {	//Определение номера таба
                 case 1:
-                    textView.setText("Порядок согласования разработанной проектной документации.");
+                    textView1.setText(R.string.qc1);
+                    textView2.setText(R.string.qc2);
+                    textView3.setText(R.string.qc3);
                     break;
                 case 2:
-                    textView.setText("Заключение договора на предоставление коммунальных услуг холодного водоснабжение и водоотведения в жилом доме.");
+                    textView1.setText(R.string.qg1);
+                    textView2.setText(R.string.qg2);
+                    textView3.setText(R.string.qg3);
                     break;
                 case 3:
-                    textView.setText("Заключение договора на предоставление коммунальных услуг холодного водоснабжение и водоотведения на промышленном предприятии.");
+                    textView1.setText(R.string.qo1);
+                    textView2.setText(R.string.qo2);
+                    textView3.setText(R.string.qo3);
                     break;
             }
             return rootView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int questionnumber;
+            switch (view.getId()) {         //определение номера вопроса, пока лучше свича ничего не придумал
+                case R.id.section_label1:
+                    questionnumber = 1;
+                    break;
+                case R.id.section_label2:
+                    questionnumber = 2;
+                    break;
+                case R.id.section_label3:
+                    questionnumber = 3;
+                    break;
+                default:
+                    questionnumber = 1; //Без дефаулта студия ругается
+            }
+            Intent intent = new Intent(this.getContext(), AnswerActivity.class);
+            intent.putExtra("part", getArguments().getInt(ARG_SECTION_NUMBER));
+            intent.putExtra("question", questionnumber);
+            startActivity(intent);
         }
     }
 
@@ -140,11 +177,11 @@ public class QuestionsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Общие вопросы";	//TODO передалть в стринги
+                    return "Общие вопросы";
                 case 1:
-                    return "Гражданам";//TODO передалть в стринги
+                    return "Гражданам";
                 case 2:
-                    return "Организациям";//TODO передалть в стринги
+                    return "Организациям";
             }
             return null;
         }

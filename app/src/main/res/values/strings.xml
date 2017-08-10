@@ -89,12 +89,7 @@
 
     <string name="h10">Телефон (для обратного звонка): *</string>
     <string name="h11">Как к Вам обратиться при звонке</string>
-
-    <string name="feedbackType">Тип сообщения</string>
-    <string name="feedbackType1">Похвала</string>
-    <string name="feedbackType2">Жалоба</string>
-    <string name="feedbackType3">Предложение</string>
-    <string name="feedbackType4">Отчет об ошибке</string>
+    <string name="h12">Добавить фотографию к обращению</string>
 
     <string name="send">Отправить</string>
 

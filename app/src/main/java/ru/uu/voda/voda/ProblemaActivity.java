@@ -20,16 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import java.io.File;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.ImageView;
-
 public class ProblemaActivity  extends AppCompatActivity {
 
     public static String p_street_in = "";
@@ -55,12 +45,6 @@ public class ProblemaActivity  extends AppCompatActivity {
     public Spinner p_damage;
     public Spinner p_location_damage;
     public CheckBox p_init_app;
-
-    File directory;
-    final int TYPE_PHOTO = 1;
-    final int REQUEST_CODE_PHOTO = 1;
-    final String TAG = "myLogs";
-    ImageView ivPhoto;
 
 
     @Override
@@ -90,6 +74,8 @@ public class ProblemaActivity  extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+
                 p_street_in = p_street.getText().toString();
                 p_house_in = p_house.getText().toString();
                 p_level_in = p_level.getText().toString();
@@ -99,71 +85,26 @@ public class ProblemaActivity  extends AppCompatActivity {
                 p_district_in = p_district.getSelectedItem().toString();
                 p_damage_in = p_damage.getSelectedItem().toString();
                 p_location_damage_in = p_location_damage.getSelectedItem().toString();
+
+
+
+
                 try {
+
                     new SendData().execute();
+
+
                 } catch (Exception e) {
 
                 }
-            }
-        });
 
-        createDirectory();
-        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
 
-        ivPhoto.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //intent.putExtra(MediaStore.EXTRA_OUTPUT, generateFileUri(TYPE_PHOTO));    //с этой строчкой на моём телефоне приложение не возвращается из камеры.. 
-                startActivityForResult(intent, REQUEST_CODE_PHOTO);
+
+
+
             }
         });
     }
-
-        @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_CODE_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                if (intent == null) {
-                    Log.d(TAG, "Intent is null");
-                } else {
-                    Log.d(TAG, "Photo uri: " + intent.getData());
-                    Bundle bndl = intent.getExtras();
-                    if (bndl != null) {
-                        Object obj = intent.getExtras().get("data");
-                        if (obj instanceof Bitmap) {
-                            Bitmap bitmap = (Bitmap) obj;
-                            Log.d(TAG, "bitmap " + bitmap.getWidth() + " x " + bitmap.getHeight());
-                            ivPhoto.setImageBitmap(bitmap);
-                        }
-                    }
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                Log.d(TAG, "Canceled");
-            }
-        }
-
-
-    }
-
-    private Uri generateFileUri(int type) {
-        File file = null;
-        switch (type) {
-            case TYPE_PHOTO:
-                file = new File(directory.getPath() + "/" + "photo_"
-                        + System.currentTimeMillis() + ".jpg");
-                break;
-        }
-        Log.d(TAG, "fileName = " + file);
-        return Uri.fromFile(file);
-    }
-
-    private void createDirectory() {
-        directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyFolder");
-        if (!directory.exists())
-            directory.mkdirs();
-    }
-
 
 
 

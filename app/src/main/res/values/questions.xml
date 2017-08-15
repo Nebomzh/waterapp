@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_questions">Есть вопрос?</string>
+    <string name="future_question">Отправка вопросов находится в разработке</string>
+    <string name="noanswer">Ответ на вопрос не найден</string>
+
+    <string-array name="questionsC">
+        <item>Порядок согласования разработанной проектной документации</item>
+        <item>Как определяется стоимость подключения (технологического присоединения) объекта капитального строительства к системам водоснабжения и водоотведения?</item>
+        <item>Как определить нагрузку по водоснабжению/водоотведению объекта, м3/сут. для оформления заявки на подключение</item>
+        <item>Где получить графические материалы для оформления заявки на получение Технических условий/заключения договора подключения</item>
+        <item>Как происходит подключение?\nПорядок подключения(тех.присоединения) объекта капитального строительства к системам водоснабжения и водоотведения</item>
+        <item>Какую информацию содержат технические условия?</item>
+        <item>Сроки получения технических условий</item>
+        <item>Что нужно для получения технических условий?</item>
+        <item>Возможно ли получить предварительную информацию о возможности подключения объекта к сетям водоснабжения и водоотведения</item>
+    </string-array>
+
+    <string-array name="questionsG">
+        <item>Заключение договора на \nЖилой дом (частное домовладение)</item>
+        <item>Заключение договора на \nЖилое помещение в многоквартирном доме</item>
+        <item>Заключение договора на \nНежилое помещение в многоквартирном доме</item>
+    </string-array>
+
+    <string-array name="questionsO">
+        <item>Заключение договора на \nПромышленные предприятия, отдельно стоящие здания, УК, ТСЖ, ЖСК</item>
+        <item>Заключение договора на \nЖилое помещение в многоквартирном доме</item>
+        <item>Заключение договора на \nНежилое помещение в многоквартирном доме</item>
+        <item>Заключение договора на \nСтроящийся многоквартирный дом, нежилое здание</item>
+    </string-array>
+
+    <string-array name="answersC">
+        <item>
+<![CDATA[
+Письмо-заявка от застройщика на рассмотрение проектной документации; к письму приложить материалы:<br>
+- условия подключения (приложение №1 к договорам подключения) по водоснабжению и водоотведению;<br>
+- исходные данные МУП АПЦ для проектирования сетей ВиВ с оформлением плана сетей В1, К1 на кадастровом плане города с указанием правообладателей земельных участков, по которым запланировано строительство сетей водоснабжения и водоотведения к объекту;<br>
+- разделы проекта: ПОЗУ в полном объеме, НВК, ВК (предварительно согласовать в СП «Водосбыт» приборы учета), трассы внеплощадочных инженерных коммуникаций к объекту проектирования.
+]]>
+        </item>
+        <item>
+<![CDATA[
+Постановлением Правительства РФ от 13.05.2013 г. №406 «О государственном регулировании тарифов в сфере водоснабжения и водоотведения» п.85, а также Методическими указаниями по расчету регулируемых тарифов в сфере водоснабжения и водоотведения, утвержденных приказом ФСТ России от 27.12.2003 г. №1746-э, разд. X, п.121 определен порядок определения платы за подключение к системам водоснабжения и водоотведения: <br>
+- для заявителей, величина подключаемой (присоединяемой) нагрузки объектов которых превышает 10 м3/час; <br>
+- для заявителей, величина подключаемой (присоединяемой) нагрузки объектов которых не превышает 10 м3/час.<br>
+<br>
+Плата за подключение для заявителей, величина подключаемой (присоединяемой) нагрузки объектов которых превышает 10 м3/час, формируется, исходя из стоимости создания сетей&nbsp;&nbsp;водоснабжения и водоотведения&nbsp;&nbsp;к&nbsp;&nbsp;объекту с учетом обеспечения свободного ресурса в сетях для подключения дополнительных нагрузок и устанавливается&nbsp;&nbsp;Министерством Тарифного Регулирования и Энергетики Челябинской области&nbsp;&nbsp;в виде индивидуальной платы за подключение к системам водоснабжения и водоотведения объектов капитального строительства.<br>
+<br>
+Для заявителей, величина подключаемой (присоединяемой) нагрузки объектов которых не превышает 10 м3/час,&nbsp;&nbsp;размер платы за подключение объектов определяется в соответствии с п.116 «Методических указаний по расчету регулируемых тарифов в сфере водоснабжения и водоотведения», утвержденных Приказом Федеральной службы по тарифам от 27.12.2013 г. №1746-Э&nbsp;&nbsp;как сумма произведений ставки тарифа за подключаемую нагрузку на нагрузку и произведение ставки тарифа за протяженность на протяженность сети. <br>
+Формула для определения размера платы за подключение к централизованной системе водоснабжения и (или) водоотведения: <br>
+где:<br>
+ПП - плата за подключение объекта абонента к централизованной системе водоснабжения и (или) водоотведения, тыс. руб.;<br>
+&nbsp;&nbsp;- ставка тарифа за подключаемую нагрузку водопроводной или канализационной сети, тыс. руб./куб. м в сут.; (в ред. Приказа ФСТ России от 24.11.2014 N 2054-э)<br>
+М - подключаемая нагрузка (мощность) объекта абонента, определяемая исходя из диаметра подключаемой водопроводной или канализационной сети, куб. м/сут.;<br>
+&nbsp;&nbsp; - ставка тарифа за протяженность водопроводной или канализационной сети диаметром d, тыс. руб./км; (в ред. Приказа ФСТ России от 24.11.2014 N 2054-э)<br>
+L - протяженность водопроводной или канализационной сети от точки подключения объекта заявителя до точки подключения создаваемых организацией водопроводных и (или) канализационных сетей к объектам централизованной системы водоснабжения и (или) водоотведения, км. (в ред. Приказа ФСТ России от 24.11.2014 N 2054-э).
+]]>
+        </item>
+        <item>
+<![CDATA[
+Величина нагрузки по объекту подключения, м3/сут. принимается с учетом норм водопотребления. Расчет выполняется лицензированной проектной организацией по проектированию объектов водоснабжения/водоотведения.
+]]>
+        </item>
+        <item>
+<![CDATA[
+1.&nbsp;&nbsp;&nbsp;&nbsp;К заявке на получение технических условий/заключение договора прикладывается Градостроительный план земельного участка (оформляется Отделом отводов ГУАиГ).<br>
+2.&nbsp;&nbsp;&nbsp;&nbsp;При подключении существующих объектов и частных индивидуальных домов&nbsp;&nbsp;прикладывается&nbsp;&nbsp;выкопировка из генерального плана города на геоподоснове с сетями с указанием границ земельного участка (получить по заявке в МУП АПЦ, ул. Воровского,2; к.318,320; тел.263 00 17).
+]]>
+        </item>
+        <item>
+<![CDATA[
+Порядок подключения определен Постановлением Правительства Российской Федерации от 29 июля 2013 г. № 644 «Об утверждении Правил холодного водоснабжения и водоотведения.<br>
+<br>
+Он включает следующие этапы:<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;подача заказчиком заявления о подключении;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;заключение договора о подключении;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;выдача исполнителем заказчику условий подключения (технических условий для присоединения);<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;выполнение заказчиком условий подключения;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;проверка исполнителем выполнения заказчиком условий подключения;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;присоединение заказчиком объекта к сетям водопровода и канализации и подписание сторонами акта о присоединении;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;выполнение условий подачи ресурсов.
+]]>
+        </item>
+        <item>
+<![CDATA[
+Согласно Постановлению Правительства РФ от 13 февраля 2006 года № 83 технические условия должны содержать следующие данные:<br>
+<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;Максимальная нагрузка в возможных точках подключения;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;Срок подключения объекта капитального строительства к сетям водопровода и канализации;<br>
+•&nbsp;&nbsp;&nbsp;&nbsp;Срок действия технических условий три года. По истечении этого срока параметры выданных технических условий могут быть изменены.<br>
+В случае смены владельца земельного участка, которому были выданы технические условия, новый владелец вправе воспользоваться этими техническими условиями, уведомив об этом МУП ПОВВ.<br>
+<br>
+После получения технических условий заказчику необходимо обратиться на заключение договора о подключении (технологическом присоединении) к централизованной системе холодного водоснабжения и договора о подключении (технологическом присоединении) к централизованной системе водоотведения.<br>
+<br>
+В соответствии с п. 16 Правил определения и предоставления технических условий подключения объекта капитального строительства к сетям инженерно-технического обеспечения, утвержденных Постановлением Правительства РФ от 13 февраля 2006 года № 83, обязательства организации, выдавшей технические условия, по обеспечению подключения объекта капитального строительства к сетям инженерно-технического обеспечения в соответствии с такими техническими условиями прекращаются в случае, если в течение 1 года с даты получения технических условий правообладатель земельного участка не определит необходимую ему подключаемую нагрузку и не обратится с заявлением о подключении объекта капитального строительства к сетям инженерно-технического обеспечения.
+]]>
+        </item>
+        <item>
+<![CDATA[
+Технические условия или информация о плате за подключение объекта капитального строительства к сетям водопровода и канализации МУП ПОВВ определяются и предоставляются в соответствии с требованиями законодательства к срокам подготовки документов в течение 14* рабочих дней с даты получения запроса и предоставления полного пакета документов. При отсутствии возможности подключения строящегося (реконструируемого) объекта капитального строительства к сетям инженерно-технического обеспечения заявителю направляется отказ в выдаче указанных условий.
+]]>
+        </item>
+        <item>
+<![CDATA[
+Для возможности оформления технических условий заказчик должен представить следующие документы и информацию:<br>
+<br>
+Запрос на выдачу технических условий<br>
+Запрос на выдачу технических условий (частное лицо)<br>
+Копии учредительных документов<br>
+Правоустанавливающие документы на земельный участок (договор аренды либо документ, подтверждающий право собственности земельного участка)<br>
+Дополнительная информация, предусмотренная Постановлением Правительства РФ № 83 от 13 февраля 2006 года, пункт 10<br>
+<br>
+I: Получение технических условий в соответствии с Правилами определения и предоставления технических условий подключения объекта капитального строительства к сетям инженерно-технического обеспечения, утвержденными постановлением Правительства РФ от 13.02.2006 N 83, не является обязательной процедурой при подключении к системе холодного водоснабжения и канализации.<br>
+<br>
+В случае если заказчик определил необходимую ему нагрузку, не требуется предварительно получать технические условия: заказчик сразу может&nbsp;&nbsp;обратиться с заявлением о заключении договора о подключении.
+]]>
+        </item>
+        <item>
+<![CDATA[
+Согласно Постановлению Правительства РФ от 13 февраля 2006 года № 83 технические условия по заявке правообладателя земельного участка или объекта капитального строительства могут быть подготовлены и выданы Технические условия с указанием стоимости подключения, без указания точек подключения к сетям.
+]]>
+        </item>
+    </string-array>
+
+    <string-array name="answersG">
+    <item>
+<![CDATA[
+<div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/grazhdanam/zaklyuchenie-dogovora/zayavlenie_fizlica_dom.pdf">Заявление</a>&nbsp;в 2 экземплярах о заключении в письменной форме договора холодного водоснабжения и водоотведение.<br>
+ В заявлении указать:<br>
+ - реквизиты акта об определении границы раздела внутридомовых инженерных систем и централизованных сетей инженерно-технического обеспечения (при наличии),<br>
+ - в случае отсутствия индивидуального прибора учета воды :<br>
+ а) сведения об использовании земельного участка и расположенных на нем надворных построек (приготовление пищи для людей, приготовление кормов для скота, подогрев воды, полив и т.д.);<br>
+ б) виды и количество сельскохозяйственных животных и птиц (при наличии);<br>
+ в) площадь земельного участка, не занятого жилым домом и надворными постройками;<br>
+ г) режим водопотребления на полив земельного участка.<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии необходимых документов (см. <a href="/grazhdanam/podklyuchenie-k-seti/perechen-dokumentov-zhiloy-dom/" target="_blank">Перечень документов</a>).                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:
+г. Челябинск, ул. Варненская, 13 каб. 137
+Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30
+Перерыв с 12:00 до 12:45.
+Либо направить по почте заказным письмом с описью вложения.                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">По истечении 10 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 30 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Вопросы по заключению договора Вы можете задать по тел. (351) 259-14-72.                            </div>
+                        </div>
+]]>
+    </item>
+    <item>
+<![CDATA[
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Оформить <a target="_blank" href="/upload/files/docs/grazhdanam/zaklyuchenie-dogovora/zayavlenie_fizlica_zhiloe_mnogokvartir_dom.pdf">Заявление</a> в 2 экземплярах о заключении в письменной форме договора холодного водоснабжения и водоотведение.</span><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Приложить к заявлению копии необходимых документов (см. <a target="_blank" href="/grazhdanam/zaklyuchenie-dogovora/perechen-dokumentov-zhiloe-pomeshchenie-v-mnogokvartirnom-dome">Перечень документов</a>) - в одном экземпляре.</span><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br>
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 каб. 137</span><br>
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br>
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br>
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                По истечении 10 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                После получения Вами проекта договора в 2 экземплярах в течение 30 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-72.</span>                            </div>
+                        </div>
+]]>
+    </item>
+    <item>
+<![CDATA[
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/grazhdanam/zaklyuchenie-dogovora/zayavlenie_fizlica_nezhiloe_mnogokvartir_dom.pdf">Заявление</a> в 2 экземплярах о заключении в письменной форме договора холодного водоснабжения и водоотведение.                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии необходимых документов (см. <a target="_blank" href="/grazhdanam/zaklyuchenie-dogovora/perechen-dokumentov-nezhiloe-pomeshchenie-v-mkd/">Перечень документов</a>) - в одном экземпляре.                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 каб. 123</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">По истечении 10 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 30 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-65, </span><span style="background-color: #ffffff;">259-14-33.</span>                            </div>
+                        </div>
+]]>
+    </item>
+    </string-array>
+
+    <string-array name="answersO">
+    <item>
+<![CDATA[
+<div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/organizatsiyam/zaklyuchenie-dogovora/zayavlenie_urlica_ip_prom_uk_i_dr.pdf">Заявление</a> в 2 экземплярах о заключении договора холодного водоснабжения и водоотведения.<br>
+ &nbsp;<br>
+ Внимание!<br>
+ 1. Заявление заполняется на фирменном бланке юр. лица или ИП.<br>
+ 2. В заявлении в обязательном порядке указывается информация, предусмотренная <a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">пунктом 16 «Правил ХВС и ВО», утвержденных Постановлением Правительства РФ от 29.07.2013г. № 644. (</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">Ознакомиться</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">)</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">.</a><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии (в одном экземпляре) необходимых документов (см. <a href="/organizatsiyam/zaklyuchenie-dogovora/perechen-dokumentov-promyshlennye-predpriyatiya-otdelno-stoyashchie-zdaniya-uk-tszh-zhsk/" target="_blank">Перечень документов)</a>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 в каб. 123</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                По истечении 20 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 20 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-65, </span>259-14-33                            </div>
+                        </div>
+]]>
+    </item>
+    <item>
+<![CDATA[
+<div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/organizatsiyam/zaklyuchenie-dogovora/zayavlenie_urlica_ip_prom_uk_i_dr.pdf">Заявление</a> в 2 экземплярах о заключении договора холодного водоснабжения и водоотведения.<br>
+ &nbsp;<br>
+ Внимание!<br>
+ 1. Заявление заполняется на фирменном бланке юр. лица или ИП.<br>
+ 2. В заявлении в обязательном порядке указывается информация, предусмотренная <a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">пунктом 16 «Правил ХВС и ВО», утвержденных Постановлением Правительства РФ от 29.07.2013г. № 644. (</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">Ознакомиться</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">)</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">.</a><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии (в одном экземпляре) необходимых документов (см. <a href="/organizatsiyam/zaklyuchenie-dogovora/perechen-dokumentov-promyshlennye-predpriyatiya-otdelno-stoyashchie-zdaniya-uk-tszh-zhsk/" target="_blank">Перечень документов)</a>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 в каб. 123</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                По истечении 20 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 20 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-65, </span>259-14-33                            </div>
+                        </div>
+]]>
+    </item>
+    <item>
+<![CDATA[
+<div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/organizatsiyam/zaklyuchenie-dogovora/zayavlenie_urlica_ip_prom_uk_i_dr.pdf">Заявление</a> в 2 экземплярах о заключении договора холодного водоснабжения и водоотведения.<br>
+ &nbsp;<br>
+ Внимание!<br>
+ 1. Заявление заполняется на фирменном бланке юр. лица или ИП.<br>
+ 2. В заявлении в обязательном порядке указывается информация, предусмотренная <a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">пунктом 16 «Правил ХВС и ВО», утвержденных Постановлением Правительства РФ от 29.07.2013г. № 644. (</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">Ознакомиться</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">)</a><a target="_blank" href="/organizatsiyam/zaklyuchenie-dogovora/pravila-khvs-i-vo-p-16.php">.</a><br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии (в одном экземпляре) необходимых документов (см. <a href="/organizatsiyam/zaklyuchenie-dogovora/perechen-dokumentov-promyshlennye-predpriyatiya-otdelno-stoyashchie-zdaniya-uk-tszh-zhsk/" target="_blank">Перечень документов)</a>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 в каб. 123</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                По истечении 20 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 20 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-65, </span>259-14-33                            </div>
+                        </div>
+]]>
+    </item>
+    <item>
+<![CDATA[
+<div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>1</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Оформить <a target="_blank" href="/upload/files/docs/organizatsiyam/zaklyuchenie-dogovora/zayavlenie_urlica_ip_nezhiloe_mnogokvartir_stroydom.pdf">Заявление</a> в 2 экземплярах о заключении договора холодного водоснабжения и водоотведения.<br>
+ &nbsp;<br>
+ Внимание!<br>
+ Заявление заполняется на фирменном бланке юр. лица или ИП.<br>
+ &nbsp;<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>2</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                Приложить к заявлению копии (в одном экземпляре) необходимых документов (см. <a href="/organizatsiyam/zaklyuchenie-dogovora/perechen-dokumentov-stroyashchiysya-mnogokvartirnyy-dom-nezhiloe-zdanie/" target="_blank">Перечень документов</a>).<br>
+ &nbsp;<br>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>3</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Предоставить заявление с документами в СП «Водосбыт» МУП ПОВВ:</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">г. Челябинск, ул. Варненская, 13 в каб. 123</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Пн., вт., ср., чт. с 8:00 до 17:00, пт. с 8:00 до 15:30</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Перерыв с 12:00 до 12:45.</span><br style="background-color: #ffffff;">
+ <span style="background-color: #ffffff;">Либо направить по почте заказным письмом с описью вложения.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>4</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">По истечении 20 рабочих дней, после предоставления (получения) документов, Вам сообщат по телефону, указанному в заявлении, о готовности договора и возможности его забрать лично либо направят по почте по указанному в заявлении адресу.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>5</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">После получения Вами проекта договора в 2 экземплярах в течение 20 календарных дней Вы должны рассмотреть договор, подписать и вернуть 1 экземпляр договора в порядке, указанном в Шаге 3.</span>                            </div>
+                        </div>
+                                            <div class="item_container_step">
+                            <div class="item_container_step_count">
+                                <span>6</span>
+                            </div>
+                            <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span style="background-color: #ffffff;">Вопросы по заключению договора Вы можете задать по тел.&nbsp;</span><span style="background-color: #ffffff;">(351) 259-14-65, </span>259-14-33                            </div>
+                        </div>
+]]>
+    </item>
+    </string-array>
+</resources>

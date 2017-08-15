@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.widget.TextView;
 
+import android.text.Spanned; //Для добавления Html кода в textview
+
 public class AnswerActivity extends AppCompatActivity {
 
     @Override
@@ -17,55 +19,38 @@ public class AnswerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        switch (intent.getIntExtra("part",1)) {
+        String[] questions; //массив с вопросами
+        String[] answers; //массив с ответами
+
+        switch (intent.getIntExtra("part",1)) {	//Определение номера раздела
             case 1:
-                switch (intent.getIntExtra("question",1)) {
-                    case 1:
-                        question.setText(R.string.qc1);
-                        answer.setText(R.string.ac1);
-                        break;
-                    case 2:
-                        question.setText(R.string.qc2);
-                        answer.setText(R.string.ac2);
-                        break;
-                    case 3:
-                        question.setText(R.string.qc3);
-                        answer.setText(R.string.ac3);
-                        break;
-                }
+                questions = getResources().getStringArray(R.array.questionsC);//секция common
+                answers = getResources().getStringArray(R.array.answersC);//секция common
                 break;
             case 2:
-                switch (intent.getIntExtra("question",1)) {
-                    case 1:
-                        question.setText(R.string.qg1);
-                        answer.setText(R.string.ag1);
-                        break;
-                    case 2:
-                        question.setText(R.string.qg2);
-                        answer.setText(R.string.ag2);
-                        break;
-                    case 3:
-                        question.setText(R.string.qg3);
-                        answer.setText(R.string.ag3);
-                        break;
-                }
+                questions = getResources().getStringArray(R.array.questionsG);//секция гражданам
+                answers = getResources().getStringArray(R.array.answersG);//секция гражданам
                 break;
             case 3:
-                switch (intent.getIntExtra("question",1)) {
-                    case 1:
-                        question.setText(R.string.qo1);
-                        answer.setText(R.string.ao1);
-                        break;
-                    case 2:
-                        question.setText(R.string.qo2);
-                        answer.setText(R.string.ao2);
-                        break;
-                    case 3:
-                        question.setText(R.string.qo3);
-                        answer.setText(R.string.ao3);
-                        break;
-                }
+                questions = getResources().getStringArray(R.array.questionsO);//секция организациям
+                answers = getResources().getStringArray(R.array.answersO);//секция организациям
                 break;
+            default:
+                questions = getResources().getStringArray(R.array.questionsC);//без дефаулта студия ругается
+                answers = getResources().getStringArray(R.array.answersC);
         }
+
+        int questionNumber=intent.getIntExtra("question",1); //номер вопроса
+
+        question.setText(questions[questionNumber]);
+
+        if(questionNumber<answers.length)              //Проверка На случай если в массиве с ответами ответов будет меньше, чем вопросов
+        {
+            Spanned htmlAsSpanned = HtmlCompat.fromHtml(answers[questionNumber]);
+            answer.setText(htmlAsSpanned);
+        }
+        else
+            answer.setText(R.string.noanswer);
+
     }
 }

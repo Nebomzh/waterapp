@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 import android.content.Intent;
-import android.widget.Toast;
+
+import android.widget.LinearLayout;
+import android.content.Context; //Для добавления стиля создаваемым view
+import android.support.v7.view.ContextThemeWrapper;//Для добавления стиля создаваемым view
 
 public class QuestionsActivity extends AppCompatActivity {
 
@@ -98,55 +101,49 @@ public class QuestionsActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_questions, container, false);
-            TextView textView1 = (TextView) rootView.findViewById(R.id.section_label1);
-            TextView textView2 = (TextView) rootView.findViewById(R.id.section_label2);
-            TextView textView3 = (TextView) rootView.findViewById(R.id.section_label3);
 
-            textView1.setOnClickListener(this);
-            textView2.setOnClickListener(this);
-            textView3.setOnClickListener(this);
-
+            String[] questions; //массив с вопросами
 
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {	//Определение номера таба
                 case 1:
-                    textView1.setText(R.string.qc1);
-                    textView2.setText(R.string.qc2);
-                    textView3.setText(R.string.qc3);
+                    questions = getResources().getStringArray(R.array.questionsC);//секция common
                     break;
                 case 2:
-                    textView1.setText(R.string.qg1);
-                    textView2.setText(R.string.qg2);
-                    textView3.setText(R.string.qg3);
+                    questions = getResources().getStringArray(R.array.questionsG);//секция гражданам
                     break;
                 case 3:
-                    textView1.setText(R.string.qo1);
-                    textView2.setText(R.string.qo2);
-                    textView3.setText(R.string.qo3);
+                    questions = getResources().getStringArray(R.array.questionsO);//секция организациям
                     break;
+                default:
+                    questions = getResources().getStringArray(R.array.questionsC);//без дефаулта студия ругается
             }
+
+            final Context contextThemeWrapper = new ContextThemeWrapper(this.getContext(), R.style.questiontext);   //стиль вопросов
+            final Context contextMargin = new ContextThemeWrapper(this.getContext(), R.style.margin);   //отступ
+            LinearLayout questionsList = (LinearLayout) rootView.findViewById(R.id.questionsList);      //находим лэйаут, куда будем добавлять вопросы
+
+            for (int i=0, n=questions.length; i<n; i++)     //Для всех вопросов в массиве
+            {
+                TextView questionView = new TextView(contextThemeWrapper);  //создаём новый вью со стилем
+                questionView.setText(questions[i]);                         //с текстом вопроса
+                questionView.setId(i);                                      //с id по порядку
+                questionsList.addView(questionView);                        //и добавляем его в список
+
+                TextView margin = new TextView(contextMargin);  //элемент отступа
+                questionsList.addView(margin);
+
+                questionView.setOnClickListener(this);
+            }
+
             return rootView;
         }
 
         @Override
         public void onClick(View view) {
-            int questionnumber;
-            switch (view.getId()) {         //определение номера вопроса, пока лучше свича ничего не придумал
-                case R.id.section_label1:
-                    questionnumber = 1;
-                    break;
-                case R.id.section_label2:
-                    questionnumber = 2;
-                    break;
-                case R.id.section_label3:
-                    questionnumber = 3;
-                    break;
-                default:
-                    questionnumber = 1; //Без дефаулта студия ругается
-            }
-            Intent intent = new Intent(this.getContext(), AnswerActivity.class);
-            intent.putExtra("part", getArguments().getInt(ARG_SECTION_NUMBER));
-            intent.putExtra("question", questionnumber);
-            startActivity(intent);
+                Intent intent = new Intent(getContext(), AnswerActivity.class);
+                intent.putExtra("part", getArguments().getInt(ARG_SECTION_NUMBER));
+                intent.putExtra("question", view.getId());
+                startActivity(intent);
         }
     }
 

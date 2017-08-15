@@ -2,26 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="?attr/actionBarSize"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ru.uu.voda.voda.QuestionsActivity$PlaceholderFragment"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/section_label1"
-        style="@style/questiontext" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/section_label2"
-        android:text="@string/qc2"
-        style="@style/questiontext" />
+        <LinearLayout
+            android:id="@+id/questionsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/section_label3"
-        android:text="@string/qc3"
-        style="@style/questiontext" />
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </LinearLayout>

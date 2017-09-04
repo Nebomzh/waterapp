@@ -17,6 +17,11 @@
 
     <string name="exit">Выход</string>
 
+    <string name="phone1">Утечки Челябинск</string>
+    <string name="phone2">Утечки Копейск</string>
+    <string name="phone3">Приборы учёта Челябинск</string>
+    <string name="phone4">Приборы учёта Копейск</string>
+
     <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
     <string name="h1">Район города: *</string>
 

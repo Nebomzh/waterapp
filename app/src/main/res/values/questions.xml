@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_activity_questions">Есть вопрос?</string>
+    <string name="title_activity_answer">Вопрос — Ответ</string>
     <string name="future_question">Отправка вопросов находится в разработке</string>
     <string name="noanswer">Ответ на вопрос не найден</string>
 

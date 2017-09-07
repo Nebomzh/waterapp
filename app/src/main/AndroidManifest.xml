@@ -36,7 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.uu.voda.voda.MainActivity" />
         </activity>
-        <activity android:name=".VoprosActivity" />
         <activity android:name=".ContactsActivity" />
         <activity
             android:name=".QuestionsActivity"

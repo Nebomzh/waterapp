@@ -100,7 +100,7 @@ public class QuestionsActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_questions, container, false);
+            View rootView = inflater.inflate(R.layout.activity_questions_fragment, container, false);
 
             String[] questions; //массив с вопросами
 

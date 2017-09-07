@@ -202,14 +202,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName" />
 
-                <Button
-                    android:id="@+id/ButtonSendFeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="sendFeedback"
-                    android:text="@string/submit" />
-
-
             </LinearLayout>
         </ScrollView>
 

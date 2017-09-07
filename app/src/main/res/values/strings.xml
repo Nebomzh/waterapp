@@ -96,5 +96,5 @@
     <string name="feedbackType3">Предложение</string>
     <string name="feedbackType4">Отчет об ошибке</string>
 
-    <string name="submit">Отправить</string>
+    <string name="send">Отправить</string>
 </resources>

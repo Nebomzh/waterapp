@@ -31,6 +31,16 @@
         <activity android:name=".ProblemaActivity" />
         <activity android:name=".VoprosActivity" />
         <activity android:name=".ContactsActivity" />
+        
+        <activity
+            android:name=".DisconnectionsActivity"
+            android:label="@string/title_activity_disconnections"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.uu.voda.voda.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

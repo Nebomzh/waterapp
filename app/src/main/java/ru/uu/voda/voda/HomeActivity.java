@@ -98,11 +98,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, ContactsActivity.class);
                 break;
             case R.id.button4:
-                Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для неготовых кнопок показываем тост, что они в разработке
-                return; //и выходим из обработчика, никуда не переходя
-                /*intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("geo:55.754283,37.62002"));    //Вариант открытия координат на карте
-                break;*/
+                intent.setClass(this, DisconnectionsActivity.class);
+                break;
             case R.id.button5:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://voda.uu.ru"));

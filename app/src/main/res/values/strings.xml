@@ -96,4 +96,7 @@
     <string name="feedbackType4">Отчет об ошибке</string>
 
     <string name="submit">Отправить</string>
+    
+    <string name="title_activity_disconnections">DisconnectionsActivity</string>
+
 </resources>

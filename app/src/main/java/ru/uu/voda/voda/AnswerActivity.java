@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.widget.TextView;
 
+import android.support.v7.widget.Toolbar; //Тулбар
+
 import android.text.Spanned; //Для добавления Html кода в textview
 
 public class AnswerActivity extends AppCompatActivity {
@@ -13,6 +15,11 @@ public class AnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
+
+        //Тулбар
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView question = (TextView) findViewById(R.id.question);
         TextView answer = (TextView) findViewById(R.id.answer);

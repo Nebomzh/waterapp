@@ -39,7 +39,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.uu.voda.voda.MainActivity" />
         </activity>
-        <activity android:name=".AnswerActivity"></activity>
+        <activity
+            android:name=".AnswerActivity"
+            android:label="@string/title_activity_answer"
+            android:parentActivityName=".QuestionsActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.uu.voda.voda.QuestionsActivity" />
+        </activity>
     </application>
 
 </manifest>

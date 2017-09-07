@@ -1,201 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
     tools:context="ru.uu.voda.voda.ProblemaActivity">
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ScrollView01"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/h0a"
+            app:subtitle="@string/h0b"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        tools:context="ru.uu.voda.voda.ProblemaActivity">
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ScrollView01"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="vertical"
+            >
 
-
-            <TextView
-                android:id="@+id/textView0"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/h0"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h1"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h1"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <Spinner
-                android:id="@+id/Spinner1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner1_list" />
+                <Spinner
+                    android:id="@+id/Spinner1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Spinner1_list" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h2"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h2"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText2"
-                style="@style/Widget.AppCompat.AutoCompleteTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/EditText2"
+                    style="@style/Widget.AppCompat.AutoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h3"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h3"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/EditText3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h4"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h4"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+                <EditText
+                    android:id="@+id/EditText4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h5"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h5"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <Spinner
-                android:id="@+id/Spinner5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner5_list" />
+                <Spinner
+                    android:id="@+id/Spinner5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Spinner5_list" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h6"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h6"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <Spinner
-                android:id="@+id/Spinner6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner6_list" />
+                <Spinner
+                    android:id="@+id/Spinner6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Spinner6_list" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h7"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h7"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/EditText7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h8"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h8"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <CheckBox
-                android:id="@+id/CheckBox8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/yes" />
+                <CheckBox
+                    android:id="@+id/CheckBox8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h9"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h9"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <CheckBox
-                android:id="@+id/CheckBox9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/yes" />
+                <CheckBox
+                    android:id="@+id/CheckBox9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h10"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h10"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone" />
+                <EditText
+                    android:id="@+id/EditText10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h11"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h11"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/EditText11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                <EditText
+                    android:id="@+id/EditText11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-            <Button
-                android:id="@+id/ButtonSendFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="sendFeedback"
-                android:text="@string/submit" />
+                <Button
+                    android:id="@+id/ButtonSendFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="sendFeedback"
+                    android:text="@string/submit" />
 
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

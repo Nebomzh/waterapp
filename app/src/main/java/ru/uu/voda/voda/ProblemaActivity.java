@@ -20,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.support.v7.widget.Toolbar; //Тулбар
+
 public class ProblemaActivity  extends AppCompatActivity {
 
     public static String p_street_in = "";
@@ -52,6 +54,11 @@ public class ProblemaActivity  extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problema);
+
+        //Тулбар
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         //сначала обратимся к нашим полям и кнопке

@@ -22,7 +22,8 @@
     <string name="phone3">Приборы учёта Челябинск</string>
     <string name="phone4">Приборы учёта Копейск</string>
 
-    <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
+    <string name="h0a">ОТПРАВИТЬ ЗАЯВКУ</string>
+    <string name="h0b">о проблеме с водоснабжением и водоотведением:</string>
     <string name="h1">Район города: *</string>
 
     <string name="Spinner1_1">Другой</string>

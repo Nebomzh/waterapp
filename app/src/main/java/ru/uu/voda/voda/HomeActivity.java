@@ -15,11 +15,19 @@ import android.net.Uri;
 import android.content.SharedPreferences;           //для работы с настройками
 import android.content.SharedPreferences.Editor;    //для редактирования настроек
 
+import android.view.ContextMenu;    //Контекстное меню
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener { //implements добавляет обработчик нажатий прямо в активити
     /** Главная страница*/
 
     SharedPreferences sPref;    //объект настроек
     final String ANIM_STATE = "anim_state"; //ключ состояния анимации
+
+    //id Элементов контекстного меню
+    final int CONTEXT_MENU_PHONE1 = 1;
+    final int CONTEXT_MENU_PHONE2 = 2;
+    final int CONTEXT_MENU_PHONE3 = 3;
+    final int CONTEXT_MENU_PHONE4 = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         button4.setOnClickListener(this);
         button5.setOnClickListener(this);
         button6.setOnClickListener(this);
+
+        //Добавляем контекстное меню
+        registerForContextMenu(button6); //Для шестой кнопки
 
         //Анимация
         if(sPref.getBoolean(ANIM_STATE, true)) //узнаём состояние анимации из настроек(по умолчанию есть)
@@ -97,9 +108,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setData(Uri.parse("http://voda.uu.ru"));
                 break;
             case R.id.button6:
-                intent.setAction(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:+73517299559"));
-                break;
+                openContextMenu(view);  //открываем контекстное меню для этой кнопки
+                return;
+//                intent.setAction(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tel:+73517299559"));
+//                break;
         }
         startActivity(intent);
     }
@@ -143,6 +156,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 finish(); // выход из приложения
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    // Создание контекстного меню
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        switch (view.getId()) {
+            case R.id.button6:
+                menu.add(0, CONTEXT_MENU_PHONE1, 0, R.string.phone1);
+                menu.add(0, CONTEXT_MENU_PHONE2, 0, R.string.phone2);
+                menu.add(0, CONTEXT_MENU_PHONE3, 0, R.string.phone3);
+                menu.add(0, CONTEXT_MENU_PHONE4, 0, R.string.phone4);
+                break;
+        }
+    }
+
+    // обработка нажатий пунктов контекстного меню
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Intent intent = new Intent();   //intent в который нужно будет перейти
+        intent.setAction(Intent.ACTION_DIAL);
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_PHONE1:
+                intent.setData(Uri.parse("tel:+73517299559"));
+                break;
+            case CONTEXT_MENU_PHONE2:
+                intent.setData(Uri.parse("tel:+73513943929"));
+                break;
+            case CONTEXT_MENU_PHONE3:
+                intent.setData(Uri.parse("tel:+73512140014"));
+                break;
+            case CONTEXT_MENU_PHONE4:
+                intent.setData(Uri.parse("tel:+73513927717"));
+                break;
+        }
+        startActivity(intent);
+        return super.onContextItemSelected(item);
     }
 }
 

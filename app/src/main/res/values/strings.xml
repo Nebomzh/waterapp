@@ -17,7 +17,13 @@
 
     <string name="exit">Выход</string>
 
-    <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
+    <string name="phone1">Утечки Челябинск</string>
+    <string name="phone2">Утечки Копейск</string>
+    <string name="phone3">Приборы учёта Челябинск</string>
+    <string name="phone4">Приборы учёта Копейск</string>
+
+    <string name="h0a">ОТПРАВИТЬ ЗАЯВКУ</string>
+    <string name="h0b">о проблеме с водоснабжением и водоотведением:</string>
     <string name="h1">Район города: *</string>
 
     <string name="Spinner1_1">Другой</string>
@@ -85,6 +91,6 @@
     <string name="h11">Как к Вам обратиться при звонке</string>
 
 
-    <string name="submit">Отправить</string>
+    <string name="send">Отправить</string>
 
 </resources>

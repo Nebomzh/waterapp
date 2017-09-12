@@ -20,6 +20,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.support.v7.widget.Toolbar; //Тулбар
+
+import android.view.Menu;       //меню
+import android.view.MenuItem;   //пункт меню
+
 public class ProblemaActivity  extends AppCompatActivity {
 
     public static String p_street_in = "";
@@ -53,9 +58,12 @@ public class ProblemaActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problema);
 
+        //Тулбар
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //сначала обратимся к нашим полям и кнопке
-        Button btn = (Button) findViewById(R.id.ButtonSendFeedback);
+        //обратимся к нашим полям
         p_street = (EditText) findViewById(R.id.EditText2);
         p_house = (EditText) findViewById(R.id.EditText3);
         p_level = (EditText) findViewById(R.id.EditText4);
@@ -66,49 +74,42 @@ public class ProblemaActivity  extends AppCompatActivity {
         p_damage = (Spinner) findViewById(R.id.Spinner5);
         p_location_damage = (Spinner) findViewById(R.id.Spinner6);
         p_init_app = (CheckBox) findViewById(R.id.CheckBox8);
-
-
-
-
-        btn.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-
-                p_street_in = p_street.getText().toString();
-                p_house_in = p_house.getText().toString();
-                p_level_in = p_level.getText().toString();
-                p_service_in = p_service.getText().toString();
-                p_phone_number_in = p_phone_number.getText().toString();
-                p_name_in = p_name.getText().toString();
-                p_district_in = p_district.getSelectedItem().toString();
-                p_damage_in = p_damage.getSelectedItem().toString();
-                p_location_damage_in = p_location_damage.getSelectedItem().toString();
-
-
-
-
-                try {
-
-                    new SendData().execute();
-
-
-                } catch (Exception e) {
-
-                }
-
-
-
-
-
-            }
-        });
     }
 
+    public void sendProblem() {
+        p_street_in = p_street.getText().toString();
+        p_house_in = p_house.getText().toString();
+        p_level_in = p_level.getText().toString();
+        p_service_in = p_service.getText().toString();
+        p_phone_number_in = p_phone_number.getText().toString();
+        p_name_in = p_name.getText().toString();
+        p_district_in = p_district.getSelectedItem().toString();
+        p_damage_in = p_damage.getSelectedItem().toString();
+        p_location_damage_in = p_location_damage.getSelectedItem().toString();
 
+        try {
+            new SendData().execute();
+        } catch (Exception e) {
+        }
+    }
 
+    // создание меню
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_problema, menu);  //создание меню из xml
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    // обработка нажатий пунктов меню
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // по id определеяем пункт меню, вызвавший этот обработчик
+        switch (item.getItemId()) {
+            case R.id.action_send_problem:    //Кнопка отправить
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();   //Тост отправить
+                sendProblem();      //Кусок посылки проблемы
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

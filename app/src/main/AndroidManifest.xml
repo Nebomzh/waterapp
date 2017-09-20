@@ -31,7 +31,9 @@
         <activity android:name=".ProblemaActivity"
             android:label="@string/button1"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.uu.voda.voda.MainActivity" />

@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -29,7 +30,7 @@ import android.view.MenuItem;   //пункт меню
 import android.content.SharedPreferences;           //для работы с сохранялками
 import android.content.SharedPreferences.Editor;    //для редактирования сохранялок
 
-public class ProblemaActivity  extends AppCompatActivity implements AddressDialogFragment.NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
+public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
 
     SharedPreferences sPref;    //объект сохранялок
     final String DISTRICT = "district"; //ключи сохранялок
@@ -44,10 +45,17 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
     final String PHONE_NUMBER = "phone_number";
     final String NAME = "name";
 
-    DialogFragment dialog;
+    //Диалоги
+    DialogFragment person_dialog;
+    DialogFragment address_dialog;
+
+    //теги диалогов
+    final String PERSON_DIALOG_TAG = "person_dialog_tag";
+    final String ADDRESS_DIALOG_TAG = "address_dialog_tag";
 
     public static String server = "vodaonline74.ru";
 
+    TextView persontext;
     TextView placetext;
     //public Spinner p_district;
     //public EditText p_street;
@@ -57,9 +65,9 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
     public Spinner p_location_damage;
     public EditText p_service;
     public CheckBox p_init_app;
-    public CheckBox p_need_callback;
-    public EditText p_phone_number;
-    public EditText p_name;
+    //public CheckBox p_need_callback;
+    //public EditText p_phone_number;
+    //public EditText p_name;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,16 +82,24 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //поле вызывающее диалог
+        //поля вызывающее диалог
+        findViewById(R.id.personbox).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                person_dialog = new PersonDialogFragment();
+                person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
+            }
+        });
         findViewById(R.id.placebox).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog = new AddressDialogFragment();
-                dialog.show(getFragmentManager(), "dlg1");
+                address_dialog = new AddressDialogFragment();
+                address_dialog.show(getFragmentManager(), ADDRESS_DIALOG_TAG);
             }
         });
 
         //обратимся к нашим полям
+        persontext = (TextView) findViewById(R.id.persontext);
         placetext = (TextView) findViewById(R.id.placetext);
         //p_district = (Spinner) findViewById(R.id.Spinner1);
         //p_street = (EditText) findViewById(R.id.EditText2);
@@ -93,45 +109,88 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
         p_location_damage = (Spinner) findViewById(R.id.Spinner6);
         p_service = (EditText) findViewById(R.id.EditText7);
         p_init_app = (CheckBox) findViewById(R.id.CheckBox8);
-        p_need_callback = (CheckBox) findViewById(R.id.CheckBox9);
-        p_phone_number = (EditText) findViewById(R.id.EditText10);
-        p_name = (EditText) findViewById(R.id.EditText11);
+        //p_need_callback = (CheckBox) findViewById(R.id.CheckBox9);
+        //p_phone_number = (EditText) findViewById(R.id.EditText10);
+        //p_name = (EditText) findViewById(R.id.EditText11);
 
         //подгружаем значения из сохранялок
-        setPlacetext();//текст для первого поля
+        setPersontext();//текст для поля с личными данными
+        setPlacetext();//текст для поля с адресом
         p_damage.setSelection(sPref.getInt(DAMAGE, 0));
         p_location_damage.setSelection(sPref.getInt(LOCATION_DAMAGE, 0));
         p_service.setText(sPref.getString(SERVICE, ""));
         p_init_app.setChecked(sPref.getBoolean(INIT_APP, false));
-        p_need_callback.setChecked(sPref.getBoolean(NEED_CALLBACK, false));
-        p_phone_number.setText(sPref.getString(PHONE_NUMBER, ""));
-        p_name.setText(sPref.getString(NAME, ""));
+        //p_need_callback.setChecked(sPref.getBoolean(NEED_CALLBACK, false));
+        //p_phone_number.setText(sPref.getString(PHONE_NUMBER, ""));
+        //p_name.setText(sPref.getString(NAME, ""));
     }
 
     //Интерфейсы принятия инфы от диалоговых окон
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        Spinner p_district = (Spinner) dialog.getDialog().findViewById(R.id.Spinner1);
-        EditText p_street = (EditText) dialog.getDialog().findViewById(R.id.EditText2);
-        EditText p_house = (EditText) dialog.getDialog().findViewById(R.id.EditText3);
-        EditText p_level = (EditText) dialog.getDialog().findViewById(R.id.EditText4);
-
         Editor ed = sPref.edit();   //объект для редактирования сохранений
+        switch (dialog.getTag()) {  //определение диалога
+            case PERSON_DIALOG_TAG: //диалог с личными данными
+                CheckBox p_need_callback = (CheckBox) dialog.getDialog().findViewById(R.id.CheckBox9);
+                EditText p_phone_number = (EditText) dialog.getDialog().findViewById(R.id.EditText10);
+                EditText p_name = (EditText) dialog.getDialog().findViewById(R.id.EditText11);
 
-        ed.putInt(DISTRICT, p_district.getSelectedItemPosition());
-        ed.putString(STREET, p_street.getText().toString());
-        ed.putString(HOUSE, p_house.getText().toString());
-        ed.putString(LEVEL, p_level.getText().toString());
+                ed.putBoolean(NEED_CALLBACK, p_need_callback.isChecked());
+                ed.putString(PHONE_NUMBER, p_phone_number.getText().toString());
+                ed.putString(NAME, p_name.getText().toString());
+                ed.commit();    //сохранение
 
-        ed.commit();    //сохранение
+                setPersontext(); //текст для поля с личными данными
+                break;
+            case ADDRESS_DIALOG_TAG: //диалог с адресом
+                Spinner p_district = (Spinner) dialog.getDialog().findViewById(R.id.Spinner1);
+                EditText p_street = (EditText) dialog.getDialog().findViewById(R.id.EditText2);
+                EditText p_house = (EditText) dialog.getDialog().findViewById(R.id.EditText3);
+                EditText p_level = (EditText) dialog.getDialog().findViewById(R.id.EditText4);
 
-        setPlacetext(); //текст для поля с местом
+                ed.putInt(DISTRICT, p_district.getSelectedItemPosition());
+                ed.putString(STREET, p_street.getText().toString());
+                ed.putString(HOUSE, p_house.getText().toString());
+                ed.putString(LEVEL, p_level.getText().toString());
+                ed.commit();    //сохранение
+
+                setPlacetext(); //текст для поля с местом
+                break;
+        }
     }
     /*@Override
     public void onDialogNegativeClick(DialogFragment dialog) {
     }*/
     @Override
     public void onDialogNeutralClick(DialogFragment dialog) {
+    }
+
+    //текст для поля с личными данными
+    private void setPersontext() {
+        String temp_string="";  //временная строка
+        Boolean something=false;      //флаг, что что-то ввели
+        //подгружаем значения из сохранялок
+        if (sPref.getString(NAME, "").length()!=0) {
+            something = true;
+            temp_string += sPref.getString(NAME, "");
+            temp_string += "\n";
+        }
+        if (sPref.getString(PHONE_NUMBER, "").length()!=0) {
+            something = true;
+            temp_string += sPref.getString(PHONE_NUMBER, "");
+            temp_string += " ";
+            if (sPref.getBoolean(NEED_CALLBACK, false))
+                temp_string += getResources().getString(R.string.h9true);
+            else
+                temp_string += getResources().getString(R.string.h9false);
+        }
+        else
+            temp_string += getResources().getString(R.string.h10request);
+
+        if (something)
+            persontext.setText(temp_string);
+        else
+            persontext.setText(getResources().getString(R.string.hpre9) + " " + getResources().getString(R.string.warn));
     }
 
     //текст для поля с местом
@@ -170,7 +229,7 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
         if (something)
             placetext.setText(temp_string);
         else
-            placetext.setText(R.string.hpre1);
+            placetext.setText(getResources().getString(R.string.hpre1) + " " + getResources().getString(R.string.warn));
     }
 
     // создание меню
@@ -348,9 +407,6 @@ public class ProblemaActivity  extends AppCompatActivity implements AddressDialo
         ed.putInt(LOCATION_DAMAGE, p_location_damage.getSelectedItemPosition());
         ed.putString(SERVICE, p_service.getText().toString());
         ed.putBoolean(INIT_APP, p_init_app.isChecked());
-        ed.putBoolean(NEED_CALLBACK, p_need_callback.isChecked());
-        ed.putString(PHONE_NUMBER, p_phone_number.getText().toString());
-        ed.putString(NAME, p_name.getText().toString());
 
         ed.commit();    //сохранение
     }

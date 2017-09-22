@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">МУП ПОВВ</string>
 
@@ -39,11 +40,14 @@
     <string name="Spinner1_8">Центральный район</string>
 
     <string name="h2">Улица *</string>
-    <string name="h2request">Укажите улицу</string>
+    <string name="h2hint">проспект Ленина</string>
+    <string name="h2request">Укажите улицу ⚠</string>
     <string name="h3">Дом (дома, здания) *</string>
-    <string name="h3request">Укажите дом (дома, здания)</string>
+    <string name="h3hint">21</string>
+    <string name="h3request">Укажите дом (дома, здания) ⚠</string>
     <string name="h4">Этаж *</string>
-    <string name="h4request">Укажите этаж</string>
+    <string name="h4hint">1</string>
+    <string name="h4request">Укажите этаж ⚠</string>
 
     <string name="h5">Тип повреждения</string>
 
@@ -92,15 +96,22 @@
     <string name="h7">Обслуживающая организация (ЖЭК, управляющая компания)</string>
     <string name="h8">Было ли обращение в обслуживающую организацию</string>
     <string name="yes">Да</string>
-    <string name="h9">Требуется перезвонить</string>
 
+    <string name="hpre9">Укажите личные данные</string>
+    <string name="h9">Требуется перезвонить</string>
+    <string name="h9true">🔔</string>
+    <string name="h9false">🔕</string>
     <string name="h10">Телефон (для обратного звонка) *</string>
+    <string name="h10hint">+7 900 123 45 67</string>
+    <string name="h10request">Укажите телефон ⚠</string>
     <string name="h11">Как к Вам обратиться при звонке</string>
+    <string name="h11hint">Александр</string>
 
     <string name="send">Отправить</string>
 
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
+    <string name="warn">⚠</string>
 
     <string name="warn_empty_fields">Не заполнены обязательные поля:\n</string>
 </resources>

@@ -48,6 +48,29 @@
                 android:paddingTop="10dp"
                 >
 
+                <LinearLayout
+                    android:id="@+id/personbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/ic_face_black_18px"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/persontext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hpre9"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/placebox"
@@ -56,7 +79,7 @@
                     android:orientation="horizontal">
                     <ImageView
                         android:src="@drawable/ic_place_black_18px"
-                        android:layout_width="wrap_content"
+                        android:layout_width="24dp"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
                         />
@@ -65,6 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/hpre1"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:gravity="center_vertical"
                         android:layout_margin="10dp"
@@ -83,7 +107,9 @@
                     android:id="@+id/Spinner5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/Spinner5_list" />
+                    android:entries="@array/Spinner5_list"
+                    android:layout_marginBottom="10dp"
+                    />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -97,7 +123,9 @@
                     android:id="@+id/Spinner6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/Spinner6_list" />
+                    android:entries="@array/Spinner6_list"
+                    android:layout_marginBottom="10dp"
+                    />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -111,63 +139,15 @@
                     android:id="@+id/EditText7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h8"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:inputType="text"
+                    android:layout_marginBottom="10dp"
+                    />
 
                 <CheckBox
                     android:id="@+id/CheckBox8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/yes" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h9"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <CheckBox
-                    android:id="@+id/CheckBox9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/yes" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h10"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <EditText
-                    android:id="@+id/EditText10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h11"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <EditText
-                    android:id="@+id/EditText11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
+                    android:text="@string/h8" />
 
             </LinearLayout>
         </ScrollView>

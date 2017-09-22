@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="@string/h2"/>
+        android:hint="@string/h2hint"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="@string/h3"/>
+        android:hint="@string/h3hint"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -73,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberSigned"
-        android:hint="@string/h4"/>
+        android:hint="@string/h4hint"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

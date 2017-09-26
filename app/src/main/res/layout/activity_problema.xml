@@ -44,8 +44,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
                 >
 
                 <LinearLayout
@@ -71,6 +69,55 @@
                         />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/problem_black"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        >
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/h5"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/Spinner5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/Spinner5_list"
+                            android:layout_marginBottom="10dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/h6"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/Spinner6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/Spinner6_list"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/placebox"
@@ -95,37 +142,23 @@
                         />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h5"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <Spinner
-                    android:id="@+id/Spinner5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/Spinner5_list"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/h6"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <Spinner
-                    android:id="@+id/Spinner6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/Spinner6_list"
-                    android:layout_marginBottom="10dp"
-                    />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <ImageView
+                android:src="@drawable/building"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_margin="10dp"
+                >
 
                 <TextView
                     android:id="@+id/textView7"
@@ -148,6 +181,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/h8" />
+            </LinearLayout>
+            </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

@@ -5,11 +5,11 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +56,19 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     public static String server = "vodaonline74.ru";
 
     TextView persontext;
+    ImageView personwarn;
+    TextView personname;
+    TextView personphone;
+    ImageView phonewarn;
     TextView placetext;
+    ImageView placewarn;
+    TextView placedistrict;
+    TextView placestreet;
+    ImageView streetwarn;
+    TextView placehouse;
+    ImageView housewarn;
+    TextView placelevel;
+    ImageView levelwarn;
     //public Spinner p_district;
     //public EditText p_street;
     //public EditText p_house;
@@ -82,6 +94,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //findViewById(R.id.personwarn).setVisibility(View.GONE);
+
         //поля вызывающее диалог
         findViewById(R.id.personbox).setOnClickListener(new OnClickListener() {
             @Override
@@ -100,7 +114,19 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
         //обратимся к нашим полям
         persontext = (TextView) findViewById(R.id.persontext);
+        personwarn = (ImageView) findViewById(R.id.personwarn);
+        personname = (TextView) findViewById(R.id.personname);
+        personphone = (TextView) findViewById(R.id.personphone);
+        phonewarn = (ImageView) findViewById(R.id.phonewarn);
         placetext = (TextView) findViewById(R.id.placetext);
+        placewarn = (ImageView) findViewById(R.id.placewarn);
+        placedistrict = (TextView) findViewById(R.id.placedistrict);
+        placestreet = (TextView) findViewById(R.id.placestreet);
+        streetwarn = (ImageView) findViewById(R.id.streetwarn);
+        placehouse = (TextView) findViewById(R.id.placehouse);
+        housewarn = (ImageView) findViewById(R.id.housewarn);
+        placelevel = (TextView) findViewById(R.id.placelevel);
+        levelwarn = (ImageView) findViewById(R.id.levelwarn);
         //p_district = (Spinner) findViewById(R.id.Spinner1);
         //p_street = (EditText) findViewById(R.id.EditText2);
         //p_house = (EditText) findViewById(R.id.EditText3);
@@ -167,69 +193,113 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
     //текст для поля с личными данными
     private void setPersontext() {
-        String temp_string="";  //временная строка
         Boolean something=false;      //флаг, что что-то ввели
         //подгружаем значения из сохранялок
         if (sPref.getString(NAME, "").length()!=0) {
             something = true;
-            temp_string += sPref.getString(NAME, "");
-            temp_string += "\n";
+            personname.setText(sPref.getString(NAME, ""));
+            personname.setVisibility(View.VISIBLE);
         }
+        else
+            personname.setVisibility(View.GONE);
         if (sPref.getString(PHONE_NUMBER, "").length()!=0) {
             something = true;
-            temp_string += sPref.getString(PHONE_NUMBER, "");
-            temp_string += " ";
+            personphone.setText(sPref.getString(PHONE_NUMBER, ""));
+            personphone.setVisibility(View.VISIBLE);
             if (sPref.getBoolean(NEED_CALLBACK, false))
-                temp_string += getResources().getString(R.string.h9true);
+                phonewarn.setImageResource(R.drawable.alarm);
             else
-                temp_string += getResources().getString(R.string.h9false);
+                phonewarn.setImageResource(R.drawable.disable_alarm);
+            phonewarn.setVisibility(View.VISIBLE);
         }
-        else
-            temp_string += getResources().getString(R.string.h10request);
+        else {
+            if (something) {
+                personphone.setText(R.string.h10request);
+                personphone.setVisibility(View.VISIBLE);
+                phonewarn.setImageResource(R.drawable.warning);
+                phonewarn.setVisibility(View.VISIBLE);
+            }
+            else {
+                personphone.setVisibility(View.GONE);
+                phonewarn.setVisibility(View.GONE);
+            }
+        }
 
-        if (something)
-            persontext.setText(temp_string);
-        else
-            persontext.setText(getResources().getString(R.string.hpre9) + " " + getResources().getString(R.string.warn));
+        if (something) { //если что-то есть, скрываем общее предупреждение
+            persontext.setVisibility(View.GONE);
+            personwarn.setVisibility(View.GONE);
+        }
+        else { //иначе отображаем
+            persontext.setVisibility(View.VISIBLE);
+            personwarn.setVisibility(View.VISIBLE);
+        }
     }
 
     //текст для поля с местом
     private void setPlacetext() {
-        String temp_string="";  //временная строка
         Boolean something=false;      //флаг, что что-то ввели
         //подгружаем значения из сохранялок
         if (sPref.getInt(DISTRICT, 0)!=0)
             something = true;
-        temp_string = getResources().getStringArray(R.array.Spinner1_list) [sPref.getInt(DISTRICT, 0)];
-        temp_string += "\n";
-        if (sPref.getString(STREET, "").length()!=0) {
+        placedistrict.setText(getResources().getStringArray(R.array.Spinner1_list) [sPref.getInt(DISTRICT, 0)]);
+        placedistrict.setVisibility(View.VISIBLE);
+        if (sPref.getString(STREET, "").length()!=0 && sPref.getString(HOUSE, "").length()!=0) {
             something = true;
-            temp_string += sPref.getString(STREET, "");
+            placestreet.setText(sPref.getString(STREET, "") + " " + sPref.getString(HOUSE, ""));
+            placestreet.setVisibility(View.VISIBLE);
+            streetwarn.setVisibility(View.GONE);
+            placehouse.setVisibility(View.GONE);
+            housewarn.setVisibility(View.GONE);
         }
-        else
-            temp_string += getResources().getString(R.string.h2request);
-        if (sPref.getString(STREET, "").length()!=0 && sPref.getString(HOUSE, "").length()!=0)
-            temp_string += " ";
-        else
-            temp_string += "\n";
-        if (sPref.getString(HOUSE, "").length()!=0) {
-            something = true;
-            temp_string += sPref.getString(HOUSE, "");
+        else {
+            if (sPref.getString(STREET, "").length() != 0) {
+                something = true;
+                placestreet.setText(sPref.getString(STREET, ""));
+                placestreet.setVisibility(View.VISIBLE);
+                streetwarn.setVisibility(View.GONE);
+            } else {
+                placestreet.setText(getResources().getString(R.string.h2request));
+                placestreet.setVisibility(View.VISIBLE);
+                streetwarn.setVisibility(View.VISIBLE);
+            }
+            if (sPref.getString(HOUSE, "").length() != 0) {
+                something = true;
+                placehouse.setText(sPref.getString(HOUSE, ""));
+                placehouse.setVisibility(View.VISIBLE);
+                housewarn.setVisibility(View.GONE);
+            } else {
+                placehouse.setText(getResources().getString(R.string.h3request));
+                placehouse.setVisibility(View.VISIBLE);
+                housewarn.setVisibility(View.VISIBLE);
+            }
         }
-        else
-            temp_string += getResources().getString(R.string.h3request);
-        temp_string += "\n";
         if (sPref.getString(LEVEL, "").length()!=0) {
             something = true;
-            temp_string += "Этаж " + sPref.getString(LEVEL, "");
+            placelevel.setText("Этаж " + sPref.getString(LEVEL, ""));
+            placelevel.setVisibility(View.VISIBLE);
+            levelwarn.setVisibility(View.GONE);
         }
-        else
-            temp_string += getResources().getString(R.string.h4request);
+        else {
+            placelevel.setText(getResources().getString(R.string.h4request));
+            placelevel.setVisibility(View.VISIBLE);
+            levelwarn.setVisibility(View.VISIBLE);
+        }
 
-        if (something)
-            placetext.setText(temp_string);
-        else
-            placetext.setText(getResources().getString(R.string.hpre1) + " " + getResources().getString(R.string.warn));
+        if (something) { //если что-то есть, скрываем общее предупреждение
+            placetext.setVisibility(View.GONE);
+            placewarn.setVisibility(View.GONE);
+        }
+        else { //иначе отображаем, скрывая остальное
+            placetext.setVisibility(View.VISIBLE);
+            placewarn.setVisibility(View.VISIBLE);
+            placedistrict.setVisibility(View.GONE);
+            placestreet.setVisibility(View.GONE);
+            streetwarn.setVisibility(View.GONE);
+            placehouse.setVisibility(View.GONE);
+            housewarn.setVisibility(View.GONE);
+            placelevel.setVisibility(View.GONE);
+            levelwarn.setVisibility(View.GONE);
+        }
     }
 
     // создание меню

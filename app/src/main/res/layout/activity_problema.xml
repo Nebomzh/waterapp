@@ -48,51 +48,49 @@
 
                 <LinearLayout
                     android:id="@+id/personbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    style="@style/horizontal">
                     <ImageView
                         android:src="@drawable/ic_face_black_18px"
-                        android:layout_width="24dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        />
-                    <TextView
-                        android:id="@+id/persontext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hpre9"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:gravity="center_vertical"
-                        android:layout_margin="10dp"
-                        />
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/persontext"
+                                android:text="@string/hpre9"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/personwarn"
+                                android:src="@drawable/warning"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                            <TextView
+                                android:id="@+id/personname"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/personphone"
+                                android:text="@string/h10request"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/phonewarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/horizontal">
                     <ImageView
                         android:src="@drawable/problem_black"
-                        android:layout_width="24dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical"
-                        android:layout_margin="10dp"
-                        >
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
                         <TextView
                             android:id="@+id/textView5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/h5"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
+                            style="@style/problemtitle" />
 
                         <Spinner
                             android:id="@+id/Spinner5"
@@ -104,11 +102,8 @@
 
                         <TextView
                             android:id="@+id/textView6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/h6"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
+                            style="@style/problemtitle" />
 
                         <Spinner
                             android:id="@+id/Spinner6"
@@ -121,52 +116,74 @@
 
                 <LinearLayout
                     android:id="@+id/placebox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    style="@style/horizontal">
                     <ImageView
                         android:src="@drawable/ic_place_black_18px"
-                        android:layout_width="24dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        />
-                    <TextView
-                        android:id="@+id/placetext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hpre1"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:gravity="center_vertical"
-                        android:layout_margin="10dp"
-                        />
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placetext"
+                                android:text="@string/hpre1"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/placewarn"
+                                android:src="@drawable/warning"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/placedistrict"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placestreet"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/streetwarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placehouse"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/housewarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placelevel"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/levelwarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/horizontal">
             <ImageView
                 android:src="@drawable/building"
-                android:layout_width="24dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_vertical"
-                android:layout_margin="10dp"
-                >
+                style="@style/partimage" />
+            <LinearLayout style="@style/partvertical">
 
                 <TextView
                     android:id="@+id/textView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/h7"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    style="@style/problemtitle" />
 
                 <EditText
                     android:id="@+id/EditText7"

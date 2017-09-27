@@ -1,201 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
     tools:context="ru.uu.voda.voda.ProblemaActivity">
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ScrollView01"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/h0a"
+            app:subtitle="@string/h0b"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="ru.uu.voda.voda.ProblemaActivity">
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ScrollView01"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="vertical"
+            >
 
-
-            <TextView
-                android:id="@+id/textView0"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/h0"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h1"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <LinearLayout
+                    android:id="@+id/personbox"
+                    style="@style/horizontal">
+                    <ImageView
+                        android:src="@drawable/ic_face_black_18px"
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/persontext"
+                                android:text="@string/hpre9"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/personwarn"
+                                android:src="@drawable/warning"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                            <TextView
+                                android:id="@+id/personname"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/personphone"
+                                android:text="@string/h10request"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/phonewarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
-            <Spinner
-                android:id="@+id/Spinner1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner1_list" />
+                <LinearLayout style="@style/horizontal">
+                    <ImageView
+                        android:src="@drawable/problem_black"
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:text="@string/h5"
+                            style="@style/problemtitle" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h2"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                        <Spinner
+                            android:id="@+id/Spinner5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/Spinner5_list"
+                            android:layout_marginBottom="10dp"
+                            />
 
-            <EditText
-                android:id="@+id/EditText2"
-                style="@style/Widget.AppCompat.AutoCompleteTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:text="@string/h6"
+                            style="@style/problemtitle" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h3"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                        <Spinner
+                            android:id="@+id/Spinner6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/Spinner6_list"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
 
-            <EditText
-                android:id="@+id/EditText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                <LinearLayout
+                    android:id="@+id/placebox"
+                    style="@style/horizontal">
+                    <ImageView
+                        android:src="@drawable/ic_place_black_18px"
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placetext"
+                                android:text="@string/hpre1"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/placewarn"
+                                android:src="@drawable/warning"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h4"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/placedistrict"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
 
-            <EditText
-                android:id="@+id/EditText4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placestreet"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/streetwarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placehouse"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/housewarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/placelevel"
+                                android:visibility="gone"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/levelwarn"
+                                android:src="@drawable/warning"
+                                android:visibility="gone"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h5"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                </LinearLayout>
 
-            <Spinner
-                android:id="@+id/Spinner5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner5_list" />
+            <LinearLayout style="@style/horizontal">
+            <ImageView
+                android:src="@drawable/building"
+                style="@style/partimage" />
+            <LinearLayout style="@style/partvertical">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h6"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView7"
+                    android:text="@string/h7"
+                    style="@style/problemtitle" />
 
-            <Spinner
-                android:id="@+id/Spinner6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/Spinner6_list" />
+                <EditText
+                    android:id="@+id/EditText7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:layout_marginBottom="10dp"
+                    />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h7"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                <CheckBox
+                    android:id="@+id/CheckBox8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/h8" />
+            </LinearLayout>
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/EditText7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h8"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
-            <CheckBox
-                android:id="@+id/CheckBox8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/yes" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h9"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
-            <CheckBox
-                android:id="@+id/CheckBox9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/yes" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h10"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
-            <EditText
-                android:id="@+id/EditText10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/h11"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
-            <EditText
-                android:id="@+id/EditText11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-
-            <Button
-                android:id="@+id/ButtonSendFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="sendFeedback"
-                android:text="@string/submit" />
+            </LinearLayout>
+        </ScrollView>
 
 
-        </LinearLayout>
-    </ScrollView>
-
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

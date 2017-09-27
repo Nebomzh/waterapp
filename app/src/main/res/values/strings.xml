@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">МУП ПОВВ</string>
 
@@ -22,10 +23,14 @@
     <string name="phone3">Приборы учёта Челябинск</string>
     <string name="phone4">Приборы учёта Копейск</string>
 
-    <string name="h0">ОТПРАВИТЬ ЗАЯВКУ О ПРОБЛЕМЕ С ВОДОСНАБЖЕНИЕМ И ВОДООТВЕДЕНИЕМ:</string>
-    <string name="h1">Район города: *</string>
+    <string name="h0a">ОТПРАВИТЬ ЗАЯВКУ</string>
+    <string name="h0b">о проблеме с водоснабжением и водоотведением</string>
 
-    <string name="Spinner1_1">Другой</string>
+    <string name="hpre1">Укажите место</string>
+
+    <string name="h1">Район города *</string>
+
+    <string name="Spinner1_1">Другой район</string>
     <string name="Spinner1_2">Калининский район</string>
     <string name="Spinner1_3">Курчатовский район</string>
     <string name="Spinner1_4">Ленинский район</string>
@@ -34,12 +39,19 @@
     <string name="Spinner1_7">Тракторозаводский район</string>
     <string name="Spinner1_8">Центральный район</string>
 
-    <string name="h2">Наименование улицы: *</string>
-    <string name="h3">Дом (дома, здания): *</string>
-    <string name="h4">Этаж: *</string>
-    <string name="h5">Тип повреждения:</string>
+    <string name="h2">Улица *</string>
+    <string name="h2hint">проспект Ленина</string>
+    <string name="h2request">Укажите улицу</string>
+    <string name="h3">Дом (дома, здания) *</string>
+    <string name="h3hint">21</string>
+    <string name="h3request">Укажите дом (дома, здания)</string>
+    <string name="h4">Этаж *</string>
+    <string name="h4hint">1</string>
+    <string name="h4request">Укажите этаж</string>
 
-    <string name="Spinner5_51">Прочее</string>
+    <string name="h5">Тип повреждения</string>
+
+    <string name="Spinner5_51">Прочее повреждение</string>
     <string name="Spinner5_53">Течь воды</string>
     <string name="Spinner5_11">Течь из земли</string>
     <string name="Spinner5_12">Течь из колодца</string>
@@ -68,9 +80,9 @@
     <string name="Spinner5_49">Плановые работы</string>
     <string name="Spinner5_54">Течь из колодца с ПГ</string>
 
-    <string name="h6">Местонахождение повреждения:</string>
+    <string name="h6">Местонахождение повреждения</string>
 
-    <string name="Spinner6_28">Другое</string>
+    <string name="Spinner6_28">Другое местонахождение</string>
     <string name="Spinner6_29">Проезжая часть дороги</string>
     <string name="Spinner6_32">Теплотрассы</string>
     <string name="Spinner6_33">Дворовая территория</string>
@@ -84,19 +96,21 @@
     <string name="h7">Обслуживающая организация (ЖЭК, управляющая компания)</string>
     <string name="h8">Было ли обращение в обслуживающую организацию</string>
     <string name="yes">Да</string>
+
+    <string name="hpre9">Укажите личные данные</string>
     <string name="h9">Требуется перезвонить</string>
-
-    <string name="h10">Телефон (для обратного звонка): *</string>
+    <string name="h10">Телефон (для обратного звонка) *</string>
+    <string name="h10hint">+7 900 123 45 67</string>
+    <string name="h10request">Укажите телефон</string>
     <string name="h11">Как к Вам обратиться при звонке</string>
+    <string name="h11hint">Александр</string>
 
-    <string name="feedbackType">Тип сообщения</string>
-    <string name="feedbackType1">Похвала</string>
-    <string name="feedbackType2">Жалоба</string>
-    <string name="feedbackType3">Предложение</string>
-    <string name="feedbackType4">Отчет об ошибке</string>
+    <string name="send">Отправить</string>
 
-    <string name="submit">Отправить</string>
-    
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="warn_empty_fields">Не заполнены обязательные поля:\n</string>
+
     <string name="title_activity_disconnections">DisconnectionsActivity</string>
-
 </resources>

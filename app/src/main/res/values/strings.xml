@@ -112,5 +112,17 @@
 
     <string name="warn_empty_fields">Не заполнены обязательные поля:\n</string>
 
-    <string name="title_activity_disconnections">DisconnectionsActivity</string>
+    <string name="title_activity_disconnections">Отключения</string>
+    <string name="month0">Января</string>
+    <string name="month1">Февраля</string>
+    <string name="month2">Марта</string>
+    <string name="month3">Апреля</string>
+    <string name="month4">Мая</string>
+    <string name="month5">Июня</string>
+    <string name="month6">Июля</string>
+    <string name="month7">Августа</string>
+    <string name="month8">Сентября</string>
+    <string name="month9">Октября</string>
+    <string name="month10">Ноября</string>
+    <string name="month11">Декабря</string>
 </resources>

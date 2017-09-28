@@ -6,27 +6,37 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.TextView;
-
-import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
+    // интерфейс активити для обмена инфой
+    DatePickerListener datePickerListener;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        //instantiate the DatePickerListener
+        Activity activity = getActivity();
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the DatePickerListener so we can send events to the host
+            datePickerListener = (DatePickerListener) activity;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(activity.toString()
+                    + " must implement DatePickerListener");
+        }
+
+        //тащим уже имеющиеся даты с активити
+        int year = datePickerListener.getYear();
+        int month = datePickerListener.getMonth();
+        int day = datePickerListener.getDay();
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Activity activity = getActivity();
-        ((TextView) activity.findViewById(R.id.calendartext)).setText(day + " " + getResources().getStringArray(R.array.month)[month] + " " + year);
+        datePickerListener.onDateSet(year, month, day); //передаём инфу о выбранной дате в активити
     }
 }

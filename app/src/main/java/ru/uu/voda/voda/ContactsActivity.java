@@ -1,206 +1,65 @@
 package ru.uu.voda.voda;
 /** страница с контактами*/
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+        import android.os.Bundle;
+        import android.support.v7.app.AppCompatActivity;
+        import android.support.v7.widget.Toolbar;
 
-public class ContactsActivity extends AppCompatActivity {
+        import com.google.android.gms.maps.CameraUpdate;
+        import com.google.android.gms.maps.CameraUpdateFactory;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.OnMapReadyCallback;
+        import com.google.android.gms.maps.SupportMapFragment;
+        import com.google.android.gms.maps.model.CameraPosition;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.android.gms.maps.model.MarkerOptions;
 
-    String[] spinner20 = {"Другой", "Калининский район", "Курчатовский район", "Центарльный район", "Советский район", "Тракторозоводский район" , "Металургический район"};
-    public static String fio_in = "";
-    public static String dol_in = "";
-    public static String tel_in = "";
-    public static String server = "vodaonline74.ru";
+public class ContactsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    public EditText fio;
-    public EditText dol;
-    public EditText tel;
-    //public EditText p_district;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button btn = (Button) findViewById(R.id.button1);
-        fio = (EditText) findViewById(R.id.editText1);
-        dol = (EditText) findViewById(R.id.editText2);
-        tel = (EditText) findViewById(R.id.editText3);
-        //p_district = (EditText) findViewById(R.id.spinner20);
-
-
-        Spinner spinner = (Spinner) findViewById(R.id.spinner20);
-        // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinner20);
-        // Определяем разметку для использования при выборе элемента
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Применяем адаптер к элементу spinner
-        spinner.setAdapter(adapter);
-
-
-
-
-        btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                fio_in = fio.getText().toString();
-                dol_in = dol.getText().toString();
-                tel_in = tel.getText().toString();
-
-
-
-                try {
-
-                    new SendData().execute();
-
-
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
-    static class SendData extends AsyncTask<Void, Void, Void> {
+        // Add a marker in Sydney and move the camera
+        LatLng position1 = new LatLng(55.142159, 61.374544);
+        LatLng position2 = new LatLng(55.141367, 61.372765);
+        mMap.addMarker(new MarkerOptions().position(position1).title("Воровского 60А"));
+        mMap.addMarker(new MarkerOptions().position(position2).title("Варненская 13"));
 
-        String resultString = null;
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(position1));
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                String myURL = "http://"+server+"/adm2/server.php";
-
-                String parammetrs = "name="+fio_in+"&dol="+dol_in+"&tel="+tel_in;
-                byte[] data = null;
-                InputStream is = null;
-
-
-
-                try {
-                    URL url = new URL(myURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout(10000);
-                    conn.setConnectTimeout(15000);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Connection", "Keep-Alive");
-                    conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-                    conn.setRequestProperty("Content-Length", "" + Integer.toString(parammetrs.getBytes().length));
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-
-
-                    // конвертируем передаваемую строку в UTF-8
-                    data = parammetrs.getBytes("UTF-8");
-
-
-                    OutputStream os = conn.getOutputStream();
-
-
-                    // передаем данные на сервер
-                    os.write(data);
-                    os.flush();
-                    os.close();
-                    data = null;
-                    conn.connect();
-                    int responseCode= conn.getResponseCode();
-
-
-                    // передаем ответ сервер
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                    if (responseCode == 200) {    // Если все ОК (ответ 200)
-                        is = conn.getInputStream();
-
-                        byte[] buffer = new byte[8192]; // размер буфера
-
-
-                        // Далее так читаем ответ
-                        int bytesRead;
-
-
-
-                        while ((bytesRead = is.read(buffer)) != -1) {
-                            baos.write(buffer, 0, bytesRead);
-                        }
-
-
-                        data = baos.toByteArray();
-                        resultString = new String(data, "UTF-8");  // сохраняем в переменную ответ сервера, у нас "OK"
-
-
-
-                    } else {
-                    }
-
-                    conn.disconnect();
-
-                } catch (MalformedURLException e) {
-
-                    //resultString = "MalformedURLException:" + e.getMessage();
-                } catch (IOException e) {
-
-                    //resultString = "IOException:" + e.getMessage();
-                } catch (Exception e) {
-
-                    //resultString = "Exception:" + e.getMessage();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-
-
-      // @Override
-        //protected void onPostExecute(Void result) {
-          //  super.onPostExecute(result);
-
-            //Toast toast = Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_SHORT);
-
-
-       // }
-
-
-
-
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(position1)
+                .zoom(15)
+                //.bearing(45)
+                //.tilt(20)
+                .build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        mMap.animateCamera(cameraUpdate);
     }
-
-
-
-
-
-
-
-
-
-
 }
-
-
-

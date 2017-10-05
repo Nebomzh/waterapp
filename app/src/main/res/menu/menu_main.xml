@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.cliff.locationgetter.MainActivity" >
+    <item
+        android:id="@+id/show"
+        android:orderInCategory="1"
+        app:showAsAction="never"
+        android:title="show_all_markers"/>
+    <item
+        android:id="@+id/clear"
+        android:orderInCategory="2"
+        app:showAsAction="never"
+        android:title="clear_map"/>
+    <item
+        android:id="@+id/tracking"
+        android:orderInCategory="3"
+        app:showAsAction="never"
+        android:title="tracking_mode"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/map_sub_menu"
+        android:title="Map mode">
+        <menu></menu>
+    </item>
+</menu>

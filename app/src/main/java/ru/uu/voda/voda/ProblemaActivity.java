@@ -2,14 +2,21 @@ package ru.uu.voda.voda;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +25,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.support.v7.widget.Toolbar; //Тулбар
 
@@ -29,6 +39,9 @@ import android.view.MenuItem;   //пункт меню
 
 import android.content.SharedPreferences;           //для работы с сохранялками
 import android.content.SharedPreferences.Editor;    //для редактирования сохранялок
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
 
@@ -44,6 +57,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final String NEED_CALLBACK = "need_callback";
     final String PHONE_NUMBER = "phone_number";
     final String NAME = "name";
+    ListView listView;
 
     //Диалоги
     DialogFragment person_dialog;
@@ -54,6 +68,11 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final String ADDRESS_DIALOG_TAG = "address_dialog_tag";
 
     public static String server = "vodaonline74.ru";
+    static List<Location> locations = new ArrayList<>();
+    static SharedPreferences sp;
+
+    static ArrayList<String> places = new ArrayList<>();
+    static ArrayAdapter<String> arrayAdapter;
 
     TextView persontext;
     ImageView personwarn;
@@ -86,6 +105,67 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problema);
+
+        listView = (ListView) findViewById(R.id.listView);
+        arrayAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
+        listView.setAdapter(arrayAdapter);
+
+        // Retrieve data with the Gson dependency by converting List<Location> into a JSON representation
+        sp = this.getSharedPreferences("com.example.cliff.locationgetter", Context.MODE_PRIVATE);
+        retrieveLocations();
+
+        // update the ListView depending on the SharedPreferences data
+        if (locations == null) {
+            locations = new ArrayList<>();
+            locations.add(new Location("Add a location...", 91.0, 181.0));
+            updatePlaces();
+        }
+        else {
+            updatePlaces();
+        }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ContactsActivity.class);
+                intent.putExtra("index", position);
+                startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long id) {
+
+                if (i == 0) {
+                    Toast.makeText(getApplicationContext(), "You don't want to do that!", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
+                final int itemToDelete = i;
+
+                new AlertDialog.Builder(ProblemaActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Are you sure?")
+                        .setMessage("Do you want to delete this location?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                locations.remove(itemToDelete);
+                                places.remove(itemToDelete);
+                                arrayAdapter.notifyDataSetChanged();
+
+                                saveLocations();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                return true;
+            }
+        });
+
+
 
         sPref = getPreferences(MODE_PRIVATE);   //получаем сохранялки
 
@@ -149,6 +229,40 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         //p_need_callback.setChecked(sPref.getBoolean(NEED_CALLBACK, false));
         //p_phone_number.setText(sPref.getString(PHONE_NUMBER, ""));
         //p_name.setText(sPref.getString(NAME, ""));
+    }
+
+    private void updatePlaces() {
+        places.clear();
+        places.add("Add a location...");
+
+        for (int i = 1; i < locations.size(); i++) {
+            places.add(locations.get(i).getPlace());
+        }
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    public static void addLocation (String address, double latitude, double longitude) {
+        locations.add(new Location(address, latitude, longitude));
+        places.add(address);
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    private void retrieveLocations() {
+        Gson gson = new Gson();
+        String response = sp.getString("locations" , "");
+
+        // Return the Type representing the direct superclass of the entity
+        Type type = new TypeToken<List<Location>>(){}.getType();
+        locations = gson.fromJson(response, type);
+    }
+
+    public static void saveLocations() {
+        // Convert the ArrayList to a Json-formatted string using the Gson dependency, which handles generic Lists
+        SharedPreferences.Editor prefsEditor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(ProblemaActivity.locations);
+        prefsEditor.putString("locations", json);
+        prefsEditor.apply();
     }
 
     //Интерфейсы принятия инфы от диалоговых окон

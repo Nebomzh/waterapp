@@ -200,6 +200,26 @@
                     android:text="@string/h8" />
             </LinearLayout>
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/addressbox"
+                    style="@style/horizontal">
+                    <ImageView
+                        android:src="@drawable/ic_place_black_18px"
+                        style="@style/partimage" />
+                    <LinearLayout style="@style/partvertical">
+                        <LinearLayout style="@style/horizontal">
+                            <TextView
+                                android:id="@+id/addresstext"
+                                android:text="@string/hpre1"
+                                style="@style/problemtext" />
+                            <ImageView
+                                android:id="@+id/addresswarn"
+                                android:src="@drawable/warning"
+                                style="@style/problemwarning" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

@@ -2,6 +2,7 @@ package ru.uu.voda.voda;
 
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final String NEED_CALLBACK = "need_callback";
     final String PHONE_NUMBER = "phone_number";
     final String NAME = "name";
+    final String ADDRESS = "address";
+    final String SAVELAT = "savelat";
+    final String SAVELNG = "savelng";
+
+    //коды запусков для результатов других активти
+    final int ADDRESS_REQUEST_CODE = 1;
 
     //Диалоги
     DialogFragment person_dialog;
@@ -80,6 +87,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     //public CheckBox p_need_callback;
     //public EditText p_phone_number;
     //public EditText p_name;
+    TextView addresstext;
+    ImageView addresswarn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +120,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                 address_dialog.show(getFragmentManager(), ADDRESS_DIALOG_TAG);
             }
         });
+        findViewById(R.id.addressbox).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getApplicationContext(), AddressPicker.class),ADDRESS_REQUEST_CODE);
+            }
+        });
 
         //обратимся к нашим полям
         persontext = (TextView) findViewById(R.id.persontext);
@@ -138,10 +153,13 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         //p_need_callback = (CheckBox) findViewById(R.id.CheckBox9);
         //p_phone_number = (EditText) findViewById(R.id.EditText10);
         //p_name = (EditText) findViewById(R.id.EditText11);
+        addresstext = (TextView) findViewById(R.id.addresstext);
+        addresswarn = (ImageView) findViewById(R.id.addresswarn);
 
         //подгружаем значения из сохранялок
         setPersontext();//текст для поля с личными данными
-        setPlacetext();//текст для поля с адресом
+        setPlacetext();//текст для поля с местом
+        setAddresstext();//текст для поля с адресом
         p_damage.setSelection(sPref.getInt(DAMAGE, 0));
         p_location_damage.setSelection(sPref.getInt(LOCATION_DAMAGE, 0));
         p_service.setText(sPref.getString(SERVICE, ""));
@@ -189,6 +207,22 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     }*/
     @Override
     public void onDialogNeutralClick(DialogFragment dialog) {
+    }
+
+    //принятие инфы от активити запущенного на результат
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null)
+            return;
+
+        //сохраняем полученную от карты инфу
+        SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+        ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
+        ed.putFloat(SAVELAT, (float) data.getDoubleExtra(SAVELAT, (double) 0)); //TODO сделать сохранение в double, а не в float
+        ed.putFloat(SAVELNG, (float) data.getDoubleExtra(SAVELNG, (double) 0)); //TODO сделать сохранение в double, а не в float
+        ed.commit();    //сохранение
+
+        setAddresstext();//текст для поля с адресом
     }
 
     //текст для поля с личными данными
@@ -302,6 +336,19 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         }
     }
 
+    //текст для поля с адресом
+    private void setAddresstext() {
+        //подгружаем значения из сохранялок
+        if (sPref.getString(ADDRESS, "").length()!=0) {
+            addresstext.setText(sPref.getString(ADDRESS, ""));
+            addresswarn.setVisibility(View.GONE);
+        }
+        else {  //если в сохранялке ничего нет
+            addresstext.setText(getResources().getString(R.string.hpre1));
+            addresswarn.setVisibility(View.VISIBLE);
+        }
+    }
+
     // создание меню
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_problema, menu);  //создание меню из xml
@@ -382,7 +429,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                         "&p_init_app=" + String.valueOf(sPref.getBoolean(INIT_APP, false)) +
                         "&p_need_callback=" + String.valueOf(sPref.getBoolean(NEED_CALLBACK, false)) +
                         "&p_phone_number=" + sPref.getString(PHONE_NUMBER, "") +
-                        "&p_name=" + sPref.getString(NAME, "");
+                        "&p_name=" + sPref.getString(NAME, ""); //TODO дописать отправку адреса текстом и координатами
                 byte[] data = null;
                 InputStream is = null;
 

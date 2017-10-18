@@ -111,4 +111,7 @@
     <string name="cancel">Отмена</string>
 
     <string name="warn_empty_fields">Не заполнены обязательные поля:\n</string>
+
+    <string name="manual_edit">Ввести вручную</string>
+    <string name="apply">Применить</string>
 </resources>

@@ -2,6 +2,7 @@ package ru.uu.voda.voda;
 /** выбиратель адреса*/
 
 import android.Manifest;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
 
-public class AddressPicker extends AppCompatActivity implements OnMapReadyCallback {
+public class AddressPicker extends AppCompatActivity implements OnMapReadyCallback, NoticeDialogListener {
 
     TextView addresstext;
 
@@ -39,10 +41,16 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     final String SAVELAT = "savelat";
     final String SAVELNG = "savelng";
 
-    boolean someaddress = false; //флаг, что в поле адреса что-то введено
+    final String ROTATE = "rotate"; //ключ поворота экрана
+    boolean rotate = false; //флаг, что был поворот экрана
+
+    //Диалоги
+    DialogFragment addressedit_dialog;
+
+    //теги диалогов
+    final String ADDRESSEDIT_DIALOG_TAG = "addressedit_dialog_tag";
 
     final int PERMISSIONS_FINE_LOCATION = 0;
-    //LatLngBounds personLocation;
     private LocationManager locationManager;
     private GoogleMap mMap;
     Marker marker;
@@ -56,13 +64,11 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addresstext = (TextView) findViewById(R.id.addresstext);
         sPref = getPreferences(MODE_PRIVATE);   //получаем сохранялки
-        setAddresstext();//текст для поля с адресом
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     /*@Override //закомментил, чтобы определение положения останавливалось не по паузе, а само когда произойдёт хоть одно определение
@@ -70,6 +76,29 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         super.onPause();
         locationManager.removeUpdates(locationListener);
     }*/
+
+    //сохранение состояния перед поворотом экрана
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(ROTATE, true);
+    }
+
+    //восстановление состояния после поворота экрана
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        rotate = savedInstanceState.getBoolean(ROTATE, false);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if(!rotate) { //если мы создаёмся не после поворота экрана
+            Intent intent = getIntent();//получаем данные из вызвавшего экрана
+            saveAddress(intent.getStringExtra(ADDRESS)); //и сохраняем эти данные
+            saveAddress(intent.getFloatExtra(SAVELAT, 0), intent.getFloatExtra(SAVELNG, 0));
+        }
+        //иначе будем брать данные из сохранялок этого экрана
+        setAddresstext();//задаём текст для поля с адресом
+    }
 
     // создание меню
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,8 +112,8 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         switch (item.getItemId()) {
             case R.id.action_apply_address:    //Кнопка применить адрес
                 //проверка, что что-то вообще введено
-                if(addresstext.getText().toString().length()!=0 && someaddress) {
-                    saveAddress();//сохранение введённого адреса
+                if(sPref.getString(ADDRESS, "").length()!=0) {
+                    sendResult();//отправка результата в вызвавший экран
                     finish();
                 } else
                     Toast.makeText(this, R.string.hpre1, Toast.LENGTH_SHORT).show();   //Тост указать место
@@ -121,7 +150,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         }
 
         // Добавление маркера и перемещение камеры
-        if (sPref.contains(SAVELAT) && sPref.contains(SAVELNG)) {//при наличии сохранённых координат мечемся туда
+        if (sPref.getFloat(SAVELAT, 0) != 0 && sPref.getFloat(SAVELNG, 0) != 0) {//при наличии сохранённых координат мечемся туда
             LatLng positionstart = new LatLng((double) sPref.getFloat(SAVELAT, 0), (double) sPref.getFloat(SAVELNG, 0));
             marker = mMap.addMarker(new MarkerOptions().position(positionstart));
             CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -160,6 +189,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             public void onMapClick(LatLng latLng) {
                 marker.setPosition(latLng);
                 findAddresstext(String.valueOf(latLng.latitude+" "+String.valueOf(latLng.longitude)));
+                saveAddress((float) latLng.latitude,(float) latLng.longitude);
             }
         });
         //Слушатель перемещения маркера
@@ -172,6 +202,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 findAddresstext(String.valueOf(marker.getPosition().latitude+" "+String.valueOf(marker.getPosition().longitude)));
+                saveAddress((float) marker.getPosition().latitude, (float) marker.getPosition().longitude);
             }
         });
     }
@@ -231,6 +262,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
                 locationManager.removeUpdates(locationListener); //после одного перемещения не будем больше отслеживать положение, пусть пользователь сам уточнит его передвигая маркер или вводя текст
                 //TODO запускам определение названия этого места
                 findAddresstext(String.valueOf(location.getLatitude())+" "+String.valueOf(location.getLongitude()));
+                saveAddress((float) marker.getPosition().latitude, (float) marker.getPosition().longitude);
             }
         }
         @Override
@@ -244,36 +276,61 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     //текст для поля с адресом из сохранялки
     private void setAddresstext() {
         //подгружаем значения из сохранялок
-        if (sPref.getString(ADDRESS, "").length()!=0) {
-            someaddress = true;
+        if (sPref.getString(ADDRESS, "").length()!=0)
             addresstext.setText(sPref.getString(ADDRESS, ""));
-        }
-        else   //если в сохранялке ничего нет
+        else  //если в сохранялке ничего нет
             addresstext.setText(getResources().getString(R.string.manual_edit));
     }
 
     //текст для поля с адресом по положению маркера
     private void findAddresstext(String string) {
         //TODO написать определение названия из координат
-        addresstext.setText(string);
+        saveAddress(string); //если удачно определится, то сохраняем (дописать if)
+        setAddresstext();//и отображаем
     }
 
-    private void editAddress (View view) {
-        //TODO написать диалог для редактирования текст
+    public void editAddress (View view) {
+        addressedit_dialog = new AddressEditDialogFragment();
+        addressedit_dialog.show(getFragmentManager(), ADDRESSEDIT_DIALOG_TAG);
     }
 
-    //сохранение и адреса и координат + передача в результат
-    private void saveAddress () {
+    //Интерфейсы принятия инфы от диалоговых окон
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        switch (dialog.getTag()) {  //определение диалога
+            case ADDRESSEDIT_DIALOG_TAG: //диалог с редактированием адреса
+                EditText addressedit = (EditText) dialog.getDialog().findViewById(R.id.addressedit);
+                saveAddress(addressedit.getText().toString());
+                setAddresstext(); //текст для поля с местом
+                break;
+        }
+    }
+    /*@Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+    }*/
+    @Override
+    public void onDialogNeutralClick(DialogFragment dialog) {
+    }
+
+    //сохранение и адреса и координат
+    private void saveAddress (String string) {
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
-        ed.putString(ADDRESS, addresstext.getText().toString());
-        ed.putFloat(SAVELAT, (float) marker.getPosition().latitude);//TODO сделать сохранение в double, а не в float
-        ed.putFloat(SAVELNG, (float) marker.getPosition().longitude);//TODO сделать сохранение в double, а не в float
+        ed.putString(ADDRESS, string);
         ed.commit();    //сохранение
+    }
+    private void saveAddress (float lat, float lng) {
+        SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+        ed.putFloat(SAVELAT, lat);
+        ed.putFloat(SAVELNG, lng);
+        ed.commit();    //сохранение
+    }
 
+    //передача результата
+    private void sendResult () {
         Intent intent = new Intent();
-        intent.putExtra(ADDRESS, addresstext.getText().toString());
-        intent.putExtra(SAVELAT, marker.getPosition().latitude);
-        intent.putExtra(SAVELNG, marker.getPosition().longitude);
+        intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));
+        intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
+        intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
         setResult(RESULT_OK, intent);
     }
 }

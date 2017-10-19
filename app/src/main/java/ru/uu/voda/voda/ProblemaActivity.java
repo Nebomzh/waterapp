@@ -123,7 +123,11 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         findViewById(R.id.addressbox).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getApplicationContext(), AddressPicker.class),ADDRESS_REQUEST_CODE);
+                Intent intent = new Intent(getApplicationContext(), AddressPicker.class);
+                intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
+                intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
+                intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
+                startActivityForResult(intent,ADDRESS_REQUEST_CODE);//запускаем карту для результата
             }
         });
 
@@ -218,8 +222,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         //сохраняем полученную от карты инфу
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
         ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
-        ed.putFloat(SAVELAT, (float) data.getDoubleExtra(SAVELAT, (double) 0)); //TODO сделать сохранение в double, а не в float
-        ed.putFloat(SAVELNG, (float) data.getDoubleExtra(SAVELNG, (double) 0)); //TODO сделать сохранение в double, а не в float
+        ed.putFloat(SAVELAT, data.getFloatExtra(SAVELAT, 0));
+        ed.putFloat(SAVELNG, data.getFloatExtra(SAVELNG, 0));
         ed.commit();    //сохранение
 
         setAddresstext();//текст для поля с адресом

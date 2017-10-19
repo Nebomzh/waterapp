@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +33,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class AddressPicker extends AppCompatActivity implements OnMapReadyCallback, NoticeDialogListener {
 
@@ -188,7 +196,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onMapClick(LatLng latLng) {
                 marker.setPosition(latLng);
-                findAddresstext(String.valueOf(latLng.latitude+" "+String.valueOf(latLng.longitude)));
+                findAddresstext(new LatLng(latLng.latitude, latLng.longitude));
                 saveAddress((float) latLng.latitude,(float) latLng.longitude);
             }
         });
@@ -201,7 +209,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             public void onMarkerDrag(Marker marker) { }
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                findAddresstext(String.valueOf(marker.getPosition().latitude+" "+String.valueOf(marker.getPosition().longitude)));
+                findAddresstext(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude));
                 saveAddress((float) marker.getPosition().latitude, (float) marker.getPosition().longitude);
             }
         });
@@ -260,8 +268,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
                 mMap.animateCamera(cameraUpdate);//перемещаем в это место камеру
                 locationManager.removeUpdates(locationListener); //после одного перемещения не будем больше отслеживать положение, пусть пользователь сам уточнит его передвигая маркер или вводя текст
-                //TODO запускам определение названия этого места
-                findAddresstext(String.valueOf(location.getLatitude())+" "+String.valueOf(location.getLongitude()));
+                findAddresstext(new LatLng(location.getLatitude(), location.getLongitude()));
                 saveAddress((float) marker.getPosition().latitude, (float) marker.getPosition().longitude);
             }
         }
@@ -283,10 +290,38 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     }
 
     //текст для поля с адресом по положению маркера
-    private void findAddresstext(String string) {
-        //TODO написать определение названия из координат
-        saveAddress(string); //если удачно определится, то сохраняем (дописать if)
-        setAddresstext();//и отображаем
+    private void findAddresstext(LatLng point) {
+            String result = "";
+
+            // A Locale if the format for the address
+            Geocoder gc = new Geocoder(getApplicationContext(), Locale.getDefault());
+            try {
+                List<Address> addresses;
+                addresses = gc.getFromLocation(point.latitude, point.longitude, 1); // Return 1 result
+                if(addresses != null && addresses.size() > 0){
+                    Address address = addresses.get(0);
+
+                    // Build addressName
+                    /*if (address.getPostalCode() != null) {
+                            result += address.getPostalCode() + " ";
+                    }*/
+                    if (address.getLocality() != null) {
+                        result += address.getLocality() + " ";
+                    }
+                    if (address.getSubThoroughfare() != null && address.getThoroughfare() != null) {
+                        result += address.getThoroughfare() + " " + address.getSubThoroughfare();
+                    }
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(result.length()!=0) {
+                saveAddress(result); //если удачно определится, то сохраняем (дописать if)
+                setAddresstext();//и отображаем
+            }
+            else
+                Toast.makeText(this, R.string.address_not_found, Toast.LENGTH_SHORT).show();
     }
 
     public void editAddress (View view) {

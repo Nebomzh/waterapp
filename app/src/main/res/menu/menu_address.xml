@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/action_change_map_type"
+        android:icon="@drawable/ic_layers_white_48px"
+        android:title="@string/change_map_type"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_apply_address"
         android:icon="@drawable/ic_done_white_48px"
         android:title="@string/apply"

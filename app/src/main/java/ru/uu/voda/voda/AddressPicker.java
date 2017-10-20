@@ -48,9 +48,11 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     final String ADDRESS = "address";  //ключи сохранялок
     final String SAVELAT = "savelat";
     final String SAVELNG = "savelng";
+    final String MAPTYPE = "maptype";
 
     final String ROTATE = "rotate"; //ключ поворота экрана
     boolean rotate = false; //флаг, что был поворот экрана
+    boolean firsttime = true; //флаг, что был активити запускается в первый раз (а не восстановливается из свёрнутого)
 
     //Диалоги
     DialogFragment addressedit_dialog;
@@ -99,12 +101,13 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
 
     protected void onResume() {
         super.onResume();
-        if(!rotate) { //если мы создаёмся не после поворота экрана
+        if(firsttime && !rotate) { //если активити запускается перый раз и не после поворота экрана
             Intent intent = getIntent();//получаем данные из вызвавшего экрана
             saveAddress(intent.getStringExtra(ADDRESS)); //и сохраняем эти данные
             saveAddress(intent.getFloatExtra(SAVELAT, 0), intent.getFloatExtra(SAVELNG, 0));
         }
         //иначе будем брать данные из сохранялок этого экрана
+        firsttime=false; //следующие запуски будут уже не в первый раз
         setAddresstext();//задаём текст для поля с адресом
     }
 
@@ -118,6 +121,22 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     public boolean onOptionsItemSelected(MenuItem item) {
         // по id определеяем пункт меню, вызвавший этот обработчик
         switch (item.getItemId()) {
+            case R.id.action_change_map_type:    //Кнопка смены типа карты
+                switch (mMap.getMapType()) {
+                    case GoogleMap.MAP_TYPE_NORMAL:
+                        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                        break;
+                    case GoogleMap.MAP_TYPE_HYBRID:
+                        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        break;
+                    case GoogleMap.MAP_TYPE_SATELLITE:
+                        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        break;
+                }
+                SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+                ed.putInt(MAPTYPE, mMap.getMapType());//добавление нового типа карты к сохранялке
+                ed.apply();    //фоновое сохранение
+                break;
             case R.id.action_apply_address:    //Кнопка применить адрес
                 //проверка, что что-то вообще введено
                 if(sPref.getString(ADDRESS, "").length()!=0) {
@@ -143,6 +162,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         //подготовка карты
         mMap = googleMap;
+        mMap.setMapType(sPref.getInt(MAPTYPE, GoogleMap.MAP_TYPE_NORMAL));//тип карты из сохранялки
         mMap.getUiSettings().setCompassEnabled(true);//включение кнопки компаса
         mMap.getUiSettings().setZoomControlsEnabled(true);//включение кнопок зума
         //Проверка наличия разрешений
@@ -292,7 +312,6 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
     //текст для поля с адресом по положению маркера
     private void findAddresstext(LatLng point) {
             String result = "";
-
             // A Locale if the format for the address
             Geocoder gc = new Geocoder(getApplicationContext(), Locale.getDefault());
             try {
@@ -306,9 +325,11 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
                             result += address.getPostalCode() + " ";
                     }*/
                     if (address.getLocality() != null) {
-                        result += address.getLocality() + " ";
+                        result += address.getLocality();
                     }
                     if (address.getSubThoroughfare() != null && address.getThoroughfare() != null) {
+                        if(result.length()!=0)
+                            result += "\n";
                         result += address.getThoroughfare() + " " + address.getSubThoroughfare();
                     }
                 }
@@ -316,12 +337,10 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             catch (IOException e) {
                 e.printStackTrace();
             }
-            if(result.length()!=0) {
-                saveAddress(result); //если удачно определится, то сохраняем (дописать if)
-                setAddresstext();//и отображаем
-            }
-            else
-                Toast.makeText(this, R.string.address_not_found, Toast.LENGTH_SHORT).show();
+            if(result.length()==0) //если неудачно определится
+                Toast.makeText(this, R.string.address_not_found, Toast.LENGTH_SHORT).show();//то отображаем сообщение
+        saveAddress(result);//сохраняем результат (если адрес не был определён будет предложено ввести вручную)
+        setAddresstext();//отображаем
     }
 
     public void editAddress (View view) {

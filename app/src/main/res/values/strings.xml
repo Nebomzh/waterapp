@@ -114,5 +114,6 @@
 
     <string name="manual_edit">Ввести вручную</string>
     <string name="address_not_found">Не удалось распознать адрес</string>
+    <string name="change_map_type">Смена типа карты</string>
     <string name="apply">Применить</string>
 </resources>

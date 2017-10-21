@@ -35,8 +35,6 @@ import android.view.Menu;       //меню
 import android.view.MenuItem;   //пункт меню
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -264,11 +262,11 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         else {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
-                    1000 * 10, 10, //минимальное время получения данных 10 секунд, минимальное изменение координат для обновления данных 10 метров
+                    1000, 1, //минимальное время получения данных 1 секунда, минимальное изменение координат для обновления данных 1 метр
                     locationListener);
             locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
-                    1000 * 10, 10,//минимальное время получения данных 10 секунд, минимальное изменение координат для обновления данных 10 метров
+                    1000, 1,//минимальное время получения данных 1 секунда, минимальное изменение координат для обновления данных 1 метр
                     locationListener);
         }
     }

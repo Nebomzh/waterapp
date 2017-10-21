@@ -70,7 +70,7 @@ public class PersonDialogFragment extends DialogFragment implements DialogInterf
                 mListener.onDialogPositiveClick(PersonDialogFragment.this);    //отправляем нажатие через интерфейс в активити
                 break;
             /*case Dialog.BUTTON_NEGATIVE:
-                mListener.onDialogNegativeClick(AddressDialogFragment.this);
+                mListener.onDialogNegativeClick(PersonDialogFragment.this);
                 break;*/
             case Dialog.BUTTON_NEUTRAL:
                 mListener.onDialogNeutralClick(PersonDialogFragment.this);

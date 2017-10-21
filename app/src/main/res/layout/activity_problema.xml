@@ -115,7 +115,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/placebox"
+                    android:id="@+id/addressbox"
                     style="@style/horizontal">
                     <ImageView
                         android:src="@drawable/ic_place_black_18px"
@@ -123,55 +123,15 @@
                     <LinearLayout style="@style/partvertical">
                         <LinearLayout style="@style/horizontal">
                             <TextView
-                                android:id="@+id/placetext"
+                                android:id="@+id/addresstext"
                                 android:text="@string/hpre1"
                                 style="@style/problemtext" />
                             <ImageView
-                                android:id="@+id/placewarn"
+                                android:id="@+id/addresswarn"
                                 android:src="@drawable/warning"
-                                style="@style/problemwarning" />
-                        </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/placedistrict"
-                                android:visibility="gone"
-                                style="@style/problemtext" />
-
-                        <LinearLayout style="@style/horizontal">
-                            <TextView
-                                android:id="@+id/placestreet"
-                                android:visibility="gone"
-                                style="@style/problemtext" />
-                            <ImageView
-                                android:id="@+id/streetwarn"
-                                android:src="@drawable/warning"
-                                android:visibility="gone"
-                                style="@style/problemwarning" />
-                        </LinearLayout>
-                        <LinearLayout style="@style/horizontal">
-                            <TextView
-                                android:id="@+id/placehouse"
-                                android:visibility="gone"
-                                style="@style/problemtext" />
-                            <ImageView
-                                android:id="@+id/housewarn"
-                                android:src="@drawable/warning"
-                                android:visibility="gone"
-                                style="@style/problemwarning" />
-                        </LinearLayout>
-                        <LinearLayout style="@style/horizontal">
-                            <TextView
-                                android:id="@+id/placelevel"
-                                android:visibility="gone"
-                                style="@style/problemtext" />
-                            <ImageView
-                                android:id="@+id/levelwarn"
-                                android:src="@drawable/warning"
-                                android:visibility="gone"
                                 style="@style/problemwarning" />
                         </LinearLayout>
                     </LinearLayout>
-
                 </LinearLayout>
 
             <LinearLayout style="@style/horizontal">
@@ -200,26 +160,6 @@
                     android:text="@string/h8" />
             </LinearLayout>
             </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/addressbox"
-                    style="@style/horizontal">
-                    <ImageView
-                        android:src="@drawable/ic_place_black_18px"
-                        style="@style/partimage" />
-                    <LinearLayout style="@style/partvertical">
-                        <LinearLayout style="@style/horizontal">
-                            <TextView
-                                android:id="@+id/addresstext"
-                                android:text="@string/hpre1"
-                                style="@style/problemtext" />
-                            <ImageView
-                                android:id="@+id/addresswarn"
-                                android:src="@drawable/warning"
-                                style="@style/problemwarning" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

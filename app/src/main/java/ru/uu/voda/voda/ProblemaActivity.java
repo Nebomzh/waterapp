@@ -34,10 +34,7 @@ import android.content.SharedPreferences.Editor;    //для редактиро�
 public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
 
     SharedPreferences sPref;    //объект сохранялок
-    final String DISTRICT = "district"; //ключи сохранялок
-    final String STREET = "street";
-    final String HOUSE = "house";
-    final String LEVEL = "level";
+    //ключи сохранялок
     final String DAMAGE = "damage";
     final String LOCATION_DAMAGE = "location_damage";
     final String SERVICE = "service";
@@ -54,11 +51,9 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
     //Диалоги
     DialogFragment person_dialog;
-    DialogFragment address_dialog;
 
     //теги диалогов
     final String PERSON_DIALOG_TAG = "person_dialog_tag";
-    final String ADDRESS_DIALOG_TAG = "address_dialog_tag";
 
     public static String server = "vodaonline74.ru";
 
@@ -67,26 +62,10 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     TextView personname;
     TextView personphone;
     ImageView phonewarn;
-    TextView placetext;
-    ImageView placewarn;
-    TextView placedistrict;
-    TextView placestreet;
-    ImageView streetwarn;
-    TextView placehouse;
-    ImageView housewarn;
-    TextView placelevel;
-    ImageView levelwarn;
-    //public Spinner p_district;
-    //public EditText p_street;
-    //public EditText p_house;
-    //public EditText p_level;
     public Spinner p_damage;
     public Spinner p_location_damage;
     public EditText p_service;
     public CheckBox p_init_app;
-    //public CheckBox p_need_callback;
-    //public EditText p_phone_number;
-    //public EditText p_name;
     TextView addresstext;
     ImageView addresswarn;
 
@@ -103,21 +82,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //findViewById(R.id.personwarn).setVisibility(View.GONE);
-
         //поля вызывающее диалог
         findViewById(R.id.personbox).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 person_dialog = new PersonDialogFragment();
                 person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
-            }
-        });
-        findViewById(R.id.placebox).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                address_dialog = new AddressDialogFragment();
-                address_dialog.show(getFragmentManager(), ADDRESS_DIALOG_TAG);
             }
         });
         findViewById(R.id.addressbox).setOnClickListener(new OnClickListener() {
@@ -137,40 +107,17 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         personname = (TextView) findViewById(R.id.personname);
         personphone = (TextView) findViewById(R.id.personphone);
         phonewarn = (ImageView) findViewById(R.id.phonewarn);
-        placetext = (TextView) findViewById(R.id.placetext);
-        placewarn = (ImageView) findViewById(R.id.placewarn);
-        placedistrict = (TextView) findViewById(R.id.placedistrict);
-        placestreet = (TextView) findViewById(R.id.placestreet);
-        streetwarn = (ImageView) findViewById(R.id.streetwarn);
-        placehouse = (TextView) findViewById(R.id.placehouse);
-        housewarn = (ImageView) findViewById(R.id.housewarn);
-        placelevel = (TextView) findViewById(R.id.placelevel);
-        levelwarn = (ImageView) findViewById(R.id.levelwarn);
-        //p_district = (Spinner) findViewById(R.id.Spinner1);
-        //p_street = (EditText) findViewById(R.id.EditText2);
-        //p_house = (EditText) findViewById(R.id.EditText3);
-        //p_level = (EditText) findViewById(R.id.EditText4);
         p_damage = (Spinner) findViewById(R.id.Spinner5);
         p_location_damage = (Spinner) findViewById(R.id.Spinner6);
         p_service = (EditText) findViewById(R.id.EditText7);
         p_init_app = (CheckBox) findViewById(R.id.CheckBox8);
-        //p_need_callback = (CheckBox) findViewById(R.id.CheckBox9);
-        //p_phone_number = (EditText) findViewById(R.id.EditText10);
-        //p_name = (EditText) findViewById(R.id.EditText11);
         addresstext = (TextView) findViewById(R.id.addresstext);
         addresswarn = (ImageView) findViewById(R.id.addresswarn);
 
         //подгружаем значения из сохранялок
+        setFields();//текст для простых полей
         setPersontext();//текст для поля с личными данными
-        setPlacetext();//текст для поля с местом
         setAddresstext();//текст для поля с адресом
-        p_damage.setSelection(sPref.getInt(DAMAGE, 0));
-        p_location_damage.setSelection(sPref.getInt(LOCATION_DAMAGE, 0));
-        p_service.setText(sPref.getString(SERVICE, ""));
-        p_init_app.setChecked(sPref.getBoolean(INIT_APP, false));
-        //p_need_callback.setChecked(sPref.getBoolean(NEED_CALLBACK, false));
-        //p_phone_number.setText(sPref.getString(PHONE_NUMBER, ""));
-        //p_name.setText(sPref.getString(NAME, ""));
     }
 
     //Интерфейсы принятия инфы от диалоговых окон
@@ -189,20 +136,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                 ed.commit();    //сохранение
 
                 setPersontext(); //текст для поля с личными данными
-                break;
-            case ADDRESS_DIALOG_TAG: //диалог с адресом
-                Spinner p_district = (Spinner) dialog.getDialog().findViewById(R.id.Spinner1);
-                EditText p_street = (EditText) dialog.getDialog().findViewById(R.id.EditText2);
-                EditText p_house = (EditText) dialog.getDialog().findViewById(R.id.EditText3);
-                EditText p_level = (EditText) dialog.getDialog().findViewById(R.id.EditText4);
-
-                ed.putInt(DISTRICT, p_district.getSelectedItemPosition());
-                ed.putString(STREET, p_street.getText().toString());
-                ed.putString(HOUSE, p_house.getText().toString());
-                ed.putString(LEVEL, p_level.getText().toString());
-                ed.commit();    //сохранение
-
-                setPlacetext(); //текст для поля с местом
                 break;
         }
     }
@@ -227,6 +160,13 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         ed.commit();    //сохранение
 
         setAddresstext();//текст для поля с адресом
+    }
+
+    private void setFields() {
+        p_damage.setSelection(sPref.getInt(DAMAGE, 0));
+        p_location_damage.setSelection(sPref.getInt(LOCATION_DAMAGE, 0));
+        p_service.setText(sPref.getString(SERVICE, ""));
+        p_init_app.setChecked(sPref.getBoolean(INIT_APP, false));
     }
 
     //текст для поля с личными данными
@@ -273,73 +213,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         }
     }
 
-    //текст для поля с местом
-    private void setPlacetext() {
-        Boolean something=false;      //флаг, что что-то ввели
-        //подгружаем значения из сохранялок
-        if (sPref.getInt(DISTRICT, 0)!=0)
-            something = true;
-        placedistrict.setText(getResources().getStringArray(R.array.Spinner1_list) [sPref.getInt(DISTRICT, 0)]);
-        placedistrict.setVisibility(View.VISIBLE);
-        if (sPref.getString(STREET, "").length()!=0 && sPref.getString(HOUSE, "").length()!=0) {
-            something = true;
-            placestreet.setText(sPref.getString(STREET, "") + " " + sPref.getString(HOUSE, ""));
-            placestreet.setVisibility(View.VISIBLE);
-            streetwarn.setVisibility(View.GONE);
-            placehouse.setVisibility(View.GONE);
-            housewarn.setVisibility(View.GONE);
-        }
-        else {
-            if (sPref.getString(STREET, "").length() != 0) {
-                something = true;
-                placestreet.setText(sPref.getString(STREET, ""));
-                placestreet.setVisibility(View.VISIBLE);
-                streetwarn.setVisibility(View.GONE);
-            } else {
-                placestreet.setText(getResources().getString(R.string.h2request));
-                placestreet.setVisibility(View.VISIBLE);
-                streetwarn.setVisibility(View.VISIBLE);
-            }
-            if (sPref.getString(HOUSE, "").length() != 0) {
-                something = true;
-                placehouse.setText(sPref.getString(HOUSE, ""));
-                placehouse.setVisibility(View.VISIBLE);
-                housewarn.setVisibility(View.GONE);
-            } else {
-                placehouse.setText(getResources().getString(R.string.h3request));
-                placehouse.setVisibility(View.VISIBLE);
-                housewarn.setVisibility(View.VISIBLE);
-            }
-        }
-        if (sPref.getString(LEVEL, "").length()!=0) {
-            something = true;
-            placelevel.setText("Этаж " + sPref.getString(LEVEL, ""));
-            placelevel.setVisibility(View.VISIBLE);
-            levelwarn.setVisibility(View.GONE);
-        }
-        else {
-            placelevel.setText(getResources().getString(R.string.h4request));
-            placelevel.setVisibility(View.VISIBLE);
-            levelwarn.setVisibility(View.VISIBLE);
-        }
-
-        if (something) { //если что-то есть, скрываем общее предупреждение
-            placetext.setVisibility(View.GONE);
-            placewarn.setVisibility(View.GONE);
-        }
-        else { //иначе отображаем, скрывая остальное
-            placetext.setVisibility(View.VISIBLE);
-            placewarn.setVisibility(View.VISIBLE);
-            placedistrict.setVisibility(View.GONE);
-            placestreet.setVisibility(View.GONE);
-            streetwarn.setVisibility(View.GONE);
-            placehouse.setVisibility(View.GONE);
-            housewarn.setVisibility(View.GONE);
-            placelevel.setVisibility(View.GONE);
-            levelwarn.setVisibility(View.GONE);
-        }
-    }
-
     //текст для поля с адресом
     private void setAddresstext() {
         //подгружаем значения из сохранялок
@@ -374,24 +247,18 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     public void sendProblem() {
         saveFields();   //сохранение введённых полей
 
-        String temp_string=getResources().getString(R.string.warn_empty_fields);  //временная строка
+        String temp_string="";  //временная строка с описанием что не заполнено
         Boolean correct=true;      //флаг, что всё верно
 
         //проверка на заполненность обязательных полей
-        if (sPref.getString(STREET, "").length()==0) {
-            temp_string += getResources().getString(R.string.h2) + "\n";
-            correct = false;
-        }
-        if (sPref.getString(HOUSE, "").length()==0) {
-            temp_string += getResources().getString(R.string.h3) + "\n";
-            correct = false;
-        }
-        if (sPref.getString(LEVEL, "").length()==0) {
-            temp_string += getResources().getString(R.string.h4) + "\n";
-            correct = false;
-        }
         if (sPref.getString(PHONE_NUMBER, "").length()==0) {
-            temp_string += getResources().getString(R.string.h10);
+            temp_string += getResources().getString(R.string.h10request);
+            correct = false;
+        }
+        if (sPref.getString(ADDRESS, "").length()==0) {
+            if (temp_string.length()!=0)
+                temp_string += "\n";
+            temp_string += getResources().getString(R.string.hpre1);
             correct = false;
         }
 
@@ -403,7 +270,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
         try {
             new SendData().execute();
-            finish(); //если всё пошлётся выходим из активити, чтобы не ддосили по сто раз нажимая отправку
         } catch (Exception e) {
         }
     }
@@ -423,20 +289,19 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
                 String myURL = "http://" + server + "/adm2/server.php";
 
-                String parameters = "p_district=" + String.valueOf(sPref.getInt(DISTRICT, 0)) +
-                        "&p_street=" + sPref.getString(STREET, "") +
-                        "&p_house=" + sPref.getString(HOUSE, "") +
-                        "&p_level=" + sPref.getString(LEVEL, "") +
+                String parameters =
                         "&p_damage=" + String.valueOf(sPref.getInt(DAMAGE, 0)) +
                         "&p_location_damage=" + String.valueOf(sPref.getInt(LOCATION_DAMAGE, 0)) +
                         "&p_service=" + sPref.getString(SERVICE, "") +
                         "&p_init_app=" + String.valueOf(sPref.getBoolean(INIT_APP, false)) +
                         "&p_need_callback=" + String.valueOf(sPref.getBoolean(NEED_CALLBACK, false)) +
                         "&p_phone_number=" + sPref.getString(PHONE_NUMBER, "") +
-                        "&p_name=" + sPref.getString(NAME, ""); //TODO дописать отправку адреса текстом и координатами
+                        "&p_name=" + sPref.getString(NAME, "") +
+                        "&p_address=" + sPref.getString(ADDRESS, "") +
+                        "&p_lat=" + sPref.getString(SAVELAT, "") +
+                        "&p_lng=" + sPref.getString(SAVELNG, ""); //TODO написать бэкенд, который принимает адрес и координаты
                 byte[] data = null;
                 InputStream is = null;
-
 
                 try {
                     URL url = new URL(myURL);
@@ -450,13 +315,10 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
-
                     // конвертируем передаваемую строку в UTF-8
                     data = parameters.getBytes("UTF-8");
 
-
                     OutputStream os = conn.getOutputStream();
-
 
                     // передаем данные на сервер
                     os.write(data);
@@ -466,7 +328,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                     conn.connect();
                     int responseCode = conn.getResponseCode();
 
-
                     // передаем ответ сервер
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -475,21 +336,17 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
                         byte[] buffer = new byte[8192]; // размер буфера
 
-
                         // Далее так читаем ответ
                         int bytesRead;
-
 
                         while ((bytesRead = is.read(buffer)) != -1) {
                             baos.write(buffer, 0, bytesRead);
                         }
 
-
                         data = baos.toByteArray();
                         resultString = new String(data, "UTF-8");  // сохраняем в переменную ответ сервера, у нас "OK"
 
-
-                    } else {
+                    } else { //TODO написать что делать, если не всё ок (хотя бы тост, что не всё ок и не очищать поля)
                     }
 
                     conn.disconnect();
@@ -514,8 +371,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_LONG).show(); //TODO сейчас пишет, что данные переданы, даже если нет инета. Разобраться, чтобы реально отслеживался успех передачи
+            clearFields(); //очистка полей после отправки, чтобы не отправляли одну проблему по несколько раза
         }
     }
 
@@ -537,5 +394,23 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     protected void onDestroy() {
         saveFields();
         super.onDestroy();
+    }
+
+    //Очистка полей (после успешной отправки)
+    private  void clearFields() {
+        Editor ed = sPref.edit();   //объект для редактирования сохранений
+
+        ed.putInt(DAMAGE, 0);
+        ed.putInt(LOCATION_DAMAGE, 0);
+        ed.putString(SERVICE, "");
+        ed.putBoolean(INIT_APP, false);
+        ed.putString(ADDRESS, "");
+        ed.putFloat(SAVELAT, 0);
+        ed.putFloat(SAVELNG, 0);
+
+        ed.commit();    //сохранение
+
+        setFields();//отображение
+        setAddresstext();
     }
 }

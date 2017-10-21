@@ -60,7 +60,7 @@ public class AddressEditDialogFragment extends DialogFragment implements DialogI
                 mListener.onDialogPositiveClick(AddressEditDialogFragment.this);    //отправляем нажатие через интерфейс в активити
                 break;
             /*case Dialog.BUTTON_NEGATIVE:
-                mListener.onDialogNegativeClick(AddressDialogFragment.this);
+                mListener.onDialogNegativeClick(AddressEditDialogFragment.this);
                 break;*/
             case Dialog.BUTTON_NEUTRAL:
                 mListener.onDialogNeutralClick(AddressEditDialogFragment.this);

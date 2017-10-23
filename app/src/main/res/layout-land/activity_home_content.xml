@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="ru.uu.voda.voda.HomeActivity"
+    tools:showIn="@layout/activity_home"
+
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    >
+
+    <LinearLayout style="@style/horizontallayout">
+
+        <LinearLayout
+            android:id="@+id/button1"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView1"
+                android:src="@drawable/problem"
+                style="@style/imageonbutton" />
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/textonbutton"
+                android:text="@string/button1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button2"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView2"
+                android:src="@drawable/question"
+                style="@style/imageonbutton" />
+            <TextView
+                android:id="@+id/textView2"
+                android:text="@string/button2"
+                style="@style/textonbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button3"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:src="@drawable/contacts"
+                style="@style/imageonbutton" />
+            <TextView
+                android:id="@+id/textView3"
+                android:text="@string/button3"
+                style="@style/textonbutton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/horizontallayout">
+
+        <LinearLayout
+            android:id="@+id/button4"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView4"
+                android:src="@drawable/tools"
+                style="@style/imageonbutton" />
+            <TextView
+                android:id="@+id/textView4"
+                android:text="@string/button4"
+                style="@style/textonbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button5"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView5"
+                android:src="@drawable/site"
+                style="@style/imageonbutton" />
+            <TextView
+                android:id="@+id/textView5"
+                android:text="@string/button5"
+                style="@style/textonbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button6"
+            style="@style/buttonlayout">
+            <ImageView
+                android:id="@+id/imageView6"
+                android:src="@drawable/phone"
+                style="@style/imageonbutton" />
+            <TextView
+                android:id="@+id/textView6"
+                android:text="@string/button6"
+                style="@style/textonbutton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -79,11 +79,11 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
     }
 
-    /*@Override //закомментил, чтобы определение положения останавливалось не по паузе, а само когда произойдёт хоть одно определение
-    protected void onPause() {
-        super.onPause();
+    @Override //отключаем обновления при уничтожении, а то если неудаётся определить, а экран уже закрыли, то попытка определения так и продолжит висеть
+    protected void onDestroy() {
+        super.onDestroy();
         locationManager.removeUpdates(locationListener);
-    }*/
+    }
 
     //сохранение состояния перед поворотом экрана
     protected void onSaveInstanceState(Bundle outState) {

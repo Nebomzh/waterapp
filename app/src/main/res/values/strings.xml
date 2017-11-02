@@ -28,27 +28,6 @@
 
     <string name="hpre1">Укажите место</string>
 
-    <string name="h1">Район города *</string>
-
-    <string name="Spinner1_1">Другой район</string>
-    <string name="Spinner1_2">Калининский район</string>
-    <string name="Spinner1_3">Курчатовский район</string>
-    <string name="Spinner1_4">Ленинский район</string>
-    <string name="Spinner1_5">Металлургический район</string>
-    <string name="Spinner1_6">Советский район</string>
-    <string name="Spinner1_7">Тракторозаводский район</string>
-    <string name="Spinner1_8">Центральный район</string>
-
-    <string name="h2">Улица *</string>
-    <string name="h2hint">проспект Ленина</string>
-    <string name="h2request">Укажите улицу</string>
-    <string name="h3">Дом (дома, здания) *</string>
-    <string name="h3hint">21</string>
-    <string name="h3request">Укажите дом (дома, здания)</string>
-    <string name="h4">Этаж *</string>
-    <string name="h4hint">1</string>
-    <string name="h4request">Укажите этаж</string>
-
     <string name="h5">Тип повреждения</string>
 
     <string name="Spinner5_51">Прочее повреждение</string>
@@ -110,5 +89,8 @@
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
 
-    <string name="warn_empty_fields">Не заполнены обязательные поля:\n</string>
+    <string name="manual_edit">Ввести вручную</string>
+    <string name="address_not_found">Не удалось распознать адрес</string>
+    <string name="change_map_type">Смена типа карты</string>
+    <string name="apply">Применить</string>
 </resources>

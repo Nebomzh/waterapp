@@ -3,6 +3,7 @@ package ru.uu.voda.voda;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,14 +33,18 @@ import android.content.SharedPreferences;           //для работы с с�
 import android.content.SharedPreferences.Editor;    //для редактирования сохранялок
 
 import java.io.File;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.ImageView;
+
+//для проверки пермишенов
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;//для запроса пермишена
+import android.support.annotation.NonNull;
 
 public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
 
@@ -58,6 +63,9 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
     //коды запусков для результатов других активти
     final int ADDRESS_REQUEST_CODE = 1;
+
+    //ключи запросов пермишенов
+    final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 
     //Диалоги
     DialogFragment person_dialog;
@@ -84,6 +92,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final int REQUEST_CODE_PHOTO = 2;
     final String TAG = "myLogs";
     ImageView ivPhoto;
+    android.net.Uri mPhotoUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,9 +149,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         ivPhoto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //intent.putExtra(MediaStore.EXTRA_OUTPUT, generateFileUri(TYPE_PHOTO));    //с этой строчкой на моём телефоне приложение не возвращается из камеры.. 
-                startActivityForResult(intent, REQUEST_CODE_PHOTO);
+                attachPhoto();
             }
         });
     }
@@ -176,11 +183,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     //принятие инфы от активити запущенного на результат
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null)
+        if (resultCode != RESULT_OK)
             return;
-
         switch (requestCode) {
             case ADDRESS_REQUEST_CODE:
+                if (data == null)
+                    return;
                 //сохраняем полученную от карты инфу
                 SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
                 ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
@@ -190,25 +198,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                 setAddresstext();//текст для поля с адресом
                 break;
             case REQUEST_CODE_PHOTO:
-
-                    if (resultCode == RESULT_OK) {
-                        if (data == null) {
-                            Log.d(TAG, "Intent is null");
-                        } else {
-                            Log.d(TAG, "Photo uri: " + data.getData());
-                            Bundle bndl = data.getExtras();
-                            if (bndl != null) {
-                                Object obj = data.getExtras().get("data");
-                                if (obj instanceof Bitmap) {
-                                    Bitmap bitmap = (Bitmap) obj;
-                                    Log.d(TAG, "bitmap " + bitmap.getWidth() + " x " + bitmap.getHeight());
-                                    ivPhoto.setImageBitmap(bitmap);
-                                }
-                            }
-                        }
-                    } else if (resultCode == RESULT_CANCELED) {
-                        Log.d(TAG, "Canceled");
-                    }
+                setPic(ivPhoto, mPhotoUri.getPath());//отображаем превьюшку
                 break;
         }
     }
@@ -464,21 +454,98 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         setFields();//отображение
         setAddresstext();
     }
-    private Uri generateFileUri(int type) {
-        File file = null;
-        switch (type) {
-            case TYPE_PHOTO:
-                file = new File(directory.getPath() + "/" + "photo_"
-                        + System.currentTimeMillis() + ".jpg");
-                break;
-        }
-        Log.d(TAG, "fileName = " + file);
-        return Uri.fromFile(file);
-    }
 
     private void createDirectory() {
-        directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyFolder");
+        directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.app_name));
         if (!directory.exists())
             directory.mkdirs();
     }
+
+    //прикрепить фотку
+    private void attachPhoto() {
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show(); //сообщение об отсутствии разрешения на прикрепление файлов
+            //Запрос разрешений
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+        }
+        else //если разрешение есть
+            selectPhotoAction();//показываем выбор сделать/прикрепить/открепить фотку
+    }
+
+    //Обработка ответа пользователя на получение разрешений
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Чел предоставил разрешение
+                    selectPhotoAction();//показываем выбор сделать/прикрепить/открепить фотку
+                } else { //чел не предоставил разшение
+                    Toast.makeText(this, R.string.storage_denied, Toast.LENGTH_LONG).show(); //сообщение об отсутствии разрешения на прикрепление файлов
+                }
+            }
+        }
+    }
+
+    //выбор способа прикрепления фотки
+    private void selectPhotoAction() {
+        //TODO написать здесь контекстное меню с фоткой, атачем и удалением
+        takePhoto(); //делаем фотку
+    }
+
+    //сделать фотку
+    private void takePhoto() {
+        //проверка наличия камеры в устройстве
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { //если камеры нет
+            Toast.makeText(this, R.string.no_camera, Toast.LENGTH_LONG).show();//сообщение об отсутствии камеры
+            return;//не фоткаем
+        }
+        // create new Intent
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //проверка наличия приложения для съёмки (защита от краша, при старте активитифоррезалт, если такого приложения не будет на устройстве)
+        if (takePictureIntent.resolveActivity(getPackageManager()) == null) { //если приложухи нет
+            Toast.makeText(this, R.string.no_camera_app, Toast.LENGTH_LONG).show(); //сообщение об отсутствии камерной приложухи
+            return;//не фоткаем
+        }
+        createDirectory();//создаём папку для фоток
+        // imageUri is the current activity attribute, define and save it
+        // for later usage (also in onSaveInstanceState)
+        mPhotoUri = Uri.fromFile(new File(directory, System.currentTimeMillis() + ".jpg")); //ури фотки = имя путь + имя файла
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);//суём ури в интент
+        startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);//запускаем приложуху с камерой
+    }
+
+    //функция масштабирующая и ставящая фотку в превью
+    private void setPic(ImageView mImageView, String mCurrentPhotoPath) {
+        // Get the dimensions of the View
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        mImageView.setImageBitmap(bitmap);
+    }
 }
+//TODO сохранение картинки при повороте экрана
+//TODO сохранение фотки в сохранялки и её подгрузка при пересоздании экрана
+//TODO очистка фотки при отправки
+//TODO подгрузка фоток из галереи

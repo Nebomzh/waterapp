@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- доступность инета -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- право на запись на SD карту (для сохранения фоток и сохранения кеша гуглкарт) -->
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" /> <!-- доступ к гугл-веб-сервисам -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" /> <!-- приложение юзает камеру, но она не обязательна -->
 
     <uses-feature android:name="android.hardware.wifi" />
     <uses-feature

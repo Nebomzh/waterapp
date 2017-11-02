@@ -168,8 +168,10 @@
                 <ImageView
                     android:id="@+id/ivPhoto"
                     android:src="@drawable/ic_add_a_photo_black_18px"
-                    style="@style/partimage"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+                    android:layout_margin="10dp"
+                    android:layout_width="92dp"
+                    android:layout_height="92dp"
+                    android:background="@drawable/background" />
             </LinearLayout>
 
             </LinearLayout>

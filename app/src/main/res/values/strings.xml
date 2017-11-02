@@ -93,4 +93,10 @@
     <string name="address_not_found">Не удалось распознать адрес</string>
     <string name="change_map_type">Смена типа карты</string>
     <string name="apply">Применить</string>
+
+    <string name="storage_permission">Необходимо разрешение на прикрепление файлов</string>
+    <string name="storage_denied">Без разрешения невозможно прикрепление файлов</string>
+    <string name="no_camera">Отсутствует камера</string>
+    <string name="no_camera_app">Отсутствует приложение для съёмки фотографий</string>
+
 </resources>

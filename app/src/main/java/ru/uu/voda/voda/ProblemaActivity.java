@@ -37,7 +37,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
 //для проверки пермишенов
 import android.Manifest;
@@ -45,6 +44,8 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.app.ActivityCompat;//для запроса пермишена
 import android.support.annotation.NonNull;
+
+import android.view.ViewTreeObserver; //для прорисовки ImageView с фоткой
 
 public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
 
@@ -60,6 +61,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final String ADDRESS = "address";
     final String SAVELAT = "savelat";
     final String SAVELNG = "savelng";
+    final String CURRENT_PHOTO_PATH = "сurrentPhotoPath";
+    final String SAVE_PHOTO_PATH = "savePhotoPath";
 
     //коды запусков для результатов других активти
     final int ADDRESS_REQUEST_CODE = 1;
@@ -88,11 +91,8 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     ImageView addresswarn;
 
     File directory;
-    final int TYPE_PHOTO = 1;
     final int REQUEST_CODE_PHOTO = 2;
-    final String TAG = "myLogs";
     ImageView ivPhoto;
-    android.net.Uri mPhotoUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,14 +138,15 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         p_init_app = (CheckBox) findViewById(R.id.CheckBox8);
         addresstext = (TextView) findViewById(R.id.addresstext);
         addresswarn = (ImageView) findViewById(R.id.addresswarn);
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
 
         //подгружаем значения из сохранялок
         setFields();//текст для простых полей
         setPersontext();//текст для поля с личными данными
         setAddresstext();//текст для поля с адресом
+        setPic();//фотка в рамке
 
-        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
-
+        //прикрепление фоток
         ivPhoto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,12 +186,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK)
             return;
+        SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
         switch (requestCode) {
             case ADDRESS_REQUEST_CODE:
                 if (data == null)
                     return;
                 //сохраняем полученную от карты инфу
-                SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
                 ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
                 ed.putFloat(SAVELAT, data.getFloatExtra(SAVELAT, 0));
                 ed.putFloat(SAVELNG, data.getFloatExtra(SAVELNG, 0));
@@ -198,7 +199,10 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                 setAddresstext();//текст для поля с адресом
                 break;
             case REQUEST_CODE_PHOTO:
-                setPic(ivPhoto, mPhotoUri.getPath());//отображаем превьюшку
+                //сохраняем путь до фото
+                ed.putString(SAVE_PHOTO_PATH, sPref.getString(CURRENT_PHOTO_PATH, "")); //из временного в постоянный
+                ed.commit();    //сохранение
+                setPic();//отображаем превьюшку
                 break;
         }
     }
@@ -448,11 +452,13 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         ed.putString(ADDRESS, "");
         ed.putFloat(SAVELAT, 0);
         ed.putFloat(SAVELNG, 0);
+        ed.putString(SAVE_PHOTO_PATH, "");
 
         ed.commit();    //сохранение
 
         setFields();//отображение
         setAddresstext();
+        setPic();
     }
 
     private void createDirectory() {
@@ -513,23 +519,58 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
             return;//не фоткаем
         }
         createDirectory();//создаём папку для фоток
-        // imageUri is the current activity attribute, define and save it
-        // for later usage (also in onSaveInstanceState)
-        mPhotoUri = Uri.fromFile(new File(directory, System.currentTimeMillis() + ".jpg")); //ури фотки = имя путь + имя файла
+        String mCurrentPhotoPath = directory.getPath() + "/" + String.valueOf(System.currentTimeMillis()) + ".jpg"; //путь фотки = путь папки + имя файла
+        SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+        ed.putString(CURRENT_PHOTO_PATH, mCurrentPhotoPath); //сохраняем возможный путь будущей фотки
+        ed.commit();    //сохранение
+        android.net.Uri mPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath)); //ури фотки
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);//суём ури в интент
         startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);//запускаем приложуху с камерой
     }
 
     //функция масштабирующая и ставящая фотку в превью
-    private void setPic(ImageView mImageView, String mCurrentPhotoPath) {
+    private void setPic() {
+        String savePhotoPath = sPref.getString(SAVE_PHOTO_PATH, "");
+        if (savePhotoPath.length()==0) { //если нечего вставлять
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+        //проверка что файл существует
+        if(! (new File(savePhotoPath)).exists() ) { //если файла не существует
+            SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+            ed.putString(SAVE_PHOTO_PATH, ""); //очищаем сохранённый путь
+            ed.commit();    //сохранение
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+
         // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
+        int targetW = ivPhoto.getWidth();
+        int targetH = ivPhoto.getHeight();
+
+        if( targetW == 0 && targetH == 0 ) { //если ширина и высота ещё не известны (скорее всего вьюха ещё не отрисована)
+            //чтобы получать ширину и высоту после прорисовки, а не когда они дают 0
+            ViewTreeObserver vto = ivPhoto.getViewTreeObserver(); //вешаем на вьюху листенер
+            vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                public boolean onPreDraw() {
+                    // Remove after the first run so it doesn't fire forever
+                    ivPhoto.getViewTreeObserver().removeOnPreDrawListener(this);
+                    setPic();//вызываем сами себя (но этот вызов случится позже, при прорисовке)
+                    return true;
+                }
+            });
+            return; //пока фотку не вставляем ибо ещё некуда
+        }
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        BitmapFactory.decodeFile(savePhotoPath, bmOptions);
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
 
@@ -541,11 +582,9 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        mImageView.setImageBitmap(bitmap);
+        Bitmap bitmap = BitmapFactory.decodeFile(savePhotoPath, bmOptions);
+        ivPhoto.setImageBitmap(bitmap);
     }
 }
-//TODO сохранение картинки при повороте экрана
-//TODO сохранение фотки в сохранялки и её подгрузка при пересоздании экрана
-//TODO очистка фотки при отправки
 //TODO подгрузка фоток из галереи
+//TODO отправка фотки на сервак

@@ -81,8 +81,8 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
 
     @Override //отключаем обновления при уничтожении, а то если неудаётся определить, а экран уже закрыли, то попытка определения так и продолжит висеть
     protected void onDestroy() {
-        super.onDestroy();
         locationManager.removeUpdates(locationListener);
+        super.onDestroy();
     }
 
     //сохранение состояния перед поворотом экрана
@@ -309,34 +309,34 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
 
     //текст для поля с адресом по положению маркера
     private void findAddresstext(LatLng point) {
-            String result = "";
-            // A Locale if the format for the address
-            Geocoder gc = new Geocoder(getApplicationContext(), Locale.getDefault());
-            try {
-                List<Address> addresses;
-                addresses = gc.getFromLocation(point.latitude, point.longitude, 1); // Return 1 result
-                if(addresses != null && addresses.size() > 0){
-                    Address address = addresses.get(0);
+        String result = "";
+        // A Locale if the format for the address
+        Geocoder gc = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addresses;
+            addresses = gc.getFromLocation(point.latitude, point.longitude, 1); // Return 1 result
+            if(addresses != null && addresses.size() > 0){
+                Address address = addresses.get(0);
 
-                    // Build addressName
+                // Build addressName
                     /*if (address.getPostalCode() != null) {
                             result += address.getPostalCode() + " ";
                     }*/
-                    if (address.getLocality() != null) {
-                        result += address.getLocality();
-                    }
-                    if (address.getSubThoroughfare() != null && address.getThoroughfare() != null) {
-                        if(result.length()!=0)
-                            result += "\n";
-                        result += address.getThoroughfare() + " " + address.getSubThoroughfare();
-                    }
+                if (address.getLocality() != null) {
+                    result += address.getLocality();
+                }
+                if (address.getSubThoroughfare() != null && address.getThoroughfare() != null) {
+                    if(result.length()!=0)
+                        result += "\n";
+                    result += address.getThoroughfare() + " " + address.getSubThoroughfare();
                 }
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(result.length()==0) //если неудачно определится
-                Toast.makeText(this, R.string.address_not_found, Toast.LENGTH_SHORT).show();//то отображаем сообщение
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(result.length()==0) //если неудачно определится
+            Toast.makeText(this, R.string.address_not_found, Toast.LENGTH_SHORT).show();//то отображаем сообщение
         saveAddress(result);//сохраняем результат (если адрес не был определён будет предложено ввести вручную)
         setAddresstext();//отображаем
     }

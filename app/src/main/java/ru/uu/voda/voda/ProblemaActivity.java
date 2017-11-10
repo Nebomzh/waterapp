@@ -47,7 +47,9 @@ import android.support.annotation.NonNull;
 
 import android.view.ViewTreeObserver; //для прорисовки ImageView с фоткой
 
-public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
+import android.view.ContextMenu;    //Контекстное меню
+
+public class ProblemaActivity  extends AppCompatActivity implements View.OnClickListener, NoticeDialogListener { //добавляем обработчик нажатий прямо в активити; интерфейс для принятия событий диалога
 
     SharedPreferences sPref;    //объект сохранялок
     //ключи сохранялок
@@ -69,6 +71,11 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
 
     //ключи запросов пермишенов
     final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
+
+    //id Элементов контекстного меню
+    final int CONTEXT_MENU_1 = 1;
+    final int CONTEXT_MENU_2 = 2;
+    final int CONTEXT_MENU_3 = 3;
 
     //Диалоги
     DialogFragment person_dialog;
@@ -107,25 +114,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //поля вызывающее диалог
-        findViewById(R.id.personbox).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                person_dialog = new PersonDialogFragment();
-                person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
-            }
-        });
-        findViewById(R.id.addressbox).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddressPicker.class);
-                intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
-                intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
-                intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
-                startActivityForResult(intent,ADDRESS_REQUEST_CODE);//запускаем карту для результата
-            }
-        });
-
         //обратимся к нашим полям
         persontext = (TextView) findViewById(R.id.persontext);
         personwarn = (ImageView) findViewById(R.id.personwarn);
@@ -140,19 +128,75 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         addresswarn = (ImageView) findViewById(R.id.addresswarn);
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
 
+        //кликабельные поля
+        findViewById(R.id.personbox).setOnClickListener(this);
+        findViewById(R.id.addressbox).setOnClickListener(this);
+        ivPhoto.setOnClickListener(this);//прикрепление фоток
+
+        //Добавляем контекстное меню
+        registerForContextMenu(ivPhoto); //Для шестой кнопки
+
         //подгружаем значения из сохранялок
         setFields();//текст для простых полей
         setPersontext();//текст для поля с личными данными
         setAddresstext();//текст для поля с адресом
         setPic();//фотка в рамке
+    }
 
-        //прикрепление фоток
-        ivPhoto.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attachPhoto();
+    //обработчик нажатий
+    @Override
+    public void onClick(View view) {
+        // по id определеяем кнопку, вызвавшую этот обработчик
+        switch (view.getId()) {
+            case R.id.personbox://поле вызывающее диалог
+                person_dialog = new PersonDialogFragment();
+                person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
+                break;
+            case R.id.addressbox://вызов адреспикера
+                Intent intent = new Intent(getApplicationContext(), AddressPicker.class);
+                intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
+                intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
+                intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
+                startActivityForResult(intent,ADDRESS_REQUEST_CODE);//запускаем карту для результата
+                break;
+            case R.id.ivPhoto:
+                attachPhoto();//прикрепление фоток
+                break;
+        }
+    }
+
+    // Создание контекстного меню
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            super.onCreateContextMenu(menu, view, menuInfo);//создаём меню только при наличии разрешений
+            switch (view.getId()) {
+                case R.id.ivPhoto:
+                    menu.add(0, CONTEXT_MENU_1, 0, R.string.take_picture);
+                    menu.add(0, CONTEXT_MENU_2, 0, R.string.take_gallery);
+                    menu.add(0, CONTEXT_MENU_3, 0, R.string.detach);
+                    break;
             }
-        });
+        }
+    }
+
+    // обработка нажатий пунктов контекстного меню
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_1:
+                takePhoto(); //делаем фотку
+                break;
+            case CONTEXT_MENU_2:
+                Toast.makeText(this, "прикрепление файла", Toast.LENGTH_LONG).show(); //TODO аттач
+                break;
+            case CONTEXT_MENU_3:
+                Toast.makeText(this, "отклепление файла", Toast.LENGTH_LONG).show(); //TODO удаление
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     //Интерфейсы принятия инфы от диалоговых окон
@@ -478,7 +522,7 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                     PERMISSIONS_WRITE_EXTERNAL_STORAGE);
         }
         else //если разрешение есть
-            selectPhotoAction();//показываем выбор сделать/прикрепить/открепить фотку
+            openContextMenu(ivPhoto);  //открываем контекстное меню с выбором сделать/прикрепить/открепить фотку
     }
 
     //Обработка ответа пользователя на получение разрешений
@@ -490,18 +534,12 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Чел предоставил разрешение
-                    selectPhotoAction();//показываем выбор сделать/прикрепить/открепить фотку
+                    openContextMenu(ivPhoto);  //открываем контекстное меню с выбором сделать/прикрепить/открепить фотку
                 } else { //чел не предоставил разшение
                     Toast.makeText(this, R.string.storage_denied, Toast.LENGTH_LONG).show(); //сообщение об отсутствии разрешения на прикрепление файлов
                 }
             }
         }
-    }
-
-    //выбор способа прикрепления фотки
-    private void selectPhotoAction() {
-        //TODO написать здесь контекстное меню с фоткой, атачем и удалением
-        takePhoto(); //делаем фотку
     }
 
     //сделать фотку
@@ -586,5 +624,4 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         ivPhoto.setImageBitmap(bitmap);
     }
 }
-//TODO подгрузка фоток из галереи
 //TODO отправка фотки на сервак

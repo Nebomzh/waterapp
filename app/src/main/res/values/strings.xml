@@ -98,5 +98,8 @@
     <string name="storage_denied">Без разрешения невозможно прикрепление файлов</string>
     <string name="no_camera">Отсутствует камера</string>
     <string name="no_camera_app">Отсутствует приложение для съёмки фотографий</string>
+    <string name="take_picture">Сделать фото</string>
+    <string name="take_gallery">Выбрать из галереи</string>
+    <string name="detach">Открепить фотографию</string>
 
 </resources>

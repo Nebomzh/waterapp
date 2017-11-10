@@ -2,13 +2,14 @@ package ru.uu.voda.voda;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -67,7 +68,9 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     final String SAVE_PHOTO_PATH = "savePhotoPath";
 
     //коды запусков для результатов других активти
-    final int ADDRESS_REQUEST_CODE = 1;
+    final int REQUEST_CODE_ADDRESS = 1;
+    final int REQUEST_CODE_PHOTO = 2;
+    final int REQUEST_CODE_GALLERY = 3;
 
     //ключи запросов пермишенов
     final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
@@ -98,7 +101,6 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     ImageView addresswarn;
 
     File directory;
-    final int REQUEST_CODE_PHOTO = 2;
     ImageView ivPhoto;
 
     @Override
@@ -157,7 +159,7 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
                 intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
                 intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
                 intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
-                startActivityForResult(intent,ADDRESS_REQUEST_CODE);//запускаем карту для результата
+                startActivityForResult(intent, REQUEST_CODE_ADDRESS);//запускаем карту для результата
                 break;
             case R.id.ivPhoto:
                 attachPhoto();//прикрепление фоток
@@ -189,11 +191,16 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
             case CONTEXT_MENU_1:
                 takePhoto(); //делаем фотку
                 break;
-            case CONTEXT_MENU_2:
-                Toast.makeText(this, "прикрепление файла", Toast.LENGTH_LONG).show(); //TODO аттач
+            case CONTEXT_MENU_2://аттач из галереи
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
                 break;
-            case CONTEXT_MENU_3:
-                Toast.makeText(this, "отклепление файла", Toast.LENGTH_LONG).show(); //TODO удаление
+            case CONTEXT_MENU_3://открепление фотки
+                SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+                ed.putString(SAVE_PHOTO_PATH, "");//очистка пути к фотке в сохранялке
+                ed.commit();    //сохранение
+                setPic();//отображение отсутствия фотки
                 break;
         }
         return super.onContextItemSelected(item);
@@ -232,7 +239,7 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
             return;
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
         switch (requestCode) {
-            case ADDRESS_REQUEST_CODE:
+            case REQUEST_CODE_ADDRESS:
                 if (data == null)
                     return;
                 //сохраняем полученную от карты инфу
@@ -248,6 +255,28 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
                 ed.commit();    //сохранение
                 setPic();//отображаем превьюшку
                 break;
+            case REQUEST_CODE_GALLERY:
+                Uri selectedImage = data.getData();//получаем ури выбранной фотки
+                ed.putString(SAVE_PHOTO_PATH, getRealPathFromURI(this, selectedImage)); //сохраняем путь до фото
+                ed.commit();    //сохранение
+                setPic();//отображаем превьюшку*/
+                break;
+        }
+    }
+
+    //функция выцепления из переданного галереей УРИ настоящего пути до файла (работает какой-то магией, но работает)
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 

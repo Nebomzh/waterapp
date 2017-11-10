@@ -48,7 +48,8 @@
 
                 <LinearLayout
                     android:id="@+id/personbox"
-                    style="@style/horizontal">
+                    style="@style/horizontal"
+                    android:background="@drawable/shadow">
                     <ImageView
                         android:src="@drawable/ic_face_black_18px"
                         style="@style/partimage" />
@@ -116,7 +117,8 @@
 
                 <LinearLayout
                     android:id="@+id/addressbox"
-                    style="@style/horizontal">
+                    style="@style/horizontal"
+                    android:background="@drawable/shadow">
                     <ImageView
                         android:src="@drawable/ic_place_black_18px"
                         style="@style/partimage" />

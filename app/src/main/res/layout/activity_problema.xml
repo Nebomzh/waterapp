@@ -161,6 +161,19 @@
             </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout style="@style/horizontal">
+                <ImageView
+                    android:src="@drawable/ic_attach_file_black_18px"
+                    style="@style/partimage" />
+                <ImageView
+                    android:id="@+id/ivPhoto"
+                    android:src="@drawable/ic_add_a_photo_black_18px"
+                    android:layout_margin="10dp"
+                    android:layout_width="92dp"
+                    android:layout_height="92dp"
+                    android:background="@drawable/background" />
+            </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

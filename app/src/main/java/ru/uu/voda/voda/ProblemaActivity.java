@@ -2,12 +2,14 @@ package ru.uu.voda.voda;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,7 +33,24 @@ import android.view.MenuItem;   //пункт меню
 import android.content.SharedPreferences;           //для работы с сохранялками
 import android.content.SharedPreferences.Editor;    //для редактирования сохранялок
 
-public class ProblemaActivity  extends AppCompatActivity implements NoticeDialogListener { //добавляем интерфейс для принятия событий диалога
+import java.io.File;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+//для проверки пермишенов
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;//для запроса пермишена
+import android.support.annotation.NonNull;
+
+import android.view.ViewTreeObserver; //для прорисовки ImageView с фоткой
+
+import android.view.ContextMenu;    //Контекстное меню
+
+public class ProblemaActivity  extends AppCompatActivity implements View.OnClickListener, NoticeDialogListener { //добавляем обработчик нажатий прямо в активити; интерфейс для принятия событий диалога
 
     SharedPreferences sPref;    //объект сохранялок
     //ключи сохранялок
@@ -45,9 +64,21 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     final String ADDRESS = "address";
     final String SAVELAT = "savelat";
     final String SAVELNG = "savelng";
+    final String CURRENT_PHOTO_PATH = "сurrentPhotoPath";
+    final String SAVE_PHOTO_PATH = "savePhotoPath";
 
     //коды запусков для результатов других активти
-    final int ADDRESS_REQUEST_CODE = 1;
+    final int REQUEST_CODE_ADDRESS = 1;
+    final int REQUEST_CODE_PHOTO = 2;
+    final int REQUEST_CODE_GALLERY = 3;
+
+    //ключи запросов пермишенов
+    final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
+
+    //id Элементов контекстного меню
+    final int CONTEXT_MENU_1 = 1;
+    final int CONTEXT_MENU_2 = 2;
+    final int CONTEXT_MENU_3 = 3;
 
     //Диалоги
     DialogFragment person_dialog;
@@ -69,6 +100,9 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     TextView addresstext;
     ImageView addresswarn;
 
+    File directory;
+    ImageView ivPhoto;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -82,25 +116,6 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //поля вызывающее диалог
-        findViewById(R.id.personbox).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                person_dialog = new PersonDialogFragment();
-                person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
-            }
-        });
-        findViewById(R.id.addressbox).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddressPicker.class);
-                intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
-                intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
-                intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
-                startActivityForResult(intent,ADDRESS_REQUEST_CODE);//запускаем карту для результата
-            }
-        });
-
         //обратимся к нашим полям
         persontext = (TextView) findViewById(R.id.persontext);
         personwarn = (ImageView) findViewById(R.id.personwarn);
@@ -113,11 +128,82 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         p_init_app = (CheckBox) findViewById(R.id.CheckBox8);
         addresstext = (TextView) findViewById(R.id.addresstext);
         addresswarn = (ImageView) findViewById(R.id.addresswarn);
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+
+        //кликабельные поля
+        findViewById(R.id.personbox).setOnClickListener(this);
+        findViewById(R.id.addressbox).setOnClickListener(this);
+        ivPhoto.setOnClickListener(this);//прикрепление фоток
+
+        //Добавляем контекстное меню
+        registerForContextMenu(ivPhoto); //Для шестой кнопки
 
         //подгружаем значения из сохранялок
         setFields();//текст для простых полей
         setPersontext();//текст для поля с личными данными
         setAddresstext();//текст для поля с адресом
+        setPic();//фотка в рамке
+    }
+
+    //обработчик нажатий
+    @Override
+    public void onClick(View view) {
+        // по id определеяем кнопку, вызвавшую этот обработчик
+        switch (view.getId()) {
+            case R.id.personbox://поле вызывающее диалог
+                person_dialog = new PersonDialogFragment();
+                person_dialog.show(getFragmentManager(), PERSON_DIALOG_TAG);
+                break;
+            case R.id.addressbox://вызов адреспикера
+                Intent intent = new Intent(getApplicationContext(), AddressPicker.class);
+                intent.putExtra(ADDRESS, sPref.getString(ADDRESS, ""));//передаём в интент инфу, что уже есть
+                intent.putExtra(SAVELAT, sPref.getFloat(SAVELAT, 0));
+                intent.putExtra(SAVELNG, sPref.getFloat(SAVELNG, 0));
+                startActivityForResult(intent, REQUEST_CODE_ADDRESS);//запускаем карту для результата
+                break;
+            case R.id.ivPhoto:
+                attachPhoto();//прикрепление фоток
+                break;
+        }
+    }
+
+    // Создание контекстного меню
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            super.onCreateContextMenu(menu, view, menuInfo);//создаём меню только при наличии разрешений
+            switch (view.getId()) {
+                case R.id.ivPhoto:
+                    menu.add(0, CONTEXT_MENU_1, 0, R.string.take_picture);
+                    menu.add(0, CONTEXT_MENU_2, 0, R.string.take_gallery);
+                    menu.add(0, CONTEXT_MENU_3, 0, R.string.detach);
+                    break;
+            }
+        }
+    }
+
+    // обработка нажатий пунктов контекстного меню
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_1:
+                takePhoto(); //делаем фотку
+                break;
+            case CONTEXT_MENU_2://аттач из галереи
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
+                break;
+            case CONTEXT_MENU_3://открепление фотки
+                SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+                ed.putString(SAVE_PHOTO_PATH, "");//очистка пути к фотке в сохранялке
+                ed.commit();    //сохранение
+                setPic();//отображение отсутствия фотки
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     //Интерфейсы принятия инфы от диалоговых окон
@@ -149,17 +235,49 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
     //принятие инфы от активити запущенного на результат
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null)
+        if (resultCode != RESULT_OK)
             return;
-
-        //сохраняем полученную от карты инфу
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
-        ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
-        ed.putFloat(SAVELAT, data.getFloatExtra(SAVELAT, 0));
-        ed.putFloat(SAVELNG, data.getFloatExtra(SAVELNG, 0));
-        ed.commit();    //сохранение
+        switch (requestCode) {
+            case REQUEST_CODE_ADDRESS:
+                if (data == null)
+                    return;
+                //сохраняем полученную от карты инфу
+                ed.putString(ADDRESS, data.getStringExtra(ADDRESS));
+                ed.putFloat(SAVELAT, data.getFloatExtra(SAVELAT, 0));
+                ed.putFloat(SAVELNG, data.getFloatExtra(SAVELNG, 0));
+                ed.commit();    //сохранение
+                setAddresstext();//текст для поля с адресом
+                break;
+            case REQUEST_CODE_PHOTO:
+                //сохраняем путь до фото
+                ed.putString(SAVE_PHOTO_PATH, sPref.getString(CURRENT_PHOTO_PATH, "")); //из временного в постоянный
+                ed.commit();    //сохранение
+                setPic();//отображаем превьюшку
+                break;
+            case REQUEST_CODE_GALLERY:
+                Uri selectedImage = data.getData();//получаем ури выбранной фотки
+                ed.putString(SAVE_PHOTO_PATH, getRealPathFromURI(this, selectedImage)); //сохраняем путь до фото
+                ed.commit();    //сохранение
+                setPic();//отображаем превьюшку*/
+                break;
+        }
+    }
 
-        setAddresstext();//текст для поля с адресом
+    //функция выцепления из переданного галереей УРИ настоящего пути до файла (работает какой-то магией, но работает)
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     private void setFields() {
@@ -407,10 +525,132 @@ public class ProblemaActivity  extends AppCompatActivity implements NoticeDialog
         ed.putString(ADDRESS, "");
         ed.putFloat(SAVELAT, 0);
         ed.putFloat(SAVELNG, 0);
+        ed.putString(SAVE_PHOTO_PATH, "");
 
         ed.commit();    //сохранение
 
         setFields();//отображение
         setAddresstext();
+        setPic();
+    }
+
+    private void createDirectory() {
+        directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.app_name));
+        if (!directory.exists())
+            directory.mkdirs();
+    }
+
+    //прикрепить фотку
+    private void attachPhoto() {
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.storage_permission, Toast.LENGTH_LONG).show(); //сообщение об отсутствии разрешения на прикрепление файлов
+            //Запрос разрешений
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+        }
+        else //если разрешение есть
+            openContextMenu(ivPhoto);  //открываем контекстное меню с выбором сделать/прикрепить/открепить фотку
+    }
+
+    //Обработка ответа пользователя на получение разрешений
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Чел предоставил разрешение
+                    openContextMenu(ivPhoto);  //открываем контекстное меню с выбором сделать/прикрепить/открепить фотку
+                } else { //чел не предоставил разшение
+                    Toast.makeText(this, R.string.storage_denied, Toast.LENGTH_LONG).show(); //сообщение об отсутствии разрешения на прикрепление файлов
+                }
+            }
+        }
+    }
+
+    //сделать фотку
+    private void takePhoto() {
+        //проверка наличия камеры в устройстве
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { //если камеры нет
+            Toast.makeText(this, R.string.no_camera, Toast.LENGTH_LONG).show();//сообщение об отсутствии камеры
+            return;//не фоткаем
+        }
+        // create new Intent
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //проверка наличия приложения для съёмки (защита от краша, при старте активитифоррезалт, если такого приложения не будет на устройстве)
+        if (takePictureIntent.resolveActivity(getPackageManager()) == null) { //если приложухи нет
+            Toast.makeText(this, R.string.no_camera_app, Toast.LENGTH_LONG).show(); //сообщение об отсутствии камерной приложухи
+            return;//не фоткаем
+        }
+        createDirectory();//создаём папку для фоток
+        String mCurrentPhotoPath = directory.getPath() + "/" + String.valueOf(System.currentTimeMillis()) + ".jpg"; //путь фотки = путь папки + имя файла
+        SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+        ed.putString(CURRENT_PHOTO_PATH, mCurrentPhotoPath); //сохраняем возможный путь будущей фотки
+        ed.commit();    //сохранение
+        android.net.Uri mPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath)); //ури фотки
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);//суём ури в интент
+        startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);//запускаем приложуху с камерой
+    }
+
+    //функция масштабирующая и ставящая фотку в превью
+    private void setPic() {
+        String savePhotoPath = sPref.getString(SAVE_PHOTO_PATH, "");
+        if (savePhotoPath.length()==0) { //если нечего вставлять
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+        //проверка разрешения на чтение файлов
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+        //проверка что файл существует
+        if(! (new File(savePhotoPath)).exists() ) { //если файла не существует
+            SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
+            ed.putString(SAVE_PHOTO_PATH, ""); //очищаем сохранённый путь
+            ed.commit();    //сохранение
+            ivPhoto.setImageResource(R.drawable.ic_add_a_photo_black_18px); //ставим значёк с фотиком
+            return;
+        }
+
+        // Get the dimensions of the View
+        int targetW = ivPhoto.getWidth();
+        int targetH = ivPhoto.getHeight();
+
+        if( targetW == 0 && targetH == 0 ) { //если ширина и высота ещё не известны (скорее всего вьюха ещё не отрисована)
+            //чтобы получать ширину и высоту после прорисовки, а не когда они дают 0
+            ViewTreeObserver vto = ivPhoto.getViewTreeObserver(); //вешаем на вьюху листенер
+            vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                public boolean onPreDraw() {
+                    // Remove after the first run so it doesn't fire forever
+                    ivPhoto.getViewTreeObserver().removeOnPreDrawListener(this);
+                    setPic();//вызываем сами себя (но этот вызов случится позже, при прорисовке)
+                    return true;
+                }
+            });
+            return; //пока фотку не вставляем ибо ещё некуда
+        }
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(savePhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(savePhotoPath, bmOptions);
+        ivPhoto.setImageBitmap(bitmap);
     }
 }
+//TODO отправка фотки на сервак

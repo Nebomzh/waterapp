@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.uu.voda.voda.ProblemaActivity">
+    tools:context="ru.uu.voda.ProblemaActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="ru.uu.voda.voda.ProblemaActivity">
+        tools:context="ru.uu.voda.ProblemaActivity">
 
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +48,8 @@
 
                 <LinearLayout
                     android:id="@+id/personbox"
-                    style="@style/horizontal">
+                    style="@style/horizontal"
+                    android:background="@drawable/shadow">
                     <ImageView
                         android:src="@drawable/ic_face_black_18px"
                         style="@style/partimage" />
@@ -116,7 +117,8 @@
 
                 <LinearLayout
                     android:id="@+id/addressbox"
-                    style="@style/horizontal">
+                    style="@style/horizontal"
+                    android:background="@drawable/shadow">
                     <ImageView
                         android:src="@drawable/ic_place_black_18px"
                         style="@style/partimage" />
@@ -159,6 +161,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/h8" />
             </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/horizontal">
+                <ImageView
+                    android:src="@drawable/ic_attach_file_black_18px"
+                    style="@style/partimage" />
+                <ImageView
+                    android:id="@+id/ivPhoto"
+                    android:src="@drawable/ic_add_a_photo_black_18px"
+                    android:layout_margin="10dp"
+                    android:layout_width="92dp"
+                    android:layout_height="92dp"
+                    android:background="@drawable/background" />
             </LinearLayout>
 
             </LinearLayout>

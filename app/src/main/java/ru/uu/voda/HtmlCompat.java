@@ -1,4 +1,4 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 
 import android.os.Build;
 import android.text.Html;

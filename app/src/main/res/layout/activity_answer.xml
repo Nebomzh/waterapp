@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.uu.voda.voda.AnswerActivity">
+    tools:context="ru.uu.voda.AnswerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,13 +29,13 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="ru.uu.voda.voda.AnswerActivity">
+        tools:context="ru.uu.voda.AnswerActivity">
 
         <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
-                tools:context="ru.uu.voda.voda.AnswerActivity"
+                tools:context="ru.uu.voda.AnswerActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

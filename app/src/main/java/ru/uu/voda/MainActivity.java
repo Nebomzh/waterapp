@@ -1,20 +1,10 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 public class MainActivity extends AppCompatActivity  {
 

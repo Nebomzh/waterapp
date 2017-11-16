@@ -1,4 +1,4 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 
 import org.junit.Test;
 

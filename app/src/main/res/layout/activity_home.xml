@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="ru.uu.voda.voda.HomeActivity">
+    tools:context="ru.uu.voda.HomeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

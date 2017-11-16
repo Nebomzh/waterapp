@@ -7,7 +7,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="ru.uu.voda.voda.HomeActivity"
+            tools:context="ru.uu.voda.HomeActivity"
             tools:showIn="@layout/activity_home"
 
             android:layout_alignParentLeft="true"

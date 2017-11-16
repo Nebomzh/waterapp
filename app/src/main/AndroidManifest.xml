@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.uu.voda.voda">
+    package="ru.uu.voda">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- определение координат и Network и GPS -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- определение координат только Network -->
@@ -44,7 +44,7 @@
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.uu.voda.voda.MainActivity" />
+                android:value="ru.uu.voda.MainActivity" />
         </activity>
 
         <meta-data
@@ -58,7 +58,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.uu.voda.voda.MainActivity" />
+                android:value="ru.uu.voda.MainActivity" />
         </activity>
         <activity
             android:name=".QuestionsActivity"
@@ -67,7 +67,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.uu.voda.voda.MainActivity" />
+                android:value="ru.uu.voda.MainActivity" />
         </activity>
         <activity
             android:name=".AnswerActivity"
@@ -76,7 +76,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.uu.voda.voda.QuestionsActivity" />
+                android:value="ru.uu.voda.QuestionsActivity" />
         </activity>
         <activity android:name=".AddressPicker"
             android:label="@string/hpre1"
@@ -84,7 +84,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.uu.voda.voda.ProblemaActivity" />
+                android:value="ru.uu.voda.ProblemaActivity" />
         </activity>
     </application>
 

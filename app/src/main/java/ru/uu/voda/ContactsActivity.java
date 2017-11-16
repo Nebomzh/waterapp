@@ -1,4 +1,4 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 /** страница с контактами*/
 
 import android.Manifest;

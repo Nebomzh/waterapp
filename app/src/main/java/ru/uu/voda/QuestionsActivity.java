@@ -1,4 +1,4 @@
-package ru.uu.voda.voda;
+package ru.uu.voda;
 
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;

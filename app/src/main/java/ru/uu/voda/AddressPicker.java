@@ -81,7 +81,8 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
 
     @Override //отключаем обновления при уничтожении, а то если неудаётся определить, а экран уже закрыли, то попытка определения так и продолжит висеть
     protected void onDestroy() {
-        locationManager.removeUpdates(locationListener);
+        if(locationManager != null)
+            locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
 

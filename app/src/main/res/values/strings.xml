@@ -102,4 +102,9 @@
     <string name="take_gallery">Выбрать из галереи</string>
     <string name="detach">Открепить фотографию</string>
 
+    <string name="no_connection">Отсутствует подключение к Интернету</string>
+    <string name="dont_exit">Пожалуйста, не закрывайте приложение во время отправки</string>
+    <string name="send_success">Заявка успешно отправлена!</string>
+    <string name="send_fail">Заявка не отправлена\nПопробуйте позже</string>
+
 </resources>

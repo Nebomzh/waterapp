@@ -34,7 +34,7 @@
 
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/ScrollView01"
+            android:id="@+id/content1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
@@ -179,6 +179,41 @@
             </LinearLayout>
         </ScrollView>
 
+        <LinearLayout
+            android:id="@+id/content2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:max="100"
+                />
+            <TextView
+                android:id="@+id/textdontexit"
+                android:text="@string/dont_exit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                />
+            <ImageView
+                android:id="@+id/ivValve"
+                android:src="@drawable/valve"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="30dp"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

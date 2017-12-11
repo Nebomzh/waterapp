@@ -1,5 +1,5 @@
 package ru.uu.voda;
-
+//TODO перерисовать значки экрана, чтобы они были в одном стиле (с одной толщиной линий)
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

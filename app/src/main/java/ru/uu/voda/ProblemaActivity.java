@@ -1,6 +1,5 @@
 package ru.uu.voda;
 
-
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,19 +9,31 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
+//для отправки
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 import android.support.v7.widget.Toolbar; //Тулбар
@@ -86,8 +97,10 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     //теги диалогов
     final String PERSON_DIALOG_TAG = "person_dialog_tag";
 
-    public static String server = "vodaonline74.ru";
-
+    View content1;
+    View content2;
+    View plane;
+    MenuItem sendbutton;
     TextView persontext;
     ImageView personwarn;
     TextView personname;
@@ -99,15 +112,21 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     public CheckBox p_init_app;
     TextView addresstext;
     ImageView addresswarn;
+    ProgressBar progressBar;
+    ImageView valve;
 
     File directory;
     ImageView ivPhoto;
+
+    private SendData mSendData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problema);
+        content1 = findViewById(R.id.content1);//основной контент
+        content2 = findViewById(R.id.content2);//альтернативный контент
 
         sPref = getPreferences(MODE_PRIVATE);   //получаем сохранялки
 
@@ -143,6 +162,17 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         setPersontext();//текст для поля с личными данными
         setAddresstext();//текст для поля с адресом
         setPic();//фотка в рамке
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        valve = (ImageView) findViewById(R.id.ivValve); //вращающийся кран
+
+        //определяемся какой из контентов показать
+        mSendData = (SendData) getLastCustomNonConfigurationInstance();//пытаемся получить уже существующий поток отправки (если был поворот экрана и данные уже отправлялись)
+        if (mSendData != null) {//если поток был
+            mSendData.link(this);//кидаем ссылку на это активити в поток
+            if (mSendData.getStatus() == AsyncTask.Status.RUNNING) //если поток был и он ещё работает
+                showContent2(false); //показываем экран с процессом отправки
+        }
     }
 
     //обработчик нажатий
@@ -347,6 +377,10 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     // создание меню
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_problema, menu);  //создание меню из xml
+        sendbutton = menu.findItem(R.id.action_send_problem);//находим кнопку отправки
+        if (mSendData != null)
+            if (mSendData.getStatus() == AsyncTask.Status.RUNNING) //если есть запущенный поток отправки
+                sendbutton.setVisible(false);//скрываем кнопку отправки
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -356,7 +390,8 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         switch (item.getItemId()) {
             case R.id.action_send_problem:    //Кнопка отправить
                 //Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();   //Тост отправить
-                sendProblem();      //Кусок посылки проблемы
+                plane = findViewById(R.id.action_send_problem);//находим эту кнопку здесь, потому что в онкреэйте ещё не было создано меню
+                sendProblem();      //начало посылки проблемы
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -365,6 +400,9 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
     public void sendProblem() {
         saveFields();   //сохранение введённых полей
 
+        Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);  //элемент анимации тряски
+        Animation animScale = AnimationUtils.loadAnimation(this, R.anim.scale);  //элемент анимации масштаба
+
         String temp_string="";  //временная строка с описанием что не заполнено
         Boolean correct=true;      //флаг, что всё верно
 
@@ -372,126 +410,284 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         if (sPref.getString(PHONE_NUMBER, "").length()==0) {
             temp_string += getResources().getString(R.string.h10request);
             correct = false;
+            if(sPref.getString(NAME, "").length()==0) { //если ещё и имя не заполнено
+                persontext.startAnimation(animScale);//встряска имянадписи
+                personwarn.startAnimation(animScale);//встряска имяпредупрежухи
+            } else { //если незаполнен только телефон, но есть имя
+                personphone.startAnimation(animScale);//встряска телефононадписи
+                phonewarn.startAnimation(animScale);//встряска телефонопредупрежухи
+            }
         }
         if (sPref.getString(ADDRESS, "").length()==0) {
             if (temp_string.length()!=0)
                 temp_string += "\n";
             temp_string += getResources().getString(R.string.hpre1);
             correct = false;
+            addresstext.startAnimation(animScale);//встряска адресонадписи
+            addresswarn.startAnimation(animScale);//встряска адресопредупрежухи
         }
 
         if (!correct) //если что-то не заполнено
         {
-            Toast.makeText(this, temp_string, Toast.LENGTH_LONG).show();    //отображаем сообщение, что не все поля заполнены
+            plane.startAnimation(animShake);//встряска самолётика
+            Toast.makeText(this, temp_string, Toast.LENGTH_SHORT).show();    //отображаем сообщение, что не все поля заполнены //TODO заменить тосты на нижние шторки
             return; //выходим из метода, не отправляя данные
         }
 
-        try {
-            new SendData().execute();
-        } catch (Exception e) {
+        //проверка, что отправка уже не запущена
+        if(mSendData!=null)
+            if (mSendData.getStatus()== AsyncTask.Status.RUNNING)
+                return; //не запускаем новую отправку, если одна уже идёт
+
+        //проверка наличия подключения
+        ConnectivityManager myConnMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //менеджер подключений
+        NetworkInfo networkinfo = myConnMgr.getActiveNetworkInfo();//узнаём инфу о сети
+        if (networkinfo != null && networkinfo.isConnected()) { //если есть подключение
+            mSendData = new SendData();
+            mSendData.link(this);//кидаем ссылку на это активити в поток
+            mSendData.execute();// запускаем в новом потоке отправку данных
+        } else {
+            plane.startAnimation(animShake);//анимация самолётика туда-сюда
+            Toast.makeText(this, R.string.no_connection, Toast.LENGTH_SHORT).show();//говорим, что нет Инета //TODO заменить тосты на нижние шторки
         }
     }
 
-    private class SendData extends AsyncTask<Void, Void, Void> {
+    static private class SendData extends AsyncTask<Void, Integer, Boolean> { //можно будет использовать вместо асинхтаска сервис, если времена отправок будут сильно большими
 
-        String resultString = null;
+    String resultString = null; //строка с результатами отправки, можно использовать для отображения причин ошибок
+    boolean result=false; //успешность результата (пока отправка не произошла считаем неудачным)
+
+    ProblemaActivity activity;//родительское активити
+
+    // получаем ссылку на Activity
+    void link(ProblemaActivity act) {
+        activity = act;
+    }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            activity.showContent2(true);//показываем анимацию отправки, скрывая контент с полями
         }
 
+        final static String lineEnd = "\r\n";// Конец строки
+        final static String twoHyphens = "--";// Два тире
+        final static String boundary =  "*****";// Граница
+        final static String separator = twoHyphens + boundary + lineEnd;// Разделитель
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
+
+            // Адрес метода api для загрузки файла на сервер
+            final String API_FILES_UPLOADING_PATH = "http://vodaonline74.ru/adm2/server.php";//TODO указать действующий адрес
+            //final String API_FILES_UPLOADING_PATH = "http://virtual-pc/formeasy.php";
+
+            // Ключ, под которым файл передается на сервер
+            final String FORM_FILE_NAME = "uploadfile";
+
             try {
+                // Configure connection
+                URL uploadUrl = new URL(API_FILES_UPLOADING_PATH);// Создание ссылки для отправки файла
+                HttpURLConnection connection = (HttpURLConnection) uploadUrl.openConnection();// Создание соединения для отправки файла
+                connection.setDoInput(true);// Разрешение ввода соединению
+                connection.setDoOutput(true);// Разрешение вывода соединению
+                connection.setUseCaches(false);// Отключение кеширования
+                connection.setRequestMethod("POST");// Задание запросу типа POST
+                // Задание необходимых свойств запросу
+                connection.setRequestProperty("Connection", "Keep-Alive");
+                connection.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
 
-                String myURL = "http://" + server + "/adm2/server.php";
+                // Создание потока для записи в соединение
+                DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
 
-                String parameters =
-                        "&p_damage=" + String.valueOf(sPref.getInt(DAMAGE, 0)) +
-                        "&p_location_damage=" + String.valueOf(sPref.getInt(LOCATION_DAMAGE, 0)) +
-                        "&p_service=" + sPref.getString(SERVICE, "") +
-                        "&p_init_app=" + String.valueOf(sPref.getBoolean(INIT_APP, false)) +
-                        "&p_need_callback=" + String.valueOf(sPref.getBoolean(NEED_CALLBACK, false)) +
-                        "&p_phone_number=" + sPref.getString(PHONE_NUMBER, "") +
-                        "&p_name=" + sPref.getString(NAME, "") +
-                        "&p_address=" + sPref.getString(ADDRESS, "") +
-                        "&p_lat=" + sPref.getString(SAVELAT, "") +
-                        "&p_lng=" + sPref.getString(SAVELNG, ""); //TODO написать бэкенд, который принимает адрес и координаты
-                byte[] data = null;
-                InputStream is = null;
+                //Отправка текстовых полей
+                writeTextField(outputStream, "damage", String.valueOf(activity.sPref.getInt(activity.DAMAGE, 0)));
+                writeTextField(outputStream, "location_damage", String.valueOf(activity.sPref.getInt(activity.LOCATION_DAMAGE, 0)));
+                writeTextField(outputStream, "service", activity.sPref.getString(activity.SERVICE, ""));
+                writeTextField(outputStream, "init_app", String.valueOf(activity.sPref.getBoolean(activity.INIT_APP, false)));
+                writeTextField(outputStream, "need_callback", String.valueOf(activity.sPref.getBoolean(activity.NEED_CALLBACK, false)));
+                writeTextField(outputStream, "phone_number", activity.sPref.getString(activity.PHONE_NUMBER, ""));
+                writeTextField(outputStream, "name", activity.sPref.getString(activity.NAME, ""));
+                writeTextField(outputStream, "address", activity.sPref.getString(activity.ADDRESS, ""));
+                writeTextField(outputStream, "lat", String.valueOf(activity.sPref.getFloat(activity.SAVELAT, 0)));
+                writeTextField(outputStream, "lng", String.valueOf(activity.sPref.getFloat(activity.SAVELNG, 0)));
 
-                try {
-                    URL url = new URL(myURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout(10000);
-                    conn.setConnectTimeout(15000);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Connection", "Keep-Alive");
-                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    conn.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
+                // Путь к файлу в памяти устройства
+                String filePath = activity.sPref.getString(activity.SAVE_PHOTO_PATH, "");
 
-                    // конвертируем передаваемую строку в UTF-8
-                    data = parameters.getBytes("UTF-8");
+                //Проверки, что файл вообще получится отправить
+                if (    filePath.length()!=0  &&  //если есть что отправлять
+                        ContextCompat.checkSelfPermission(activity.getBaseContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && //если есть разрешение на чтение файлов
+                        (new File(filePath)).exists() ) { //если файл существует
 
-                    OutputStream os = conn.getOutputStream();
+                    // Формирование multipart контента с изображением
 
-                    // передаем данные на сервер
-                    os.write(data);
-                    os.flush();
-                    os.close();
-                    data = null;
-                    conn.connect();
-                    int responseCode = conn.getResponseCode();
+                    outputStream.writeBytes(separator);// Начало контента
+                    outputStream.writeBytes("Content-Disposition: form-data; name=\"" + FORM_FILE_NAME + "\"; " +
+                            "filename=\"" + filePath + "\"" + lineEnd);// Заголовок элемента формы
+                    outputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);// Тип данных элемента формы
+                    outputStream.writeBytes(lineEnd);// Конец заголовка
 
-                    // передаем ответ сервер
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    //TODO написать сжатие файла на случай если будут отправлять слишком крупные
 
-                    if (responseCode == 200) {    // Если все ОК (ответ 200)
-                        is = conn.getInputStream();
+                    // Поток для считывания файла в оперативную память
+                    FileInputStream fileInputStream = new FileInputStream(new File(filePath));
 
-                        byte[] buffer = new byte[8192]; // размер буфера
+                    //переменные для отображения прогресса
+                    int fileSize = fileInputStream.available(); //определяем размер файла для подсчёта прогресса
+                    int sentBytes = 0;
 
-                        // Далее так читаем ответ
-                        int bytesRead;
+                    // Переменные для считывания файла в оперативную память
+                    int bytesRead, bytesAvailable, bufferSize;
+                    byte[] buffer;
+                    int maxBufferSize = 8 * 1024; //можно и 1024*1024, но сделаем 8 КБ чтобы прогрессбар чаще обновлялся
+                    bufferSize = Math.min(fileSize, maxBufferSize);
+                    buffer = new byte[bufferSize];
 
-                        while ((bytesRead = is.read(buffer)) != -1) {
-                            baos.write(buffer, 0, bytesRead);
-                        }
+                    publishProgress(0);//обнуляем прогресс
 
-                        data = baos.toByteArray();
-                        resultString = new String(data, "UTF-8");  // сохраняем в переменную ответ сервера, у нас "OK"
+                    // Считывание файла в оперативную память и запись его в соединение
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                    while (bytesRead > 0) {
+                        outputStream.write(buffer, 0, bufferSize);// Write buffer to socket
+                        sentBytes += bufferSize;//записываем сколько байт уже послали
 
-                    } else { //TODO написать что делать, если не всё ок (хотя бы тост, что не всё ок и не очищать поля)
+                        bytesAvailable = fileInputStream.available();
+                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                        publishProgress((int) (sentBytes * 100 / fileSize));//обновляем прогресс (можно показывать и промежуточный прогресс вторым параметром (int)((sentBytes + bufferSize) * 100 / fileSize) но он получается слишком узким, поэтому не будем тратить на его просчёты время)
+                        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
                     }
 
-                    conn.disconnect();
+                    // Конец элемента формы
+                    outputStream.writeBytes(lineEnd);
+                    outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-                } catch (MalformedURLException e) {
-
-                    //resultString = "MalformedURLException:" + e.getMessage();
-                } catch (IOException e) {
-
-                    //resultString = "IOException:" + e.getMessage();
-                } catch (Exception e) {
-
-                    //resultString = "Exception:" + e.getMessage();
+                    // Закрытие соединений и потоков
+                    fileInputStream.close();
                 }
-            } catch (Exception e) {
+                outputStream.flush();
+                outputStream.close();
+
+                // Получение ответа от сервера
+                int serverResponseCode = connection.getResponseCode();
+
+                // Считка ответа от сервера в зависимости от успеха
+                if(serverResponseCode == 200) {
+                    result = true;
+                    //можно получать дополнительные сведения об ошибках для отладки, но пользователям будем просто писать, что отправка не удалась
+                    //resultString = readStream(connection.getInputStream());
+                } else {
+                    //resultString = readStream(connection.getErrorStream());
+                    //resultString = connection.getResponseMessage() + " . Error Code : " + serverResponseCode;
+                }
+                connection.disconnect();
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
+                //resultString = "MalformedURLException:" + e.getMessage();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+                //resultString = "ProtocolException:" + e.getMessage();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                //resultString = "FileNotFoundException:" + e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                //resultString = "IOException:" + e.getMessage();
             }
-            return null;
+
+            //задержка, чтобы люди успели насладиться анимацией отправки
+            //try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+
+            return result;
         }
 
+        //отправка текстовых полей
+        private void writeTextField(DataOutputStream outputStream, String field, String value) throws IOException {
+            outputStream.writeBytes(separator);// Начало контента
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"" + field + "\"" +lineEnd);// Заголовок элемента формы
+            outputStream.writeBytes("Content-Type: text/plain" + lineEnd);// Тип данных элемента формы
+            outputStream.writeBytes(lineEnd);// Конец заголовка
+
+            //передаём текстовые значения
+            byte[] data = value.getBytes("UTF-8");// конвертируем передаваемую строку в UTF-8
+            outputStream.write(data);
+
+            outputStream.writeBytes(lineEnd);// Конец элемента формы
+            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+        }
+
+        // Считка потока в строку
+        public String readStream(InputStream inputStream) throws IOException {
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            return buffer.toString();
+        }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Toast.makeText(getApplicationContext(), "Данные переданы!", Toast.LENGTH_LONG).show(); //TODO сейчас пишет, что данные переданы, даже если нет инета. Разобраться, чтобы реально отслеживался успех передачи
-            clearFields(); //очистка полей после отправки, чтобы не отправляли одну проблему по несколько раза
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            activity.progressBar.setIndeterminate(false);//отключаем режим неопределённости
+            activity.progressBar.setProgress(values[0]);//записываем прошедший прогресс
+            //activity.progressBar.setSecondaryProgress(values[1]);//записываем прогресс над которым сейчас идёт работа (получался незаметно узким, поэтому для быстродействия решено не отображать)
         }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            activity.showContent1();//показываем основной контент, убирая анимацию отправки
+            if(result) { //если успешно отправилось
+                Toast toastsendsuccess = Toast.makeText(activity.getBaseContext(), R.string.send_success, Toast.LENGTH_LONG);
+                LinearLayout toastContainer = (LinearLayout) toastsendsuccess.getView();//перехватываем вид тоста
+                ImageView sampleImageView = new ImageView(activity.getApplicationContext());//бахаем новую картинку
+                sampleImageView.setImageResource(R.drawable.ic_send_white_48px);//помещаем значёк в картинку
+                toastContainer.addView(sampleImageView, 0);//добавляем картинку в тост вперёд текста
+                toastsendsuccess.show();//показываем
+                activity.clearFields(); //очистка полей после отправки, чтобы не отправляли одну проблему по несколько раз //TODO раскомментить
+            }
+            else {
+                Toast toastsenderror = Toast.makeText(activity.getBaseContext(), R.string.send_fail, Toast.LENGTH_LONG);//можно выводить resultString, для подробностей почему не прошла отправка
+                LinearLayout toastContainer = (LinearLayout) toastsenderror.getView();//перехватываем вид тоста
+                ImageView sampleImageView = new ImageView(activity.getApplicationContext());//бахаем новую картинку
+                sampleImageView.setImageResource(R.drawable.error);//помещаем значёк в картинку
+                toastContainer.addView(sampleImageView, 0);//добавляем картинку в тост вперёд текста
+                toastsenderror.show();//показываем
+            }
+        }
+    }
+
+    //сохранение объекта отправки на случай поворота экрана
+    public Object onRetainCustomNonConfigurationInstance() {
+        return mSendData;
+    }
+
+    //показ первого контента
+    private void showContent1() {
+        content1.setVisibility(View.VISIBLE);//возвращаем все элементы
+        Animation animFade = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade);  //элемент анимации исчезновешния
+        content2.startAnimation(animFade);   //старт анимации исчезновения
+        content2.setVisibility(View.GONE);//убираем альтернативный контент с анимацией
+        sendbutton.setVisible(true);//делаем кнопку отправки видимой
+        if (plane != null) //если есть ссылка на самолёт (значит его уже запускали и его нужно вернуть, а если ссылки нет, значит активити пересоздавали и возвращать ничего и не надо)
+            plane.clearAnimation();//и возвращаем самолётик на место
+    }
+
+    //показ второго контента
+    private void showContent2(boolean animation) {
+        content1.setVisibility(View.GONE);//убираем элементы редактирования, чтобы пользователи не меняли содержимое во время отправки
+        content2.setVisibility(View.VISIBLE);//показываем альтернативный контент (экран с анимацией)
+        if (animation) { //если необходима анимация при смене экранов
+            Animation animAlpha = AnimationUtils.loadAnimation(getBaseContext(), R.anim.alpha);  //элемент анимации прозрачности
+            content2.startAnimation(animAlpha);   //старт анимации появления
+            Animation animTrans = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate);  //элемент анимации передвижения
+            plane.startAnimation(animTrans);//самолётик улетает
+        }
+        progressBar.setIndeterminate(true);//включаем режим неопределённости, пока отправка сама не задаст прогресс
+        Animation animRotate = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);  //элемент анимации вращения
+        valve.startAnimation(animRotate);   //старт анимации вращения
     }
 
     //сохранение полей
@@ -507,11 +703,11 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         ed.commit();    //сохранение
     }
 
-    //При уничтожении
+    //Сохраняем поля, если приложуха теряет фокус (лучше онДестроя, потому что будет вызвано, даже если приложуху убивают тасккилером)
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         saveFields();
-        super.onDestroy();
+        super.onStop();
     }
 
     //Очистка полей (после успешной отправки)
@@ -653,4 +849,3 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         ivPhoto.setImageBitmap(bitmap);
     }
 }
-//TODO отправка фотки на сервак

@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.content.FileProvider; //Даёт камере доступ к сохранению файлов
 
 //для отправки
 import android.net.ConnectivityManager;
@@ -786,7 +787,10 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
         ed.putString(CURRENT_PHOTO_PATH, mCurrentPhotoPath); //сохраняем возможный путь будущей фотки
         ed.commit();    //сохранение
-        android.net.Uri mPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath)); //ури фотки
+        //ури фотки
+        android.net.Uri mPhotoUri = FileProvider.getUriForFile(ProblemaActivity.this, //создаём провайдера файлов
+                BuildConfig.APPLICATION_ID + ".provider",
+                new File(mCurrentPhotoPath)); //который даст камере сохранить фотку в наш файл
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);//суём ури в интент
         startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);//запускаем приложуху с камерой
     }

@@ -49,10 +49,11 @@
         <LinearLayout
             android:id="@+id/button3"
             style="@style/buttonlayout">
+
             <ImageView
                 android:id="@+id/imageView3"
-                android:src="@drawable/contacts"
-                style="@style/imageonbutton" />
+                style="@style/imageonbutton"
+                android:src="@drawable/voda" />
             <TextView
                 android:id="@+id/textView3"
                 android:text="@string/button3"

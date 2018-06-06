@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;    //Для всплывающих сообщений
 import android.view.Menu;       //меню
@@ -49,10 +50,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //Присваиваем кнопкам обработчик
         button1.setOnClickListener(this);   //Обработчик находится в самом активити
         button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
+       // button3.setOnClickListener(this);
         button4.setOnClickListener(this);
         button5.setOnClickListener(this);
         button6.setOnClickListener(this);
+        button3.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),
+                        "Просмотр общедомовых приборов находится в разработке", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         //Добавляем контекстное меню
         registerForContextMenu(button6); //Для шестой кнопки
@@ -94,15 +105,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button2:
                 intent.setClass(this, QuestionsActivity.class);
                 break;
-            case R.id.button3:
-                intent.setClass(this, ContactsActivity.class);
-                break;
+          //case R.id.button3:
+
+
+
+                // intent.setClass(this, ContactsActivity.class);
+              // break;
             case R.id.button4:
-                Toast.makeText(this, R.string.future_button, Toast.LENGTH_SHORT).show();    //Для неготовых кнопок показываем тост, что они в разработке
-                return; //и выходим из обработчика, никуда не переходя
-                /*intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("geo:55.754283,37.62002"));    //Вариант открытия координат на карте
-                break;*/
+                intent.setClass(this, DisableActivity.class);
+                break;
             case R.id.button5:
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://voda.uu.ru"));
@@ -116,6 +127,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         startActivity(intent);
     }
+
 
     // создание меню
     public boolean onCreateOptionsMenu(Menu menu) {

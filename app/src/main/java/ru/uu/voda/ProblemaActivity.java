@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,12 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.content.FileProvider; //Даёт камере доступ к сохранению файлов
+
 
 //для отправки
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -60,6 +66,8 @@ import android.support.annotation.NonNull;
 import android.view.ViewTreeObserver; //для прорисовки ImageView с фоткой
 
 import android.view.ContextMenu;    //Контекстное меню
+
+import id.zelory.compressor.Compressor;
 
 public class ProblemaActivity  extends AppCompatActivity implements View.OnClickListener, NoticeDialogListener { //добавляем обработчик нажатий прямо в активити; интерфейс для принятия событий диалога
 
@@ -165,6 +173,9 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         valve = (ImageView) findViewById(R.id.ivValve); //вращающийся кран
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         //определяемся какой из контентов показать
         mSendData = (SendData) getLastCustomNonConfigurationInstance();//пытаемся получить уже существующий поток отправки (если был поворот экрана и данные уже отправлялись)
@@ -452,7 +463,7 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         }
     }
 
-    static private class SendData extends AsyncTask<Void, Integer, Boolean> { //можно будет использовать вместо асинхтаска сервис, если времена отправок будут сильно большими
+    private class SendData extends AsyncTask<Void, Integer, Boolean> { //можно будет использовать вместо асинхтаска сервис, если времена отправок будут сильно большими
 
     String resultString = null; //строка с результатами отправки, можно использовать для отображения причин ошибок
     boolean result=false; //успешность результата (пока отправка не произошла считаем неудачным)
@@ -527,6 +538,9 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
                             "filename=\"" + filePath + "\"" + lineEnd);// Заголовок элемента формы
                     outputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);// Тип данных элемента формы
                     outputStream.writeBytes(lineEnd);// Конец заголовка
+
+
+
 
                     //TODO написать сжатие файла на случай если будут отправлять слишком крупные
 
@@ -786,9 +800,15 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
         SharedPreferences.Editor ed = sPref.edit();   //объект для редактирования сохранений
         ed.putString(CURRENT_PHOTO_PATH, mCurrentPhotoPath); //сохраняем возможный путь будущей фотки
         ed.commit();    //сохранение
-        android.net.Uri mPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath)); //ури фотки
+        //android.net.Uri mPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath)); //ури фотки
+        android.net.Uri mPhotoUri = FileProvider.getUriForFile(ProblemaActivity.this, //создаём провайдера файлов
+                BuildConfig.APPLICATION_ID + ".provider",
+                new File(mCurrentPhotoPath)); //который даст камере сохранить фотку в наш файл
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);//суём ури в интент
         startActivityForResult(takePictureIntent, REQUEST_CODE_PHOTO);//запускаем приложуху с камерой
+
+      
+
     }
 
     //функция масштабирующая и ставящая фотку в превью

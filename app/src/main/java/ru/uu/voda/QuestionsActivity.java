@@ -132,6 +132,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 TextView margin = new TextView(contextMargin);  //элемент отступа
                 questionsList.addView(margin);
 
+
                 questionView.setOnClickListener(this);
             }
 

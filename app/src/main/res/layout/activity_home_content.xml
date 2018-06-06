@@ -53,10 +53,11 @@
                 <LinearLayout
                     android:id="@+id/button3"
                     style="@style/buttonlayout">
+
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:src="@drawable/contacts"
-                        style="@style/imageonbutton" />
+                        style="@style/imageonbutton"
+                        android:src="@drawable/voda" />
                     <TextView
                         android:id="@+id/textView3"
                         android:text="@string/button3"
@@ -66,10 +67,11 @@
                 <LinearLayout
                     android:id="@+id/button4"
                     style="@style/buttonlayout">
+
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:src="@drawable/tools"
-                        style="@style/imageonbutton" />
+                        style="@style/imageonbutton"
+                        android:src="@drawable/tools" />
                     <TextView
                         android:id="@+id/textView4"
                         android:text="@string/button4"

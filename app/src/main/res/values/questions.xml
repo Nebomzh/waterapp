@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"   encoding="utf-8" ?>
+
 <resources>
     <string name="title_activity_questions">Есть вопрос?</string>
     <string name="title_activity_answer">Вопрос — Ответ</string>
@@ -131,7 +132,7 @@ I: Получение технических условий в соответс�
                                 <span>1</span>
                             </div>
                             <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
-                                Оформить <a target="_blank" href="/upload/files/docs/grazhdanam/zaklyuchenie-dogovora/zayavlenie_fizlica_dom.pdf">Заявление</a>&nbsp;в 2 экземплярах о заключении в письменной форме договора холодного водоснабжения и водоотведение.<br>
+                                Оформить <a href="http://voda.uu.ru/">Заявление</a>&nbsp;в 2 экземплярах о заключении в письменной форме договора холодного водоснабжения и водоотведение.<br>
  В заявлении указать:<br>
  - реквизиты акта об определении границы раздела внутридомовых инженерных систем и централизованных сетей инженерно-технического обеспечения (при наличии),<br>
  - в случае отсутствия индивидуального прибора учета воды :<br>
@@ -145,7 +146,7 @@ I: Получение технических условий в соответс�
                                 <span>2</span>
                             </div>
                             <div class="item_container_step_descr wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
-                                Приложить к заявлению копии необходимых документов (см. <a href="/grazhdanam/podklyuchenie-k-seti/perechen-dokumentov-zhiloy-dom/" target="_blank">Перечень документов</a>).                            </div>
+                                Приложить к заявлению копии необходимых документов (см. <a href= http://voda.uu.ru/upload/files/docs/grazhdanam/zaklyuchenie-dogovora/zayavlenie_fizlica_dom.pdf">Перечень документов</a>).                            </div>
                         </div>
                                             <div class="item_container_step">
                             <div class="item_container_step_count">

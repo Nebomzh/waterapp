@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">МУП ПОВВ</string>
+    <string name="app_name">МУП ПОВВ г.Челябинска</string>
 
     <string name="button1">Сообщить о проблеме</string>
     <string name="button2">Есть вопрос?</string>
-    <string name="button3">Контакты</string>
+    <string name="button3">Общедомовой прибор</string>
     <string name="button4">Отключения</string>
     <string name="button5">Перейти на сайт</string>
-    <string name="button6">Позвонить в службу подержки</string>
+    <string name="button6"> Телефоны колл-центра </string>
 
     <string name="future_button">Эта кнопка находится в разработке</string>
 
@@ -18,10 +18,10 @@
 
     <string name="exit">Выход</string>
 
-    <string name="phone1">Утечки Челябинск</string>
-    <string name="phone2">Утечки Копейск</string>
-    <string name="phone3">Приборы учёта Челябинск</string>
-    <string name="phone4">Приборы учёта Копейск</string>
+    <string name="phone1">Диспетчерская служба г.Челябинск</string>
+    <string name="phone2">Диспетчерская служба г.Копейск</string>
+    <string name="phone3">Вопросы по приборам учета г.Челябинск</string>
+    <string name="phone4">Вопросы по приборам учета г.Копейск</string>
 
     <string name="h0a">ОТПРАВИТЬ ЗАЯВКУ</string>
     <string name="h0b">о проблеме с водоснабжением и водоотведением</string>
@@ -79,10 +79,10 @@
     <string name="hpre9">Укажите личные данные</string>
     <string name="h9">Требуется перезвонить</string>
     <string name="h10">Телефон (для обратного звонка) *</string>
-    <string name="h10hint">+7 900 123 45 67</string>
+    <string name="h10hint">На случай,если понадобится уточнить что-либо</string>
     <string name="h10request">Укажите телефон</string>
     <string name="h11">Как к Вам обратиться при звонке</string>
-    <string name="h11hint">Александр</string>
+    <string name="h11hint">Указать имя</string>
 
     <string name="send">Отправить</string>
 

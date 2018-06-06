@@ -44,6 +44,8 @@
             <TextView
                     android:id="@+id/question"
                     style="@style/questiontext"
+                    android:autoLink="web"
+                    android:linksClickable="true"
                     />
 
             <ScrollView
@@ -58,7 +60,9 @@
                     <TextView
                         android:id="@+id/answer"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:linksClickable="true"/>
                 </LinearLayout>
             </ScrollView>
 

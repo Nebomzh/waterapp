@@ -3,10 +3,12 @@ package ru.uu.voda;
 
 import android.Manifest;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -148,15 +150,7 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //подготовка карты
@@ -210,15 +204,48 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
             });
         }
 
-        //слушатель тапов по карте
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                marker.setPosition(latLng);
-                findAddresstext(new LatLng(latLng.latitude, latLng.longitude));
-                saveAddress((float) latLng.latitude,(float) latLng.longitude);
-            }
-        });
+
+
+                //слушатель тапов по карте
+                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        marker.setPosition(latLng);
+                        findAddresstext(new LatLng(latLng.latitude, latLng.longitude));
+                        saveAddress((float) latLng.latitude, (float) latLng.longitude);
+                    }
+                });
+
+
+        /* mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                                                    @Override
+                                                    public boolean onMyLocationButtonClick(Location location) {
+                if (location != null) {
+                    marker.setPosition(new LatLng(location.getLatitude(), location.getLongitude())); //перемещаем в это место маркер
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .zoom(mMap.getCameraPosition().zoom)
+                            //.bearing(45)
+                            //.tilt(20)
+                            .build();
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    mMap.animateCamera(cameraUpdate);//перемещаем в это место камеру
+                    locationManager.removeUpdates(locationListener); //после одного перемещения не будем больше отслеживать положение, пусть пользователь сам уточнит его передвигая маркер или вводя текст
+                    findAddresstext(new LatLng(location.getLatitude(), location.getLongitude()));
+                    saveAddress((float) marker.getPosition().latitude, (float) marker.getPosition().longitude);
+                    return false;
+
+            }}
+        }); */
+
+
+
+
+
+
+
+
+
         //Слушатель перемещения маркера
         marker.setDraggable(true);  //маркер можно перемещать
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() { //обработчик событий перемещения маркера
@@ -271,6 +298,9 @@ public class AddressPicker extends AppCompatActivity implements OnMapReadyCallba
                     locationListener);
         }
     }
+
+
+
 
     //местоопределитель
     private LocationListener locationListener = new LocationListener() {

@@ -32,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -529,8 +530,11 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
                     outputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);// Тип данных элемента формы
                     outputStream.writeBytes(lineEnd);// Конец заголовка
 
-                    //TODO написать сжатие файла на случай если будут отправлять слишком крупные
+                    //сжатие файла
+                    compressPhoto(filePath, 1280, 50, Bitmap.CompressFormat.JPEG, outputStream);
 
+                    //TODO переписать отображение прогрессбара
+/*
                     // Поток для считывания файла в оперативную память
                     FileInputStream fileInputStream = new FileInputStream(new File(filePath));
 
@@ -557,14 +561,14 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
                         bufferSize = Math.min(bytesAvailable, maxBufferSize);
                         publishProgress((int) (sentBytes * 100 / fileSize));//обновляем прогресс (можно показывать и промежуточный прогресс вторым параметром (int)((sentBytes + bufferSize) * 100 / fileSize) но он получается слишком узким, поэтому не будем тратить на его просчёты время)
                         bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                    }
+                    }*/
 
                     // Конец элемента формы
                     outputStream.writeBytes(lineEnd);
                     outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
                     // Закрытие соединений и потоков
-                    fileInputStream.close();
+                    //fileInputStream.close();
                 }
                 outputStream.flush();
                 outputStream.close();
@@ -834,22 +838,59 @@ public class ProblemaActivity  extends AppCompatActivity implements View.OnClick
             return; //пока фотку не вставляем ибо ещё некуда
         }
 
+        //получаем изображение смасштабированное под вьюху //TODO сделать это в фоновом потоке
+        Bitmap bitmap = getScaledBitmap(savePhotoPath, targetW, targetH);
+        ivPhoto.setImageBitmap(bitmap);
+    }
+
+    //функция масштабирующая фотку из файла
+    private static Bitmap getScaledBitmap(String path, int targetW, int targetH) {
+
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(savePhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
+        bmOptions.inJustDecodeBounds = true; //Если включить (true), то система не будет создавать Bitmap, а только вернёт информацию о изображение в следующих полях: outWidth – ширина, outHeight – высота, outMimeType – mimetype
+        BitmapFactory.decodeFile(path, bmOptions); // считываем только размеры
+        int photoW = bmOptions.outWidth; //реальные размеры изображения
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.max(photoW/targetW, photoH/targetH); //используем наибольший коэффициент сжатия, потому что нужно, чтобы изображение полностью вписалось в заданные рамки
 
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
+        bmOptions.inJustDecodeBounds = false; //теперь нужно не только узнать границы, но и создать Bitmap
+        bmOptions.inSampleSize = scaleFactor; //коэффициент уменьшения размера изображения при чтении
+        bmOptions.inPurgeable = true; //Позволяет системе временно удалить содержимое созданного Bitmap из памяти в случае её нехватки. Когда изображение снова понадобится (например при выводе на экран), оно будет восстановлено из источника. Т.е. жертвуем производительностью в пользу памяти.
+        bmOptions.inPreferredConfig = Bitmap.Config.RGB_565; // Используем конфигурацию без прозрачности
 
-        Bitmap bitmap = BitmapFactory.decodeFile(savePhotoPath, bmOptions);
-        ivPhoto.setImageBitmap(bitmap);
+        return BitmapFactory.decodeFile(path, bmOptions); // считываем с использованием inSampleSize коэффициента
+    }
+
+    //функция сжимающая фотку для отправки
+    private static void compressPhoto(String path, //путь до фотки
+                                      int limitLength,
+                                      int quality,
+                                      Bitmap.CompressFormat compressFormat,
+                                      OutputStream outputStream) {
+        //считываем изображение, которое меньше в кратно двум раз оригинала (или оригинальное, если оно и так маленькое)
+        Bitmap scaledBitmap = getScaledBitmap(path, limitLength, limitLength);
+        int scaledWidth = scaledBitmap.getWidth();
+        int scaledHeight = scaledBitmap.getHeight();
+        if (scaledWidth > limitLength || scaledHeight > limitLength) { //проверка, что изображение ещё нужно дожимать
+            float aspectRatio = (float) scaledWidth / scaledHeight; //пропорции
+
+            // Calculate the target dimensions
+            int targetWidth, targetHeight;
+
+            if (scaledWidth > scaledHeight) {
+                targetWidth = limitLength;
+                targetHeight = Math.round(targetWidth / aspectRatio);
+            } else {
+                targetHeight = limitLength;
+                targetWidth = Math.round(targetHeight * aspectRatio);
+            }
+
+            scaledBitmap =  Bitmap.createScaledBitmap(scaledBitmap, targetWidth, targetHeight, true);
+        }
+
+        scaledBitmap.compress(compressFormat, quality, outputStream);
     }
 }
